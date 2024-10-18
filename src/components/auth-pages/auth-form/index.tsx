@@ -1,136 +1,76 @@
 'use client'
 
-import {
-	Box,
-	Center,
-	Checkbox,
-	Container,
-	Flex,
-	Text,
-	useDisclosure
-} from '@chakra-ui/react'
-import Image from 'next/image'
+import { Checkbox, Flex, Text, useDisclosure } from '@chakra-ui/react'
 import Link from 'next/link'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
-import DefButton from '@/components/ui/buttons/DefButton'
+import AuthTemplate from '@/components/layout-templates/auth-template'
 import InputComponent from '@/components/ui/inputs/InputComponent'
 import PhoneInputComponent from '@/components/ui/inputs/PhoneInputComponent'
 import InputTitle from '@/components/ui/texts/InputTitle'
-import Title from '@/components/ui/texts/Title'
 
-import { unbounded } from '@/constants/fonts/fonts'
-
-import Logo from '@/assets/img/Auth-logo.svg'
-
-import { PADDING_Y } from '@/config/_variables.config'
-
-import { useFullHeight } from '@/hooks/useFullHeight'
+import { PUBLIC_PAGES } from '@/config/pages/public-url.config'
 
 import PinInputComponent from './PinInput'
 import { IAuthForm } from '@/models/auth.model'
 
-const AuthForm = () => {
-	const [isAuthTypeEmail, setAuthType] = useState<boolean>(false)
+const AuthForm = ({ isRegister }: { isRegister?: boolean }) => {
 	const [agreeTerms, setAgree] = useState(false)
 	const { isOpen, onClose, onOpen } = useDisclosure()
 	const [value, setValue] = useState<IAuthForm>({
-		email: '',
-		phone: ''
+		phone: '',
+		password: ''
 	})
 
 	const onsubmit = () => {
-		if (agreeTerms) {
-			if (!isAuthTypeEmail && value.phone.trim().length > 10) {
-				const update = { phone: value.phone, email: '' }
-				// mutate(update)
-				toast.info('в разработке..')
-				setValue(update)
-			} else if (!!isAuthTypeEmail) {
-				if (value.email.includes('@')) {
-					const update = { email: value.email, phone: '' }
-					setValue(update)
-					// mutate(update)
-					toast.info('в разработке..')
-				} else toast.error('Введите корректный email')
-			} else {
-				toast.error('заполните поле')
-			}
-		} else
-			toast.error('Необходимо принять условия пользовательского соглашения')
+		if (value.phone.trim().length > 10) {
+			if (isRegister && !agreeTerms) {
+				toast.error('Необходимо принять условия пользовательского соглашения')
+			} else toast.info('в разработке..') // mutate(update)
+		} else {
+			toast.error('заполните поле')
+		}
 	}
 
-	const { clientHeight } = useFullHeight()
 	return (
-		<Flex
-			minH={clientHeight + 'px'}
-			flexDirection='column'
-			justifyContent='space-between'
-			pb={PADDING_Y}
+		<AuthTemplate
+			onsubmit={onsubmit}
+			title={isRegister ? 'Регистрация' : 'Вход'}
+			footer={{
+				btn_name: isRegister ? 'Войти' : 'Создать аккаунт',
+				question: isRegister
+					? 'У вас уже есть аккаунт?'
+					: 'У вас нет учетной записи? ',
+				path: isRegister ? PUBLIC_PAGES.AUTH : PUBLIC_PAGES.REGISTER
+			}}
 		>
-			<Box>
-				<Center overflow='hidden'>
-					<Flex
-						minW='1038px'
-						mt='-741px'
-						justifyContent='center'
-						alignItems='end'
-						h='1001px'
-						rounded='50%'
-						bg='#45C069'
-						mx='auto'
-						pb='17.94px'
-					>
-						<Image
-							src={Logo}
-							alt='Logo'
-						/>
-					</Flex>
-				</Center>
+			<PhoneInputComponent
+				handleChange={phone => setValue({ ...value, phone })}
+				value={value.phone}
+			/>
 
+			<InputComponent
+				handleChange={e => setValue({ ...value, password: e.target.value })}
+				value={value.password}
+				name='password'
+				placeholder='Напишите пароль'
+				title='Пароль'
+				type='password'
+			/>
+
+			{!isRegister && (
 				<Flex
-					mt='11.8px'
-					justifyContent='center'
-					gap='1'
-					className={unbounded.className}
-					fontWeight='500'
-					fontSize='34.03px'
-					lineHeight='42.2px'
+					justifyContent='end'
+					mt='-1'
 				>
-					<Text color='#FF8400'>AIST</Text>
-					<Text color='#43995C'>CARGO</Text>
+					<Link href={PUBLIC_PAGES.RESET_PASSWORD}>
+						<InputTitle>Забыли пароль?</InputTitle>
+					</Link>
 				</Flex>
+			)}
 
-				<InputTitle
-					textAlign='center'
-					mt='40px'
-					px='4'
-				>
-					AistCargo - быстро и удобно передать посылку между доставщиком и
-					отправителем
-				</InputTitle>
-			</Box>
-
-			<Container mt='100px'>
-				<Title mb='35px'>Регистрация/Авторизация</Title>
-
-				{isAuthTypeEmail ? (
-					<InputComponent
-						handleChange={e => setValue({ ...value, email: e.target.value })}
-						value={value.email}
-						title='Email почта'
-						name='email'
-						type='email'
-						placeholder='Напишите почту'
-					/>
-				) : (
-					<PhoneInputComponent
-						handleChange={phone => setValue({ ...value, phone })}
-						value={value.phone}
-					/>
-				)}
-
+			{!!isRegister && (
 				<Flex
 					alignItems='center'
 					gap='2'
@@ -152,29 +92,13 @@ const AuthForm = () => {
 						</Text>
 					</Link>
 				</Flex>
-
-				<DefButton
-					mt='58px'
-					isLight={true}
-					onClick={() => setAuthType(state => !state)}
-				>
-					{`Вход по ${isAuthTypeEmail ? 'номеру' : 'Email'}`}
-				</DefButton>
-				<DefButton
-					mt='2'
-					onClick={onsubmit}
-				>
-					Далее
-				</DefButton>
-			</Container>
-
+			)}
 			<PinInputComponent
-				isAuthTypeEmail={isAuthTypeEmail}
 				isOpen={isOpen}
 				onClose={onClose}
 				value={value}
 			/>
-		</Flex>
+		</AuthTemplate>
 	)
 }
 

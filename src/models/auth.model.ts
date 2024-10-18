@@ -5,7 +5,5 @@ export interface IAuthResponse {
 
 export interface IAuthForm {
 	phone: string
-	email: string
+	password: string
 }
-
-export type AuthTypes = 'phone' | 'email'

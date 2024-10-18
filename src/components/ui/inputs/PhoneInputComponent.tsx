@@ -34,7 +34,7 @@ const PhoneInputComponent = ({
 			<InputTitle>{title}</InputTitle>
 			<PhoneInput
 				defaultCountry='kg'
-				countries={countries}
+				// countries={countries}
 				name={name}
 				value={value}
 				required={required}

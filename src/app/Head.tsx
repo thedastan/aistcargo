@@ -9,7 +9,6 @@ const Head = () => {
 				name='theme-color'
 				content={THEME_COLOR}
 			/>
-
 			<meta
 				name='google-site-verification'
 				content='fQ0IqJz2eTDIDxVnU7cEV8OYPUrHscc9wXzSRQaozgY'

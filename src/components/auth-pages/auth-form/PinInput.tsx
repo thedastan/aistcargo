@@ -28,17 +28,11 @@ interface PinInputProps {
 	onClose: () => void
 	value: IAuthForm
 	isOpen: boolean
-	isAuthTypeEmail: boolean
 }
 
 const countdown_count = 30
 
-const PinInputComponent = ({
-	value,
-	isOpen,
-	isAuthTypeEmail,
-	onClose
-}: PinInputProps) => {
+const PinInputComponent = ({ value, isOpen, onClose }: PinInputProps) => {
 	const [code, setCode] = useState('')
 	const { push } = useRouter()
 	const [countdown, setCountdown] = useState(countdown_count)
@@ -54,9 +48,7 @@ const PinInputComponent = ({
 		setCountdown(countdown_count)
 	}
 
-	const { isPending, mutate } = useOtpSent(isAuthTypeEmail, () =>
-		countdownStart()
-	)
+	const { isPending, mutate } = useOtpSent(() => countdownStart())
 
 	const sendOtpCode = () => {
 		mutate(value)
@@ -128,14 +120,8 @@ const PinInputComponent = ({
 						{(isPending || isLoading) && <Spinner />}
 						<Box textAlign='center'>
 							<Title>Введите код</Title>
-							<Description mt='18px'>
-								{`Мы отправили код на ${
-									!isAuthTypeEmail ? 'ваш номер' : 'вашу почту'
-								}`}
-							</Description>
-							<Description fontWeight='500'>
-								{!isAuthTypeEmail ? value.phone : value.email}
-							</Description>
+							<Description mt='18px'>Мы отправили код на ваш номер</Description>
+							<Description fontWeight='500'>{value.phone}</Description>
 						</Box>
 						<HStack
 							mx='auto'

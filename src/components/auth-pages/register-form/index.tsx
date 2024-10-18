@@ -12,7 +12,6 @@ import {
 import { ChangeEvent, useState } from 'react'
 import { HiTruck } from 'react-icons/hi2'
 import { IoMdCube } from 'react-icons/io'
-import { IconType } from 'react-icons/lib'
 
 import DefButton from '@/components/ui/buttons/DefButton'
 import InputComponent from '@/components/ui/inputs/InputComponent'

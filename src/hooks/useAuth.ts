@@ -23,15 +23,13 @@ export function useVerify(success: () => void, error?: () => void) {
 	return { mutate, isPending }
 }
 
-export function useOtpSent(isAuthTypeEmail: boolean, success: () => void) {
+export function useOtpSent(success: () => void) {
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['otp-send'],
 		mutationFn: (data: IAuthForm) => authService.sendOtpCode(data),
 		onSuccess() {
 			success()
-			toast.success(
-				`На ${!isAuthTypeEmail ? 'ваш номер' : 'вашу почту'} отправили смс код. Проверьте`
-			)
+			toast.success(`На ваш номер отправили смс код. Напишите`)
 		},
 		onError(e) {
 			ToastError(e)
