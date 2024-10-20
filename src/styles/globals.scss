@@ -59,3 +59,11 @@
 		box-shadow: none;
 	}
 }
+
+.navbar {
+	.active {
+		svg > path {
+			fill: #ffffff;
+		}
+	}
+}
