@@ -13,7 +13,7 @@ import ProfileHead from '../profile/profile-head'
 
 const data = ['Все', 'Самолёт', 'Машина', 'Грузовик']
 
-const SenderMain = () => {
+const Home = () => {
 	const [active, setActive] = useState(data[0])
 	return (
 		<Box py='5'>
@@ -32,6 +32,7 @@ const SenderMain = () => {
 				>
 					{data.map((el, idx) => (
 						<Flex
+							key={idx}
 							onClick={() => setActive(el)}
 							bg={active === el ? THEME_COLOR : '#F5F5F5'}
 							border={`1px solid ${active === el ? THEME_COLOR : '#232D3714'}`}
@@ -79,4 +80,4 @@ const SenderMain = () => {
 	)
 }
 
-export default SenderMain
+export default Home

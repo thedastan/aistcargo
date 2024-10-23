@@ -1,9 +1,11 @@
 'use client'
 
-import { Box, Container, Flex, Heading } from '@chakra-ui/react'
+import { Box, Container, Flex } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { PropsWithChildren } from 'react'
-import { FaChevronLeft } from 'react-icons/fa6'
+import { BsChevronLeft } from 'react-icons/bs'
+
+import Title from '@/components/ui/texts/Title'
 
 import {
 	INTERFACE_WIDTH,
@@ -40,23 +42,21 @@ const InterfaceShape = ({
 					alignItems='center'
 					pb={UpperContent ? '6' : '27px'}
 				>
-					<FaChevronLeft
+					<BsChevronLeft
 						onClick={back}
 						color='#FFFFFF'
-						fontSize='21px'
-						opacity='.9'
+						fontSize='22px'
 						cursor='pointer'
 					/>
-					<Heading
+					<Title
 						lineHeight='32.68px'
 						fontSize='24px'
-						fontWeight='600'
 						color='#FFFFFF'
 					>
 						{title}
-					</Heading>
+					</Title>
 					<Box opacity='0'>
-						<FaChevronLeft fontSize='21px' />
+						<BsChevronLeft fontSize='22px' />
 					</Box>
 				</Flex>
 
