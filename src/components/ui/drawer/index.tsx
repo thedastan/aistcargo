@@ -8,6 +8,8 @@ import {
 } from '@chakra-ui/react'
 import { PropsWithChildren } from 'react'
 
+import { open_sans } from '@/constants/fonts/fonts'
+
 import Title from '../texts/Title'
 
 interface IModalProps extends PropsWithChildren {
@@ -32,7 +34,7 @@ function DrawerModal({ isOpen, onClose, children, title }: IModalProps) {
 				borderTopRadius='26px'
 				pb='30px'
 			>
-				<DrawerHeader>
+				<DrawerHeader pb='0'>
 					<Title
 						mt='15px'
 						textAlign='center'
@@ -45,7 +47,7 @@ function DrawerModal({ isOpen, onClose, children, title }: IModalProps) {
 				<DrawerBody
 					className='unscroll'
 					px={4}
-					mt='18px'
+					mt='5'
 					overflow='auto'
 					h='100%'
 				>

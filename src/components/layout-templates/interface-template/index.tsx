@@ -62,8 +62,8 @@ const InterfaceShape = ({
 
 				{!!UpperContent && (
 					<Box
-						mt='6'
-						pb='30px'
+						mt='2'
+						pb='14px'
 					>
 						{UpperContent}
 					</Box>

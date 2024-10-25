@@ -4,6 +4,7 @@ import {
 	Box,
 	Input,
 	InputGroup,
+	InputLeftElement,
 	InputRightElement,
 	Stack
 } from '@chakra-ui/react'
@@ -15,14 +16,16 @@ import InputTitle from '../texts/InputTitle'
 export interface IInputComponentProps {
 	name?: string
 	placeholder?: string
-	isLight?: boolean
+	isGreen?: boolean
 	type?: string
 	value?: string
 	handleChange?: (e: React.ChangeEvent<HTMLInputElement>) => void
 	required?: boolean
 	isReadOnly?: boolean
+	LeftElement?: JSX.Element
 	RightElement?: JSX.Element
 	title?: string
+	h?: string
 }
 
 const InputComponent = ({
@@ -30,12 +33,14 @@ const InputComponent = ({
 	placeholder,
 	value,
 	handleChange,
-	isLight,
+	isGreen,
 	type = 'text',
 	required = true,
 	isReadOnly,
+	LeftElement,
 	RightElement,
-	title
+	title,
+	h = '56px'
 }: IInputComponentProps) => {
 	const [show, setShow] = useState(false)
 	return (
@@ -43,8 +48,21 @@ const InputComponent = ({
 			mb='4'
 			spacing='6px'
 		>
-			{!!title && <InputTitle>{title}</InputTitle>}
+			{!!title && (
+				<InputTitle color={isGreen ? '#FFFFFF' : '#232D37'}>{title}</InputTitle>
+			)}
 			<InputGroup>
+				{!!LeftElement && (
+					<InputLeftElement
+						minW='3rem'
+						h='100%'
+						display='flex'
+						alignItems='center'
+						opacity={!!value ? '1' : '.7'}
+					>
+						<Box>{LeftElement}</Box>
+					</InputLeftElement>
+				)}
 				<Input
 					onChange={handleChange}
 					variant='none'
@@ -53,17 +71,19 @@ const InputComponent = ({
 					type={show ? 'text' : type}
 					rounded='16px'
 					placeholder={placeholder}
-					h='56px'
+					h={h}
 					w='100%'
-					border='1px solid #1A1D201F'
-					bg='transparent'
+					border={`1px solid ${isGreen ? '#FFFFFF33' : '#1A1D201F'}`}
+					bg={isGreen ? '#FFFFFF1A' : 'transparent'}
 					fontSize='16px'
 					px='14px'
-					fontWeight='400'
+					fontWeight={isGreen ? '500' : '400'}
 					lineHeight='22px'
-					color='#232D37'
+					color={isGreen ? '#FFFFFF' : '#232D37'}
 					_placeholder={{
-						opacity: '.7'
+						opacity: '.7',
+						fontWeight: '400',
+						color: isGreen ? '#FFFFFF' : '#232D37'
 					}}
 					isRequired={required}
 					isReadOnly={isReadOnly}
@@ -93,7 +113,6 @@ const InputComponent = ({
 						h='100%'
 						display='flex'
 						alignItems='center'
-						opacity={!!value ? '1' : '.5'}
 					>
 						<Box>{RightElement}</Box>
 					</InputRightElement>

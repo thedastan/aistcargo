@@ -58,7 +58,6 @@ const ModalComponent = ({
 				<InputComponent
 					name=''
 					placeholder=''
-					isLight={true}
 				/>
 
 				<Flex

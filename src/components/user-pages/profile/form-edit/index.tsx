@@ -50,6 +50,7 @@ const ProfileForm = () => {
 				alignItems='center'
 				pt='20px'
 			>
+				
 				<BsChevronLeft
 					onClick={back}
 					fontSize='22px'

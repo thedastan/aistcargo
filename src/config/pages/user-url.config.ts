@@ -3,7 +3,10 @@ class USER {
 
 	HOME = this.root
 
-	CREATE = `${this.root}/create`
+	CREATE_SENDER = `${this.root}/create/sender`
+	CREATE_TRAVELER = `${this.root}/create/traveler`
+	PREVIEW_PACKAGE = `${this.root}/create/preview`
+
 	PROFILE = `${this.root}/profile`
 	PROFILE_EDIT = `${this.PROFILE}/form-edit`
 	AD_MANAGEMENT = `${this.PROFILE}/ad-management`
