@@ -36,42 +36,42 @@ export function Providers({ children }: PropsWithChildren) {
 
 	return (
 		<QueryClientProvider client={client}>
-			{/* <HydrationBoundary state={dehydratedState}>
+			<HydrationBoundary state={dehydratedState}>
 				<Provider store={store}>
 					<PersistGate
 						persistor={persistor}
 						loading={null}
-					> */}
-			<>
-				<Box
-					maxW={INTERFACE_WIDTH}
-					mx='auto'
-					minH={innerHeight ? innerHeight + 'px' : '100vh'}
-					bg='#FFFFFF'
-				>
-					{children}
-				</Box>
-				<Toaster
-					theme='light'
-					position='top-center'
-					duration={4000}
-					toastOptions={{
-						style: {
-							background: '#FFFFFF',
-							border: 'none',
-							borderRadius: '12px',
-							color: '#00000080',
-							fontSize: '14px',
-							fontWeight: '500',
-							backgroundBlendMode: 'luminosity',
-							minHeight: '60px'
-						}
-					}}
-				/>
-			</>
-			{/* </PersistGate>
+					>
+						<>
+							<Box
+								maxW={INTERFACE_WIDTH}
+								mx='auto'
+								minH={innerHeight ? innerHeight + 'px' : '100vh'}
+								bg='#FFFFFF'
+							>
+								{children}
+							</Box>
+							<Toaster
+								theme='light'
+								position='top-center'
+								duration={4000}
+								toastOptions={{
+									style: {
+										background: '#FFFFFF',
+										border: 'none',
+										borderRadius: '12px',
+										color: '#00000080',
+										fontSize: '14px',
+										fontWeight: '500',
+										backgroundBlendMode: 'luminosity',
+										minHeight: '60px'
+									}
+								}}
+							/>
+						</>
+					</PersistGate>
 				</Provider>
-			</HydrationBoundary> */}
+			</HydrationBoundary>
 		</QueryClientProvider>
 	)
 }

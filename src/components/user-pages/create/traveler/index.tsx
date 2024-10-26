@@ -10,7 +10,17 @@ import RouteSelect from '@/components/ui/select/RouteSelect'
 import SearchSelect from '@/components/ui/select/SearchSelect'
 
 import CurrencySom from '@/assets/svg/CurrencySom'
+import PackageCub from '@/assets/svg/PackageCub'
 
+const package_data = [
+	'Документ/Конверт A4 (до 0.5 кг)',
+	'Коробка S (55x40x20 см до 10 кг)',
+	'Коробка M (65x40x25 см до 15 кг)',
+	'Коробка L (70x50x30 см до 23 кг)',
+	'Сумка/Чемодан S (55x40x20 см до 10 кг)',
+	'Сумка/Чемодан M (150 см до 15 кг)',
+	'Сумка/Чемодан L (203 см до 23 кг)'
+]
 const CreateComponentTraveler = () => {
 	const onsubmit = () => {}
 
@@ -30,7 +40,12 @@ const CreateComponentTraveler = () => {
 					</Box>
 				}
 			>
-				<SearchSelect />
+				<SearchSelect
+					data={package_data}
+					placeholder='Тип посылки'
+					title='Тип посылки'
+					icon={<PackageCub />}
+				/>
 
 				<InputComponent
 					title='Цена (в сомах)'

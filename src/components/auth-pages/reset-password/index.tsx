@@ -9,10 +9,11 @@ import InputComponent from '@/components/ui/inputs/InputComponent'
 import PhoneInputComponent from '@/components/ui/inputs/PhoneInputComponent'
 import InputTitle from '@/components/ui/texts/InputTitle'
 
-import { PUBLIC_PAGES } from '@/config/pages/public-url.config'
+import { AUTH_PAGES } from '@/config/pages/auth-url.config'
 
 import PinInputComponent from '../auth-form/PinInput'
 
+import { EnumOtpCode } from '@/models/auth.enum'
 import { IAuthForm } from '@/models/auth.model'
 
 const ResetPasswordForm = () => {
@@ -38,7 +39,7 @@ const ResetPasswordForm = () => {
 			footer={{
 				btn_name: 'Создать аккаунт',
 				question: 'У вас нет учетной записи? ',
-				path: PUBLIC_PAGES.REGISTER
+				path: AUTH_PAGES.REGISTER
 			}}
 		>
 			<PhoneInputComponent
@@ -72,7 +73,7 @@ const ResetPasswordForm = () => {
 			<PinInputComponent
 				isOpen={isOpen}
 				onClose={onClose}
-				value={value}
+				value={{ phone: value.phone, type: EnumOtpCode.RESET_PASSWORD }}
 			/>
 		</AuthTemplate>
 	)

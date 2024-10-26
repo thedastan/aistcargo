@@ -1,10 +1,34 @@
-import { useMutation } from '@tanstack/react-query'
-import { toast } from 'sonner'
+import { useMutation } from '@tanstack/react-query';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 
-import { ToastError } from '@/config/helpers'
 
-import { IAuthForm } from '@/models/auth.model'
-import { authService } from '@/services/auth.service'
+
+import { ToastError } from '@/config/helpers';
+import { USER_PAGES } from '@/config/pages/user-url.config';
+
+
+
+import { IAuthForm, ISendotpForm } from '@/models/auth.model';
+import { authService } from '@/services/auth.service';
+
+
+export function useLogin() {
+	const { push } = useRouter()
+	const { mutate, isPending } = useMutation({
+		mutationKey: ['login'],
+		mutationFn: (data: IAuthForm) => authService.auth(data),
+		onSuccess() {
+			push(USER_PAGES.HOME)
+			toast.success('Вы успешно вошли в систему')
+		},
+		onError(e) {
+			ToastError(e)
+		}
+	})
+
+	return { auth: mutate, isPending }
+}
 
 export function useVerify(success: () => void, error?: () => void) {
 	const { mutate, isPending } = useMutation({
@@ -26,7 +50,7 @@ export function useVerify(success: () => void, error?: () => void) {
 export function useOtpSent(success: () => void) {
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['otp-send'],
-		mutationFn: (data: IAuthForm) => authService.sendOtpCode(data),
+		mutationFn: (data: ISendotpForm) => authService.sendOtpCode(data),
 		onSuccess() {
 			success()
 			toast.success(`На ваш номер отправили смс код. Напишите`)

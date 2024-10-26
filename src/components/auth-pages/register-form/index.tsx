@@ -40,6 +40,7 @@ const RegisterForm = () => {
 	const { clientHeight } = useFullHeight()
 
 	const [value, setValue] = useState({
+		password: '',
 		first_name: '',
 		last_name: '',
 		role: EnumRole.SENDER
@@ -52,7 +53,10 @@ const RegisterForm = () => {
 	const { getRootProps, getRadioProps } = useRadioGroup({
 		name: 'framework',
 		defaultValue: EnumRole.SENDER,
-		onChange: (role: RoleTypes) => setValue({ ...value, role })
+		onChange: (role: RoleTypes) => {
+			setValue({ ...value, role })
+			console.log(role)
+		}
 	})
 
 	const group = getRootProps()
@@ -65,6 +69,14 @@ const RegisterForm = () => {
 				py={PADDING_Y}
 			>
 				<Box>
+					<InputComponent
+						handleChange={handleChange}
+						value={value.password}
+						name='password'
+						placeholder='Напишите пароль'
+						title='Пароль'
+						type='password'
+					/>
 					<InputComponent
 						handleChange={handleChange}
 						value={value.first_name}

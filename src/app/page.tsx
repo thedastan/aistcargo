@@ -1,7 +1,7 @@
 import { redirect } from 'next/navigation'
 
-import { PUBLIC_PAGES } from '@/config/pages/public-url.config'
+import { AUTH_PAGES } from '@/config/pages/auth-url.config'
 
 export default function Home() {
-	return redirect(PUBLIC_PAGES.AUTH)
+	return redirect(AUTH_PAGES.AUTH)
 }

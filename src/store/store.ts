@@ -14,16 +14,18 @@ import storage from 'redux-persist/lib/storage'
 
 import { SITE_NAME } from '@/constants/seo/seo.constants'
 
-import { OrderReducer } from './order/slice'
+import { StorageReducer } from './storage/slice'
 
 const cartPersistConfig = {
 	key: SITE_NAME,
 	storage,
 	version: 1,
-	whitelist: ['cart']
+	blacklist: ['storage']
 }
 
-const rootReducer = combineReducers({ OrderReducer })
+const rootReducer = combineReducers({
+	storage: persistReducer(cartPersistConfig, StorageReducer)
+})
 // FilterReducer: persistReducer(cartPersistConfig, FilterReducer)
 
 export const store = configureStore({

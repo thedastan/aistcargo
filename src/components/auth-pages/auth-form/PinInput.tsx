@@ -18,15 +18,15 @@ import Description from '@/components/ui/texts/Description'
 import Title from '@/components/ui/texts/Title'
 
 import { INTERFACE_WIDTH } from '@/config/_variables.config'
-import { SENDER_PAGES } from '@/config/pages/sender-url.config'
+import { AUTH_PAGES } from '@/config/pages/auth-url.config'
 
 import { useOtpSent, useVerify } from '@/hooks/useAuth'
 
-import { IAuthForm } from '@/models/auth.model'
+import { ISendotpForm } from '@/models/auth.model'
 
 interface PinInputProps {
 	onClose: () => void
-	value: IAuthForm
+	value: ISendotpForm
 	isOpen: boolean
 }
 
@@ -38,7 +38,7 @@ const PinInputComponent = ({ value, isOpen, onClose }: PinInputProps) => {
 	const [countdown, setCountdown] = useState(countdown_count)
 	const [isAgain, setAgain] = useState(false)
 	const { isPending: isLoading, mutate: verify } = useVerify(
-		() => push(SENDER_PAGES.HOME),
+		() => push(AUTH_PAGES.REGISTER_CONFIRM),
 		() => setCode('')
 	)
 
@@ -136,7 +136,7 @@ const PinInputComponent = ({ value, isOpen, onClose }: PinInputProps) => {
 								type='numeric'
 								inputMode='number'
 								style={{ padding: '10px' }}
-								onComplete={value => verify(value)}
+								onComplete={code => verify(code)}
 								autoSelect={true}
 								regexCriteria={/^[0-9]*$/}
 							/>

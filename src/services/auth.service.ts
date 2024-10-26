@@ -2,11 +2,19 @@ import { PUBLIC_API } from '@/api/interceptors'
 
 import { getAccessToken, saveTokenStorage } from './auth-token.services'
 import { EnumRole, saveUserRole } from './role.service'
-import { IAuthForm, IAuthResponse } from '@/models/auth.model'
+import { IAuthForm, IAuthResponse, ISendotpForm } from '@/models/auth.model'
 
 export const authService = {
-	// client
-	async sendOtpCode(data: IAuthForm) {
+	async auth(data: IAuthForm) {
+		const response = await PUBLIC_API.post<IAuthResponse>(
+			`account/token/access/`,
+			data
+		)
+		saveUserRole(EnumRole.SENDER)
+		if (response.data.access) saveTokenStorage(response.data)
+	},
+
+	async sendOtpCode(data: ISendotpForm) {
 		const response = await PUBLIC_API.post<IAuthResponse>(
 			`account/otp/send/`,
 			data
@@ -23,12 +31,10 @@ export const authService = {
 		if (response.data.access) saveTokenStorage(response.data)
 	},
 
-	// admin auth
-
 	// update token
 	async getNewTokens() {
 		const response = await PUBLIC_API.post<IAuthResponse>(
-			'account/staff/token/refresh/',
+			'account/token/refresh/',
 			{
 				refresh: getAccessToken()
 			}

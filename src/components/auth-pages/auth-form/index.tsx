@@ -6,14 +6,19 @@ import { useState } from 'react'
 import { toast } from 'sonner'
 
 import AuthTemplate from '@/components/layout-templates/auth-template'
+import Spinner from '@/components/loader/spinner'
 import InputComponent from '@/components/ui/inputs/InputComponent'
 import PhoneInputComponent from '@/components/ui/inputs/PhoneInputComponent'
 import InputTitle from '@/components/ui/texts/InputTitle'
 
+import { AUTH_PAGES } from '@/config/pages/auth-url.config'
 import { PUBLIC_PAGES } from '@/config/pages/public-url.config'
 
+import { useLogin, useOtpSent } from '@/hooks/useAuth'
+
 import PinInputComponent from './PinInput'
-import { IAuthForm } from '@/models/auth.model'
+import { EnumOtpCode } from '@/models/auth.enum'
+import { IAuthForm, ISendotpForm } from '@/models/auth.model'
 
 const AuthForm = ({ isRegister }: { isRegister?: boolean }) => {
 	const [agreeTerms, setAgree] = useState(false)
@@ -23,11 +28,24 @@ const AuthForm = ({ isRegister }: { isRegister?: boolean }) => {
 		password: ''
 	})
 
+	const { auth, isPending } = useLogin()
+
+	const { mutate, isPending: isPending2 } = useOtpSent(onOpen)
+	const register_value: ISendotpForm = {
+		phone: value.phone,
+		type: EnumOtpCode.REGISTER
+	}
+
 	const onsubmit = () => {
 		if (value.phone.trim().length > 10) {
-			if (isRegister && !agreeTerms) {
-				toast.error('Необходимо принять условия пользовательского соглашения')
-			} else toast.info('в разработке..') // mutate(update)
+			if (!isRegister) auth(value)
+			if (isRegister) {
+				!agreeTerms
+					? toast.error(
+							'Необходимо принять условия пользовательского соглашения'
+						)
+					: mutate(register_value)
+			}
 		} else {
 			toast.error('заполните поле')
 		}
@@ -42,22 +60,25 @@ const AuthForm = ({ isRegister }: { isRegister?: boolean }) => {
 				question: isRegister
 					? 'У вас уже есть аккаунт?'
 					: 'У вас нет учетной записи? ',
-				path: isRegister ? PUBLIC_PAGES.AUTH : PUBLIC_PAGES.REGISTER
+				path: isRegister ? AUTH_PAGES.AUTH : AUTH_PAGES.REGISTER
 			}}
 		>
+			{(isPending || isPending2) && <Spinner />}
 			<PhoneInputComponent
 				handleChange={phone => setValue({ ...value, phone })}
 				value={value.phone}
 			/>
 
-			<InputComponent
-				handleChange={e => setValue({ ...value, password: e.target.value })}
-				value={value.password}
-				name='password'
-				placeholder='Напишите пароль'
-				title='Пароль'
-				type='password'
-			/>
+			{!isRegister && (
+				<InputComponent
+					handleChange={e => setValue({ ...value, password: e.target.value })}
+					value={value.password}
+					name='password'
+					placeholder='Напишите пароль'
+					title='Пароль'
+					type='password'
+				/>
+			)}
 
 			{!isRegister && (
 				<Flex
@@ -96,7 +117,7 @@ const AuthForm = ({ isRegister }: { isRegister?: boolean }) => {
 			<PinInputComponent
 				isOpen={isOpen}
 				onClose={onClose}
-				value={value}
+				value={register_value}
 			/>
 		</AuthTemplate>
 	)

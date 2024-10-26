@@ -19,11 +19,11 @@ import TruckTransport from '@/assets/img/TruckTransport.svg'
 import Description from '../texts/Description'
 import InputTitle from '../texts/InputTitle'
 
-const TypeofTransport = ({
-	onChange
-}: {
+interface TypeofTransportProps {
 	onChange: (arr: string[]) => void
-}) => {
+	isLight?: boolean
+}
+const TypeofTransport = ({ onChange, isLight }: TypeofTransportProps) => {
 	const transports = [
 		{
 			image: CarTransport,
@@ -48,7 +48,9 @@ const TypeofTransport = ({
 			spacing='10px'
 			mb='4'
 		>
-			<InputTitle color='#FFFFFF'>Тип транспорта</InputTitle>
+			<InputTitle color={isLight ? '#232D37' : '#FFFFFF'}>
+				Тип транспорта
+			</InputTitle>
 			<CheckboxGroup defaultValue={['next']}>
 				<Flex gap='2'>
 					{transports.map((item, idx) => {
@@ -59,6 +61,7 @@ const TypeofTransport = ({
 							<CheckboxCard
 								key={idx}
 								{...item}
+								isLight={!!isLight}
 								params={checkbox}
 							/>
 						)
@@ -70,6 +73,7 @@ const TypeofTransport = ({
 }
 
 interface TransportCardProps {
+	isLight: boolean
 	params: UseRadioProps
 	image: StaticImageData
 	name: string
@@ -93,11 +97,11 @@ function CheckboxCard(props: TransportCardProps) {
 				cursor='pointer'
 				rounded='16px'
 				w='100%'
-				bg='#FFFFFF1F'
+				bg={props.isLight ? '#232D371A' : '#FFFFFF1F'}
 				border='1px solid #232D371F'
 				h='112px'
 				_checked={{
-					bg: '#FFFFFF',
+					bg: props.isLight ? '#43995C' : '#FFFFFF',
 					opacity: '1',
 					border: '1px solid #2FBF53'
 				}}
@@ -119,14 +123,22 @@ function CheckboxCard(props: TransportCardProps) {
 					</Box>
 					<Radio
 						isChecked={input.checked}
-						colorScheme='orange'
-						border='1px solid #FFFFFF'
+						colorScheme={props.isLight ? 'green' : 'orange'}
+						border={props.isLight ? '1px solid #232D37' : '1px solid #FFFFFF'}
 						px='10px'
 					/>
 				</Flex>
 				<Description
 					pl='12px'
-					color={input.checked ? '#232D37' : '#FFFFFF'}
+					color={
+						props.isLight
+							? input.checked
+								? '#FFFFFF'
+								: '#232D37'
+							: input.checked
+								? '#232D37'
+								: '#FFFFFF'
+					}
 				>
 					{props.name}
 				</Description>

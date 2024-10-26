@@ -11,6 +11,8 @@ import { THEME_COLOR } from '@/config/_variables.config'
 
 import ProfileHead from '../profile/profile-head'
 
+import Filter from './filter'
+
 const data = ['Все', 'Самолёт', 'Машина', 'Грузовик']
 
 const Home = () => {
@@ -30,6 +32,7 @@ const Home = () => {
 					gap='10px'
 					px='4'
 				>
+					<Filter />
 					{data.map((el, idx) => (
 						<Flex
 							key={idx}

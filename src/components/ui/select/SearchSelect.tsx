@@ -19,15 +19,15 @@ import { useDebounce } from '@/hooks/useDebounce'
 import InputComponent from '../inputs/InputComponent'
 import Description from '../texts/Description'
 
-const data = [
-	'Бишкек/Кыргызстан',
-	'Екатеринбург/Россия',
-	'Москва/Россия',
-	'Санк-Петербург/Россия'
-]
-const SearchSelect = () => {
+interface SearchSelectProps {
+	title: string
+	placeholder: string
+	data: string[]
+	icon?: JSX.Element
+}
+const SearchSelect = (props: SearchSelectProps) => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
-	const [search_data, setSearchData] = useState(data)
+	const [search_data, setSearchData] = useState(props.data)
 	const [search, setSearch] = useState('')
 	const ref = useRef<any>(null)
 	const debounce = useDebounce(search, 300)
@@ -42,7 +42,7 @@ const SearchSelect = () => {
 			setSearchData(state =>
 				state.filter(el => el.toLowerCase().includes(debounce))
 			)
-		} else setSearchData(data)
+		} else setSearchData(props.data)
 	}, [debounce])
 
 	return (
@@ -57,15 +57,10 @@ const SearchSelect = () => {
 				<PopoverTrigger>
 					<Box onClick={onOpen}>
 						<InputComponent
-							title='Тип посылки'
-							placeholder='Тип посылки'
+							title={props.title}
+							placeholder={props.placeholder}
 							isReadOnly={true}
-							LeftElement={
-								<PiCubeFocus
-									color='#292D32'
-									fontSize='22px'
-								/>
-							}
+							LeftElement={props.icon}
 							RightElement={
 								<FaChevronDown
 									color='#292D32'
