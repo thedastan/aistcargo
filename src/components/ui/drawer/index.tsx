@@ -29,14 +29,23 @@ function DrawerModal({ isOpen, onClose, children, title }: IModalProps) {
 			<DrawerOverlay bg='#000000B2' />
 			<DrawerContent
 				// maxH='80vh'
-				maxH='745px'
+				maxH='595px'
 				mx='auto'
 				borderTopRadius='26px'
-				pb='30px'
 			>
-				<DrawerHeader pb='0'>
+				<DrawerHeader
+					pb='5'
+					pt='6px'
+				>
+					<Box
+						bg='#E7E7E7'
+						h='6px'
+						w='100px'
+						rounded='21px'
+						mx='auto'
+					/>
 					<Title
-						mt='15px'
+						mt='6'
 						textAlign='center'
 						color='#0E121E'
 					>
@@ -47,11 +56,10 @@ function DrawerModal({ isOpen, onClose, children, title }: IModalProps) {
 				<DrawerBody
 					className='unscroll'
 					px={4}
-					mt='5'
 					overflow='auto'
 					h='100%'
+					pb='30px'
 				>
-					<Box></Box>
 					{children}
 				</DrawerBody>
 			</DrawerContent>

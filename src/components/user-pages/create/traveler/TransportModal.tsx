@@ -9,6 +9,10 @@ import { RiCarFill } from 'react-icons/ri'
 import DrawerModal from '@/components/ui/drawer'
 import Title from '@/components/ui/texts/Title'
 
+import AirplaneSvg from '@/assets/svg/AirplaneSvg'
+import CarSvg from '@/assets/svg/CarSvg'
+import TruckSvg from '@/assets/svg/TruckSvg'
+
 import { USER_PAGES } from '@/config/pages/user-url.config'
 
 interface TransportModalProps {
@@ -28,15 +32,15 @@ const TransportModal = ({ isOpen, onClose }: TransportModalProps) => {
 				pb='2'
 			>
 				<ButtonCard
-					icon={RiCarFill}
+					icon={CarSvg}
 					name='Машина'
 				/>
 				<ButtonCard
-					icon={BiSolidPlane}
+					icon={AirplaneSvg}
 					name='Самолёт'
 				/>
 				<ButtonCard
-					icon={HiTruck}
+					icon={TruckSvg}
 					name='Грузовик'
 				/>
 			</Stack>
@@ -46,7 +50,7 @@ const TransportModal = ({ isOpen, onClose }: TransportModalProps) => {
 
 interface ButtonCardProps {
 	name: string
-	icon: IconType
+	icon: () => JSX.Element
 }
 function ButtonCard(props: ButtonCardProps) {
 	return (
@@ -73,7 +77,7 @@ function ButtonCard(props: ButtonCardProps) {
 						border='1px solid #F4F4F4'
 						fontSize='24px'
 					>
-						<props.icon color='#43995C' />
+						<props.icon />
 					</Flex>
 					<Title
 						fontSize='18px'

@@ -13,25 +13,25 @@ export async function middleware(request: NextRequest, response: NextResponse) {
 
 	const isUserPage = url.includes('/user')
 
-	if (
-		isUserPage &&
-		refreshToken &&
-		role !== EnumRole.SENDER &&
-		role !== EnumRole.TRAVELER
-	) {
-		return NextResponse.redirect(new URL(AUTH_PAGES.REGISTER_CONFIRM, url))
-	}
-	if (isAuthPage && refreshToken) {
-		NextResponse.redirect(new URL(USER_PAGES.HOME, url))
-	}
+	// if (
+	// 	isUserPage &&
+	// 	refreshToken &&
+	// 	role !== EnumRole.SENDER &&
+	// 	role !== EnumRole.TRAVELER
+	// ) {
+	// 	return NextResponse.redirect(new URL(AUTH_PAGES.REGISTER_CONFIRM, url))
+	// }
+	// if (isAuthPage && refreshToken) {
+	// 	NextResponse.redirect(new URL(USER_PAGES.HOME, url))
+	// }
 
-	if (isAuthPage) {
-		return NextResponse.next()
-	}
+	// if (isAuthPage) {
+	// 	return NextResponse.next()
+	// }
 
-	if (!refreshToken) {
-		return NextResponse.redirect(new URL(AUTH_PAGES.AUTH, url))
-	}
+	// if (!refreshToken) {
+	// 	return NextResponse.redirect(new URL(AUTH_PAGES.AUTH, url))
+	// }
 
 	return NextResponse.next()
 }

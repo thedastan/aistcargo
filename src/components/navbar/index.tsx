@@ -12,6 +12,8 @@ import { USER_PAGES } from '@/config/pages/user-url.config'
 
 import TransportModal from '../user-pages/create/traveler/TransportModal'
 
+import { EnumRole } from '@/services/role.service'
+
 const navbar = [
 	{
 		path: USER_PAGES.HOME,
@@ -33,7 +35,7 @@ const navbar = [
 ]
 
 const Navbar = () => {
-	const role = 0
+	const role = Number(EnumRole.TRAVELER)
 
 	const pathname = usePathname()
 	const { isOpen, onClose, onOpen } = useDisclosure()
