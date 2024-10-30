@@ -1,7 +1,7 @@
 'use client'
 
 import { Box, Flex } from '@chakra-ui/react'
-import { useState } from 'react'
+import { ChangeEvent, useState } from 'react'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 
 import InterfaceShape from '@/components/layout-templates/interface-template'
@@ -9,34 +9,41 @@ import DefButton from '@/components/ui/buttons/DefButton'
 import InputComponent from '@/components/ui/inputs/InputComponent'
 import PhoneInputComponent from '@/components/ui/inputs/PhoneInputComponent'
 import TextAreaComponent from '@/components/ui/inputs/TextAreaComponent'
+import ParcelTypesComponent from '@/components/ui/select/ParcelTypesComponent'
 import RouteSelect from '@/components/ui/select/RouteSelect'
-import SearchSelect from '@/components/ui/select/SearchSelect'
 import TypeofTransport from '@/components/ui/select/TypeofTransport'
 import UploadPhotos from '@/components/ui/upload-photos'
 
 import CurrencySom from '@/assets/svg/CurrencySom'
-import PackageCub from '@/assets/svg/PackageCub'
 
-const package_data = [
-	'Документ/Конверт A4 (до 0.5 кг)',
-	'Коробка S (55x40x20 см до 10 кг)',
-	'Коробка M (65x40x25 см до 15 кг)',
-	'Коробка L (70x50x30 см до 23 кг)',
-	'Сумка/Чемодан S (55x40x20 см до 10 кг)',
-	'Сумка/Чемодан M (150 см до 15 кг)',
-	'Сумка/Чемодан L (203 см до 23 кг)'
-]
+import { useValidate } from '@/config/validation'
+
+import { default_ad_value } from '@/store/storage/slice'
+
+import { IAdFormCreate } from '@/models/ad.model'
 
 const CreateComponentSender = () => {
 	const [step, setStep] = useState<0 | 1>(0)
+	const [value, setValue] = useState<IAdFormCreate>({
+		...default_ad_value
+	})
 
-	const onsubmit = () => {
-		if (step) {
-			// submit
-		} else setStep(1)
+	const handleChange = (
+		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
+		setValue({ ...value, [e.target.name]: e.target.value })
+	}
+
+	const { onsubmit } = useValidate('sender', value)
+
+	const handleSubmit = () => {
+		if (!step) {
+			onsubmit({ isSenderHalf: true, setStep: () => setStep(1) })
+		} else onsubmit()
 	}
 
 	const onBack = () => setStep(0)
+
 	return (
 		<Box>
 			<InterfaceShape
@@ -45,9 +52,16 @@ const CreateComponentSender = () => {
 					<Box>
 						{!step ? (
 							<>
-								<RouteSelect />
+								<RouteSelect
+									value={{ from_city: value.from_city, to_city: value.to_city }}
+									onChange={(e: string, key: string) =>
+										setValue({ ...value, [key]: e })
+									}
+								/>
 								<InputComponent
+									handleChange={handleChange}
 									title='Адрес доставки'
+									name='address'
 									placeholder='Введите адрес получения'
 									isGreen={true}
 									LeftElement={
@@ -60,8 +74,13 @@ const CreateComponentSender = () => {
 							</>
 						) : (
 							<>
-								<TypeofTransport onChange={arr => console.log(arr)} />
+								<TypeofTransport
+									onChange={transport => setValue({ ...value, transport })}
+								/>
 								<InputComponent
+									handleChange={handleChange}
+									value={value.send_date}
+									name='send_date'
 									title='Дата отправки'
 									placeholder='Укажите дату'
 									isGreen={true}
@@ -74,33 +93,35 @@ const CreateComponentSender = () => {
 			>
 				{!step ? (
 					<Box>
-						<SearchSelect
-							data={package_data}
-							placeholder='Тип посылки'
-							title='Тип посылки'
-							icon={<PackageCub />}
+						<ParcelTypesComponent
+							onChange={parcel => setValue({ ...value, parcel })}
+							value={value.parcel}
 						/>
 
-						<UploadPhotos
-							text='Загрузить фото. Png, Jpeg,'
-							images={[]}
-							setImages={() => {}}
-						/>
+						<UploadPhotos text='Загрузить фото. Png, Jpeg,' />
 
 						<TextAreaComponent
 							title='Описание'
-							value=''
+							handleChange={handleChange}
+							name='description'
+							value={value.description}
 							placeholder='Введите текст...'
 						/>
 					</Box>
 				) : (
 					<Box mb='6'>
 						<InputComponent
+							handleChange={handleChange}
+							value={value.price}
+							name='price'
 							title='Цена (в сомах)'
 							placeholder='Цена / Договорная'
 							RightElement={<CurrencySom />}
 						/>
-						<PhoneInputComponent />
+						<PhoneInputComponent
+							handleChange={phone => setValue({ ...value, phone })}
+							value={value.phone}
+						/>
 					</Box>
 				)}
 
@@ -116,7 +137,7 @@ const CreateComponentSender = () => {
 							Назад
 						</DefButton>
 					)}
-					<DefButton onClick={onsubmit}>Далее</DefButton>
+					<DefButton onClick={handleSubmit}>Далее</DefButton>
 				</Flex>
 			</InterfaceShape>
 		</Box>

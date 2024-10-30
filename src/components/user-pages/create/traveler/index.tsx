@@ -1,28 +1,38 @@
 'use client'
 
 import { Box } from '@chakra-ui/react'
+import { ChangeEvent, useState } from 'react'
 
 import InterfaceShape from '@/components/layout-templates/interface-template'
 import DefButton from '@/components/ui/buttons/DefButton'
 import InputComponent from '@/components/ui/inputs/InputComponent'
 import TextAreaComponent from '@/components/ui/inputs/TextAreaComponent'
+import ParcelTypesComponent from '@/components/ui/select/ParcelTypesComponent'
 import RouteSelect from '@/components/ui/select/RouteSelect'
-import SearchSelect from '@/components/ui/select/SearchSelect'
 
 import CurrencySom from '@/assets/svg/CurrencySom'
-import PackageCub from '@/assets/svg/PackageCub'
 
-const package_data = [
-	'Документ/Конверт A4 (до 0.5 кг)',
-	'Коробка S (55x40x20 см до 10 кг)',
-	'Коробка M (65x40x25 см до 15 кг)',
-	'Коробка L (70x50x30 см до 23 кг)',
-	'Сумка/Чемодан S (55x40x20 см до 10 кг)',
-	'Сумка/Чемодан M (150 см до 15 кг)',
-	'Сумка/Чемодан L (203 см до 23 кг)'
-]
+import { useValidate } from '@/config/validation'
+
+import { default_ad_value } from '@/store/storage/slice'
+
+import { useAppSelector } from '@/hooks/useAppSelector'
+
+import { IAdFormCreate } from '@/models/ad.model'
+
 const CreateComponentTraveler = () => {
-	const onsubmit = () => {}
+	const { transport } = useAppSelector(s => s.storage.values_ad)
+	const [value, setValue] = useState<IAdFormCreate>({
+		...default_ad_value
+	})
+
+	const handleChange = (
+		e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+	) => {
+		setValue({ ...value, [e.target.name]: e.target.value })
+	}
+
+	const { onsubmit } = useValidate('traveler', { ...value, transport })
 
 	return (
 		<Box>
@@ -30,8 +40,15 @@ const CreateComponentTraveler = () => {
 				title='Стать попутчиком'
 				UpperContent={
 					<Box>
-						<RouteSelect />
+						<RouteSelect
+							value={{ from_city: value.from_city, to_city: value.to_city }}
+							onChange={(e: string, key: string) =>
+								setValue({ ...value, [key]: e })
+							}
+						/>
 						<InputComponent
+							handleChange={handleChange}
+							value={value.send_date}
 							title='Дата отправки'
 							placeholder='Укажите дату'
 							isGreen={true}
@@ -40,22 +57,23 @@ const CreateComponentTraveler = () => {
 					</Box>
 				}
 			>
-				<SearchSelect
-					data={package_data}
-					placeholder='Тип посылки'
-					title='Тип посылки'
-					icon={<PackageCub />}
+				<ParcelTypesComponent
+					onChange={parcel => setValue({ ...value, parcel })}
+					value={value.parcel}
 				/>
 
 				<InputComponent
+					handleChange={handleChange}
+					value={value.price}
 					title='Цена (в сомах)'
 					placeholder='Цена / Договорная'
 					RightElement={<CurrencySom />}
 				/>
 
 				<TextAreaComponent
+					handleChange={handleChange}
 					title='Описание'
-					value=''
+					value={value.description}
 					placeholder='Введите текст...'
 				/>
 

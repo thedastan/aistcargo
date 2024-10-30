@@ -10,35 +10,16 @@ import {
 } from '@chakra-ui/react'
 import Image, { StaticImageData } from 'next/image'
 
-import { open_sans } from '@/constants/fonts/fonts'
-
-import Airplane from '@/assets/img/Airplane.svg'
-import CarTransport from '@/assets/img/CarTransport.svg'
-import TruckTransport from '@/assets/img/TruckTransport.svg'
-
 import Description from '../texts/Description'
 import InputTitle from '../texts/InputTitle'
+
+import { transports } from '@/models/transport.model'
 
 interface TypeofTransportProps {
 	onChange: (arr: string[]) => void
 	isLight?: boolean
 }
 const TypeofTransport = ({ onChange, isLight }: TypeofTransportProps) => {
-	const transports = [
-		{
-			image: CarTransport,
-			name: 'Машина'
-		},
-		{
-			image: Airplane,
-			name: 'Самолёт'
-		},
-		{
-			image: TruckTransport,
-			name: 'Грузовик'
-		}
-	]
-
 	const { getCheckboxProps } = useCheckboxGroup({
 		defaultValue: [],
 		onChange
@@ -51,11 +32,11 @@ const TypeofTransport = ({ onChange, isLight }: TypeofTransportProps) => {
 			<InputTitle color={isLight ? '#232D37' : '#FFFFFF'}>
 				Тип транспорта
 			</InputTitle>
-			<CheckboxGroup defaultValue={['next']}>
+			<CheckboxGroup>
 				<Flex gap='2'>
 					{transports.map((item, idx) => {
 						const checkbox = getCheckboxProps({
-							value: item.name
+							value: String(item.id)
 						})
 						return (
 							<CheckboxCard

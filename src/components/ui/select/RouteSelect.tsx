@@ -1,16 +1,30 @@
-import { Box, Divider, Select, Stack } from '@chakra-ui/react'
+import {
+	Box,
+	Divider,
+	Input,
+	InputGroup,
+	InputRightElement,
+	Stack
+} from '@chakra-ui/react'
+import { IoChevronDownOutline } from 'react-icons/io5'
 
-import { open_sans } from '@/constants/fonts/fonts'
+import { useCity } from '@/hooks/useLists'
 
 import InputTitle from '../texts/InputTitle'
 
-interface RouteSelectProps {}
-const RouteSelect = (props: RouteSelectProps) => {
-	return (
-		<Stack
-			spacing='10px'
-			mb='4'
-		>
+import SearchSelect from './SearchSelect'
+
+interface RouteSelectProps {
+	onChange: (e: string, key: string) => void
+	value: {
+		from_city: string
+		to_city: string
+	}
+}
+const RouteSelect = ({ onChange, value }: RouteSelectProps) => {
+	const { data } = useCity()
+	return !data ? null : (
+		<Stack mb='4'>
 			<InputTitle color='#FFFFFF'>Маршрут</InputTitle>
 			<Stack
 				rounded='16px'
@@ -18,23 +32,17 @@ const RouteSelect = (props: RouteSelectProps) => {
 				bg='#FFFFFF1A'
 				border='1px solid #FFFFFF33'
 			>
-				<Select
-					placeholder='Откуда'
-					value=''
-					_placeholder={{ color: 'rgba(255, 255, 255, .4)', fontWeight: '400' }}
-					fontWeight='500'
-					fontSize='16px'
-					lineHeight='22px'
-					bg='transparent'
-					h='52px'
-					color='#FFFFFF'
-					border='none'
-					px='2'
-					_focus={{ boxShadow: 'none' }}
-					className='green-select'
+				<SearchSelect
+					data={data}
+					onChange={e => onChange(e, 'from_city')}
+					value={value.from_city}
 				>
-					<option value='Bishkek'>Bishkek</option>
-				</Select>
+					<RouteInput
+						value={data.find(el => el.id === +value.from_city)?.name || ''}
+						placeholder='Откуда'
+					/>
+				</SearchSelect>
+
 				<Box px='6'>
 					<Divider
 						h='1px'
@@ -43,25 +51,54 @@ const RouteSelect = (props: RouteSelectProps) => {
 					/>
 				</Box>
 
-				<Select
-					placeholder='Куда'
-					value=''
-					_placeholder={{ color: 'rgba(255, 255, 255, .4)', fontWeight: '400' }}
-					fontWeight='500'
-					fontSize='16px'
-					lineHeight='22px'
-					bg='transparent'
-					h='52px'
-					color='#FFFFFF'
-					border='none'
-					px='2'
-					_focus={{ boxShadow: 'none' }}
-					className='green-select'
+				<SearchSelect
+					data={data}
+					onChange={e => onChange(e, 'to_city')}
+					value={value.to_city}
 				>
-					<option value='Osh'>Osh</option>
-				</Select>
+					<RouteInput
+						value={data.find(el => el.id === +value.to_city)?.name || ''}
+						placeholder='Куда'
+					/>
+				</SearchSelect>
 			</Stack>
 		</Stack>
+	)
+}
+
+interface RouteInputProps {
+	value: string
+	placeholder: string
+}
+
+function RouteInput(props: RouteInputProps) {
+	return (
+		<InputGroup>
+			<Input
+				placeholder={props.placeholder}
+				value={props.value}
+				_placeholder={{ color: 'rgba(255, 255, 255, .4)', fontWeight: '400' }}
+				fontWeight='500'
+				fontSize='16px'
+				lineHeight='22px'
+				bg='transparent'
+				h='52px'
+				color='#FFFFFF'
+				border='none'
+				px='5'
+				_focus={{ boxShadow: 'none' }}
+				isReadOnly={true}
+			/>
+			<InputRightElement
+				alignItems='center'
+				h='100%'
+			>
+				<IoChevronDownOutline
+					color='#FFFFFF'
+					fontSize='15px'
+				/>
+			</InputRightElement>
+		</InputGroup>
 	)
 }
 

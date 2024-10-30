@@ -1,29 +1,28 @@
 import {
 	Box,
-	Checkbox,
-	CheckboxGroup,
 	Flex,
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
+	Radio,
+	RadioGroup,
 	useDisclosure,
 	useOutsideClick
 } from '@chakra-ui/react'
-import { useEffect, useRef, useState } from 'react'
-import { FaChevronDown } from 'react-icons/fa6'
+import { PropsWithChildren, useEffect, useRef, useState } from 'react'
 import { IoIosSearch } from 'react-icons/io'
-import { PiCubeFocus } from 'react-icons/pi'
 
 import { useDebounce } from '@/hooks/useDebounce'
 
 import InputComponent from '../inputs/InputComponent'
 import Description from '../texts/Description'
 
-interface SearchSelectProps {
-	title: string
-	placeholder: string
-	data: string[]
-	icon?: JSX.Element
+import { IListItem } from '@/models/transport.model'
+
+interface SearchSelectProps extends PropsWithChildren {
+	onChange: (e: string) => void
+	data: IListItem[]
+	value: string
 }
 const SearchSelect = (props: SearchSelectProps) => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
@@ -31,7 +30,6 @@ const SearchSelect = (props: SearchSelectProps) => {
 	const [search, setSearch] = useState('')
 	const ref = useRef<any>(null)
 	const debounce = useDebounce(search, 300)
-	// const { data, isLoading } = useProducts(debounce)
 	useOutsideClick({
 		ref: ref,
 		handler: () => onClose()
@@ -40,7 +38,7 @@ const SearchSelect = (props: SearchSelectProps) => {
 	useEffect(() => {
 		if (debounce) {
 			setSearchData(state =>
-				state.filter(el => el.toLowerCase().includes(debounce))
+				state.filter(el => el.name.toLowerCase().includes(debounce))
 			)
 		} else setSearchData(props.data)
 	}, [debounce])
@@ -55,20 +53,7 @@ const SearchSelect = (props: SearchSelectProps) => {
 				closeOnBlur={false}
 			>
 				<PopoverTrigger>
-					<Box onClick={onOpen}>
-						<InputComponent
-							title={props.title}
-							placeholder={props.placeholder}
-							isReadOnly={true}
-							LeftElement={props.icon}
-							RightElement={
-								<FaChevronDown
-									color='#292D32'
-									fontSize='14px'
-								/>
-							}
-						/>
-					</Box>
+					<Box onClick={onOpen}>{props.children}</Box>
 				</PopoverTrigger>
 				<PopoverContent
 					w={`${ref.current?.offsetWidth}px`}
@@ -97,23 +82,32 @@ const SearchSelect = (props: SearchSelectProps) => {
 						/>
 					</Box>
 					{!!search_data?.length && (
-						<CheckboxGroup>
+						<RadioGroup
+							onChange={e => {
+								props.onChange(e)
+								onClose()
+							}}
+							value={props.value}
+						>
 							{search_data.map((el, idx) => (
-								<Checkbox
+								<Radio
 									key={idx}
+									value={`${el.id}`}
 									flexDirection='row-reverse'
 									justifyContent='space-between'
+									w='100%'
 									minH='35px'
 									colorScheme='green'
 									pr='10px'
 									rounded='10px'
 									pl='4'
-									_checked={{ bg: '#0000000A' }}
+									bg='#0000000A'
+									// _checked={{ bg: '#0000000A' }}
 								>
-									{el}
-								</Checkbox>
+									{el.name}
+								</Radio>
 							))}
-						</CheckboxGroup>
+						</RadioGroup>
 					)}
 
 					{!search_data?.length && (

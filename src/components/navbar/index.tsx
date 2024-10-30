@@ -35,7 +35,7 @@ const navbar = [
 ]
 
 const Navbar = () => {
-	const role = Number(EnumRole.TRAVELER)
+	const role = Number(EnumRole.SENDER)
 
 	const pathname = usePathname()
 	const { isOpen, onClose, onOpen } = useDisclosure()

@@ -1,19 +1,18 @@
 import { Flex, Stack } from '@chakra-ui/react'
 import Link from 'next/link'
-import { BiSolidPlane } from 'react-icons/bi'
 import { FaChevronRight } from 'react-icons/fa6'
-import { HiTruck } from 'react-icons/hi'
-import { IconType } from 'react-icons/lib'
-import { RiCarFill } from 'react-icons/ri'
+import { useDispatch } from 'react-redux'
 
 import DrawerModal from '@/components/ui/drawer'
 import Title from '@/components/ui/texts/Title'
 
-import AirplaneSvg from '@/assets/svg/AirplaneSvg'
-import CarSvg from '@/assets/svg/CarSvg'
-import TruckSvg from '@/assets/svg/TruckSvg'
-
 import { USER_PAGES } from '@/config/pages/user-url.config'
+
+import { storageActions } from '@/store/storage/slice'
+
+import { useAppSelector } from '@/hooks/useAppSelector'
+
+import { ITransportType, transports } from '@/models/transport.model'
 
 interface TransportModalProps {
 	isOpen: boolean
@@ -21,6 +20,12 @@ interface TransportModalProps {
 }
 
 const TransportModal = ({ isOpen, onClose }: TransportModalProps) => {
+	const dispatch = useDispatch()
+	const { values_ad } = useAppSelector(s => s.storage)
+
+	const setTransportId = (transport: number) => {
+		dispatch(storageActions.setAdValues({ ...values_ad, transport }))
+	}
 	return (
 		<DrawerModal
 			title='Стать попутчиком'
@@ -31,30 +36,27 @@ const TransportModal = ({ isOpen, onClose }: TransportModalProps) => {
 				spacing='9px'
 				pb='2'
 			>
-				<ButtonCard
-					icon={CarSvg}
-					name='Машина'
-				/>
-				<ButtonCard
-					icon={AirplaneSvg}
-					name='Самолёт'
-				/>
-				<ButtonCard
-					icon={TruckSvg}
-					name='Грузовик'
-				/>
+				{transports.map(el => (
+					<ButtonCard
+						onClick={setTransportId}
+						key={el.id}
+						{...el}
+					/>
+				))}
 			</Stack>
 		</DrawerModal>
 	)
 }
 
-interface ButtonCardProps {
-	name: string
-	icon: () => JSX.Element
+interface ButtonCardProps extends ITransportType {
+	onClick: (id: number) => void
 }
 function ButtonCard(props: ButtonCardProps) {
 	return (
-		<Link href={USER_PAGES.CREATE_TRAVELER}>
+		<Link
+			href={USER_PAGES.CREATE_TRAVELER}
+			onClick={() => props.onClick(props.id)}
+		>
 			<Flex
 				justifyContent='space-between'
 				alignItems='center'

@@ -55,12 +55,12 @@ const Filter = () => {
 					isLight={true}
 				/>
 
-				<SearchSelect
+				{/* <SearchSelect
 					data={data}
 					placeholder='Выберите город'
 					title='Город'
 					icon={<HiOutlineLocationMarker fontSize='22px' />}
-				/>
+				/> */}
 
 				<DefButton mt='35px'>Применить фильтры</DefButton>
 			</DrawerModal>

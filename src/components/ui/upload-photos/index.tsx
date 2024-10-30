@@ -1,36 +1,28 @@
 import { Box, SimpleGrid, useDisclosure } from '@chakra-ui/react'
 import Image from 'next/image'
-import { Dispatch, SetStateAction, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { FaTrash } from 'react-icons/fa'
 
-import Spinner from '@/components/loader/spinner'
-
-// import { useImagesUpload } from '@/hooks/useMedia'
 import ModalComponent from '../modal/ModalComponent'
 import InputTitle from '../texts/InputTitle'
 
 import AddPhotoButton from './AddPhotoButton'
 
 interface UploadPhotosProps {
-	setImages: Dispatch<SetStateAction<string[]>>
-	images: string[]
 	text: string
 }
-const UploadPhotos = ({ images, setImages, text }: UploadPhotosProps) => {
+const UploadPhotos = ({ text }: UploadPhotosProps) => {
+	const [fileList, setFileList] = useState<File[]>([])
 	const onDelete = (index: number) => {
-		setImages(state => state.filter((_, idx) => index !== idx))
+		setFileList(state => state.filter((_, idx) => index !== idx))
 	}
-	// const { mutate, isPending } = useImagesUpload(setImages)
-	const handleChange = (files: File[]) => {
-		// mutate(files)
-	}
+
 	return (
 		<Box mb='4'>
 			<InputTitle mb='6px'>Медиа</InputTitle>
-			{/* {isPending && <Spinner />} */}
-			{!images.length ? (
+			{!fileList.length ? (
 				<AddPhotoButton
-					handleChange={handleChange}
+					handleChange={setFileList}
 					text={text}
 				/>
 			) : (
@@ -38,15 +30,15 @@ const UploadPhotos = ({ images, setImages, text }: UploadPhotosProps) => {
 					columns={{ sm: 5, base: 4 }}
 					spacing='11px'
 				>
-					{images?.map((el, idx) => (
+					{fileList?.map((el, idx) => (
 						<ImageCard
 							key={idx + 1}
-							image={el}
+							file={el}
 							onDelete={() => onDelete(idx)}
 						/>
 					))}
 					<AddPhotoButton
-						handleChange={handleChange}
+						handleChange={setFileList}
 						isMini={true}
 					/>
 				</SimpleGrid>
@@ -57,19 +49,33 @@ const UploadPhotos = ({ images, setImages, text }: UploadPhotosProps) => {
 
 interface ImageCardProps {
 	onDelete: () => void
-	image: string
+	file: File
 }
 
-function ImageCard({ onDelete, image }: ImageCardProps) {
+function ImageCard({ onDelete, file }: ImageCardProps) {
+	const [base64, setBase64] = useState<any>('')
 	const { isOpen, onClose, onOpen } = useDisclosure()
+
+	useEffect(() => {
+		if (file) {
+			const reader = new FileReader()
+			reader.onloadend = () => {
+				setBase64(reader.result)
+			}
+			reader.readAsDataURL(file)
+		}
+	}, [file])
+
 	return (
 		<Box position='relative'>
-			<Image
-				src={image}
-				width={80}
-				height={80}
-				alt='Image'
-			/>
+			{!!base64 && (
+				<Image
+					src={String(base64)}
+					width={80}
+					height={80}
+					alt='Image'
+				/>
+			)}
 			<Box
 				onClick={onOpen}
 				cursor='pointer'

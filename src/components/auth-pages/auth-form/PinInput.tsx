@@ -129,7 +129,7 @@ const PinInputComponent = ({ value, isOpen, onClose }: PinInputProps) => {
 							justifyContent='center'
 						>
 							<PinInput
-								length={5}
+								length={4}
 								secret
 								secretDelay={1000}
 								// onChange={(value, index) => setCode(value)}
