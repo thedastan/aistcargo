@@ -12,7 +12,7 @@ import { USER_PAGES } from '@/config/pages/user-url.config'
 
 import TransportModal from '../user-pages/create/traveler/TransportModal'
 
-import { EnumRole } from '@/services/role.service'
+import { EnumRole, getUserRole } from '@/services/role.service'
 
 const navbar = [
 	{
@@ -35,13 +35,13 @@ const navbar = [
 ]
 
 const Navbar = () => {
-	const role = Number(EnumRole.SENDER)
-
+	const role = getUserRole()
 	const pathname = usePathname()
 	const { isOpen, onClose, onOpen } = useDisclosure()
 	const { push } = useRouter()
 	const onRedirect = (path: string) => {
-		if (!!role && path === USER_PAGES.CREATE_SENDER) onOpen()
+		if (role === EnumRole.TRAVELER && path === USER_PAGES.CREATE_SENDER)
+			onOpen()
 		else push(path)
 	}
 	return (

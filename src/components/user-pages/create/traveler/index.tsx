@@ -14,14 +14,15 @@ import CurrencySom from '@/assets/svg/CurrencySom'
 
 import { useValidate } from '@/config/validation'
 
-import { default_ad_value } from '@/store/storage/slice'
+import { default_ad_value } from '@/store/slices/storage-slice'
 
 import { useAppSelector } from '@/hooks/useAppSelector'
 
 import { IAdFormCreate } from '@/models/ad.model'
+import { IListItem } from '@/models/transport.model'
 
 const CreateComponentTraveler = () => {
-	const { transport } = useAppSelector(s => s.storage.values_ad)
+	const { ad } = useAppSelector(s => s.storage)
 	const [value, setValue] = useState<IAdFormCreate>({
 		...default_ad_value
 	})
@@ -32,7 +33,10 @@ const CreateComponentTraveler = () => {
 		setValue({ ...value, [e.target.name]: e.target.value })
 	}
 
-	const { onsubmit } = useValidate('traveler', { ...value, transport })
+	const { onsubmit } = useValidate('traveler', {
+		...value,
+		transport: ad?.transport ? ad.transport : 0
+	})
 
 	return (
 		<Box>
@@ -42,7 +46,7 @@ const CreateComponentTraveler = () => {
 					<Box>
 						<RouteSelect
 							value={{ from_city: value.from_city, to_city: value.to_city }}
-							onChange={(e: string, key: string) =>
+							onChange={(e: IListItem, key: string) =>
 								setValue({ ...value, [key]: e })
 							}
 						/>
@@ -59,7 +63,7 @@ const CreateComponentTraveler = () => {
 			>
 				<ParcelTypesComponent
 					onChange={parcel => setValue({ ...value, parcel })}
-					value={value.parcel}
+					parcel={value.parcel}
 				/>
 
 				<InputComponent

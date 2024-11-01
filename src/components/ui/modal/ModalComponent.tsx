@@ -10,6 +10,7 @@ import {
 
 import ModalButton from '../buttons/ModalButton'
 import InputComponent from '../inputs/InputComponent'
+import Description from '../texts/Description'
 import Title from '../texts/Title'
 
 interface ModalComponentProps {
@@ -46,26 +47,24 @@ const ModalComponent = ({
 				rounded='20px'
 				zIndex='0'
 			>
-				<Flex justifyContent='space-between'>
-					<Title
+				<Flex justifyContent='center'>
+					<Description
 						color='#101010'
 						mb='10px'
+						w='75%'
+						textAlign='center'
 					>
 						{title}
-					</Title>
+					</Description>
 					{isLoading && <Spinner />}
 				</Flex>
-				<InputComponent
-					name=''
-					placeholder=''
-				/>
 
 				<Flex
 					gap='50px'
 					mt='15px'
 					justifyContent='center'
 				>
-					<ModalButton onClick={onClose}>Назад</ModalButton>
+					<ModalButton onClick={onClose}>Нет</ModalButton>
 					<Divider
 						orientation='vertical'
 						bg='#0E121E'
@@ -78,7 +77,7 @@ const ModalComponent = ({
 						isDisabled={isLoading}
 						color='#69C311'
 					>
-						Далее
+						Да
 					</ModalButton>
 				</Flex>
 			</ModalContent>

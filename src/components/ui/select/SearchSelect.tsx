@@ -17,12 +17,12 @@ import { useDebounce } from '@/hooks/useDebounce'
 import InputComponent from '../inputs/InputComponent'
 import Description from '../texts/Description'
 
-import { IListItem } from '@/models/transport.model'
+import { IListItem, PartialListItem } from '@/models/transport.model'
 
 interface SearchSelectProps extends PropsWithChildren {
-	onChange: (e: string) => void
+	onChange: (e: IListItem) => void
 	data: IListItem[]
-	value: string
+	value?: PartialListItem
 }
 const SearchSelect = (props: SearchSelectProps) => {
 	const { isOpen, onOpen, onClose } = useDisclosure()
@@ -84,15 +84,15 @@ const SearchSelect = (props: SearchSelectProps) => {
 					{!!search_data?.length && (
 						<RadioGroup
 							onChange={e => {
-								props.onChange(e)
+								props.onChange(JSON.parse(e) as IListItem)
 								onClose()
 							}}
-							value={props.value}
+							value={props.value ? JSON.stringify(props.value) : ''}
 						>
 							{search_data.map((el, idx) => (
 								<Radio
 									key={idx}
-									value={`${el.id}`}
+									value={JSON.stringify(el)}
 									flexDirection='row-reverse'
 									justifyContent='space-between'
 									w='100%'
@@ -118,15 +118,6 @@ const SearchSelect = (props: SearchSelectProps) => {
 							<Description color='#20283F'>Не найдено</Description>
 						</Flex>
 					)}
-
-					{/* {isLoading && (
-						<Flex
-							justifyContent='center'
-							py='3'
-						>
-							<Spinner size='sm' />
-						</Flex>
-					)} */}
 				</PopoverContent>
 			</Popover>
 		</div>

@@ -8,13 +8,11 @@ import {
 	dehydrate
 } from '@tanstack/react-query'
 import { PropsWithChildren, useEffect, useState } from 'react'
-import { Provider } from 'react-redux'
-import { PersistGate } from 'redux-persist/lib/integration/react'
 import { Toaster } from 'sonner'
 
 import { INTERFACE_WIDTH } from '@/config/_variables.config'
 
-import { persistor, store } from '@/store/store'
+import { PersistProvider } from '@/store/persist-provider'
 
 export function Providers({ children }: PropsWithChildren) {
 	const [innerHeight, setHeight] = useState(0)
@@ -37,38 +35,33 @@ export function Providers({ children }: PropsWithChildren) {
 	return (
 		<QueryClientProvider client={client}>
 			<HydrationBoundary state={dehydratedState}>
-				<Provider store={store}>
-					<PersistGate
-						persistor={persistor}
-						loading={null}
+				<PersistProvider>
+					<Box
+						maxW={INTERFACE_WIDTH}
+						mx='auto'
+						minH={innerHeight ? innerHeight + 'px' : '100vh'}
+						bg='#FFFFFF'
 					>
-						<Box
-							maxW={INTERFACE_WIDTH}
-							mx='auto'
-							minH={innerHeight ? innerHeight + 'px' : '100vh'}
-							bg='#FFFFFF'
-						>
-							{children}
-						</Box>
-						<Toaster
-							theme='light'
-							position='top-center'
-							duration={4000}
-							toastOptions={{
-								style: {
-									background: '#FFFFFF',
-									border: 'none',
-									borderRadius: '12px',
-									color: '#00000080',
-									fontSize: '14px',
-									fontWeight: '500',
-									backgroundBlendMode: 'luminosity',
-									minHeight: '60px'
-								}
-							}}
-						/>
-					</PersistGate>
-				</Provider>
+						{children}
+					</Box>
+					<Toaster
+						theme='light'
+						position='top-center'
+						duration={4000}
+						toastOptions={{
+							style: {
+								background: '#FFFFFF',
+								border: 'none',
+								borderRadius: '12px',
+								color: '#00000080',
+								fontSize: '14px',
+								fontWeight: '500',
+								backgroundBlendMode: 'luminosity',
+								minHeight: '60px'
+							}
+						}}
+					/>
+				</PersistProvider>
 			</HydrationBoundary>
 		</QueryClientProvider>
 	)

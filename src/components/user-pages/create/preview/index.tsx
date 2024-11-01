@@ -1,4 +1,7 @@
+'use client'
+
 import { Box, Flex } from '@chakra-ui/react'
+import moment from 'moment'
 
 import InterfaceShape from '@/components/layout-templates/interface-template'
 import AdCard from '@/components/ui/ad/AdCard'
@@ -9,7 +12,12 @@ import MiniText from '@/components/ui/texts/MiniText'
 
 import EditSvg from '@/assets/svg/EditSvg'
 
+import { useAppSelector } from '@/hooks/useAppSelector'
+
 const PreviewAdComponent = () => {
+	const { ad } = useAppSelector(s => s.storage)
+
+	const current_date = moment().format('DD.MM.YYYY')
 	return (
 		<InterfaceShape title='Предпросмотр'>
 			<Box pt='10px'>

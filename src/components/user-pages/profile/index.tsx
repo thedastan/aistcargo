@@ -1,4 +1,13 @@
-import { Avatar, Box, Container, Flex, Stack } from '@chakra-ui/react'
+'use client'
+
+import {
+	Avatar,
+	Box,
+	Container,
+	Flex,
+	SkeletonText,
+	Stack
+} from '@chakra-ui/react'
 import Link from 'next/link'
 import { SlArrowRight } from 'react-icons/sl'
 
@@ -13,7 +22,10 @@ import ProfilePenSvg from '@/assets/svg/ProfilePenSvg'
 import { PUBLIC_PAGES } from '@/config/pages/public-url.config'
 import { USER_PAGES } from '@/config/pages/user-url.config'
 
+import { getFullName, useProfile } from '@/hooks/useProfile'
+
 const Profile = () => {
+	const { user, isLoading } = useProfile()
 	return (
 		<Container py='5'>
 			<Title
@@ -37,29 +49,48 @@ const Profile = () => {
 					>
 						<Flex gap='4'>
 							<Avatar
+								src={user?.image}
 								w='60px'
 								h='60px'
 							/>
 
-							<Flex
-								flexDirection='column'
-								justifyContent='space-between'
-								py='6px'
-							>
-								<Title
-									fontSize='18px'
-									lineHeight='24px'
+							{isLoading ? (
+								<Flex
+									flexDirection='column'
+									justifyContent='center'
+									py='6px'
 								>
-									Аэлита Ажыбаева
-								</Title>
-								<MiniText
-									mt='1'
-									fontSize='14px'
-									lineHeight='19.07px'
+									<SkeletonText
+										w='200px'
+										noOfLines={2}
+										spacing='3'
+										skeletonHeight='2.5'
+									/>
+								</Flex>
+							) : (
+								<Flex
+									flexDirection='column'
+									justifyContent='space-between'
+									py='6px'
 								>
-									Отправитель
-								</MiniText>
-							</Flex>
+									<Title
+										fontSize='18px'
+										lineHeight='24px'
+										textAlign='start'
+									>
+										{getFullName(user?.first_name, user?.last_name)}
+									</Title>
+									{!!user?.role_label && (
+										<MiniText
+											mt='1'
+											fontSize='14px'
+											lineHeight='19.07px'
+										>
+											{user.role_label}
+										</MiniText>
+									)}
+								</Flex>
+							)}
 						</Flex>
 
 						<SlArrowRight

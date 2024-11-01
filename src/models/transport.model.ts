@@ -12,6 +12,8 @@ export interface IListItem {
 	name: string
 }
 
+export type PartialListItem = Partial<IListItem>
+
 export enum EnumTransportId {
 	CAR = 1,
 	AIRPLANE = 2,

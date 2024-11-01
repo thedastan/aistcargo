@@ -1,17 +1,13 @@
-import { useMutation } from '@tanstack/react-query';
-import { useRouter } from 'next/navigation';
-import { toast } from 'sonner';
+import { useMutation } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
+import { toast } from 'sonner'
 
+import { ToastError } from '@/config/helpers'
+import { USER_PAGES } from '@/config/pages/user-url.config'
 
-
-import { ToastError } from '@/config/helpers';
-import { USER_PAGES } from '@/config/pages/user-url.config';
-
-
-
-import { IAuthForm, ISendotpForm } from '@/models/auth.model';
-import { authService } from '@/services/auth.service';
-
+import { IAuthForm, ISendotpForm } from '@/models/auth.model'
+import { authService } from '@/services/auth.service'
+import { saveUserRole } from '@/services/role.service'
 
 export function useLogin() {
 	const { push } = useRouter()

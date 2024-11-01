@@ -1,7 +1,6 @@
 import { PUBLIC_API } from '@/api/interceptors'
 
 import { getAccessToken, saveTokenStorage } from './auth-token.services'
-import { EnumRole, saveUserRole } from './role.service'
 import { IAuthForm, IAuthResponse, ISendotpForm } from '@/models/auth.model'
 
 export const authService = {
@@ -10,7 +9,6 @@ export const authService = {
 			`account/token/access/`,
 			data
 		)
-		saveUserRole(EnumRole.SENDER)
 		if (response.data.access) saveTokenStorage(response.data)
 	},
 
@@ -27,7 +25,7 @@ export const authService = {
 			`account/otp/verify/`,
 			{ otp }
 		)
-		saveUserRole(EnumRole.SENDER)
+
 		if (response.data.access) saveTokenStorage(response.data)
 	},
 

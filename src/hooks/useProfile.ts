@@ -15,12 +15,13 @@ export function useProfile() {
 	return { user: data, isLoading }
 }
 
-export function useProfileUpdate() {
+export function useProfileUpdate(onSuccess?: () => void) {
 	const queryClient = useQueryClient()
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['update-profile'],
 		mutationFn: (data: IProfileUpdate) => profileService.update(data),
 		onSuccess() {
+			onSuccess && onSuccess()
 			queryClient.invalidateQueries({ queryKey: ['profile'] })
 			toast.success('Профиль обновился')
 		},
@@ -47,4 +48,13 @@ export function useAvatarUpdate() {
 	})
 
 	return { mutate, isPending }
+}
+
+export function getFullName(
+	firsName: string | undefined,
+	lastName: string | undefined
+) {
+	return (
+		`${firsName ? firsName : '' + (lastName ? ` ${lastName}` : '')}` || 'ФИО'
+	)
 }

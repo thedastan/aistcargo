@@ -13,12 +13,13 @@ import { useCity } from '@/hooks/useLists'
 import InputTitle from '../texts/InputTitle'
 
 import SearchSelect from './SearchSelect'
+import { IListItem, PartialListItem } from '@/models/transport.model'
 
 interface RouteSelectProps {
-	onChange: (e: string, key: string) => void
+	onChange: (e: IListItem, key: string) => void
 	value: {
-		from_city: string
-		to_city: string
+		from_city: PartialListItem
+		to_city: PartialListItem
 	}
 }
 const RouteSelect = ({ onChange, value }: RouteSelectProps) => {
@@ -38,7 +39,7 @@ const RouteSelect = ({ onChange, value }: RouteSelectProps) => {
 					value={value.from_city}
 				>
 					<RouteInput
-						value={data.find(el => el.id === +value.from_city)?.name || ''}
+						value={value.from_city?.name}
 						placeholder='Откуда'
 					/>
 				</SearchSelect>
@@ -57,7 +58,7 @@ const RouteSelect = ({ onChange, value }: RouteSelectProps) => {
 					value={value.to_city}
 				>
 					<RouteInput
-						value={data.find(el => el.id === +value.to_city)?.name || ''}
+						value={value.to_city?.name}
 						placeholder='Куда'
 					/>
 				</SearchSelect>
@@ -67,7 +68,7 @@ const RouteSelect = ({ onChange, value }: RouteSelectProps) => {
 }
 
 interface RouteInputProps {
-	value: string
+	value?: string
 	placeholder: string
 }
 

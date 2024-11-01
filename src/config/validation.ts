@@ -2,7 +2,7 @@ import { useRouter } from 'next/navigation'
 import { useDispatch } from 'react-redux'
 import { toast } from 'sonner'
 
-import { storageActions } from '@/store/storage/slice'
+import { storageActions } from '@/store/slices/storage-slice'
 
 import { USER_PAGES } from './pages/user-url.config'
 import { IAdFormCreate } from '@/models/ad.model'

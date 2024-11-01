@@ -11,9 +11,10 @@ import {
 	useRadioGroup
 } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
-import { useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { BsChevronLeft } from 'react-icons/bs'
 
+import Spinner from '@/components/loader/spinner'
 import DefButton from '@/components/ui/buttons/DefButton'
 import InputComponent from '@/components/ui/inputs/InputComponent'
 import InputTitle from '@/components/ui/texts/InputTitle'
@@ -21,36 +22,70 @@ import Title from '@/components/ui/texts/Title'
 
 import { PADDING_Y } from '@/config/_variables.config'
 
+import { useProfile, useProfileUpdate } from '@/hooks/useProfile'
+
+import { EnumGender, GenderTypes, IProfileUpdate } from '@/models/profile.model'
+
 const options = [
 	{
 		name: 'Мужской',
-		gender: '0'
+		gender: EnumGender.MAN
 	},
 	{
 		name: 'Женский',
-		gender: '1'
+		gender: EnumGender.WOMAN
 	}
 ]
 
 const ProfileForm = () => {
-	const [value, setValue] = useState({})
+	const [value, setValue] = useState<IProfileUpdate>({
+		first_name: '',
+		last_name: '',
+		email: '',
+		birth_date: '',
+		sex: 0
+	})
+
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setValue({ ...value, [e.target.name]: e.target.value })
+	}
+
 	const { back } = useRouter()
+	const { user, isLoading } = useProfile()
 
 	const { getRootProps, getRadioProps } = useRadioGroup({
 		name: 'framework-2',
-		defaultValue: options[0].gender,
-		onChange: (gender: '0' | '1') => setValue({ ...value, gender })
+		defaultValue: value.sex ? String(value.sex) : '',
+		onChange: sex => setValue({ ...value, sex: Number(sex) })
 	})
 
 	const group = getRootProps()
+
+	const { isPending, mutate } = useProfileUpdate()
+	const onsubmit = () => {
+		mutate(value)
+	}
+
+	useEffect(() => {
+		if (user) {
+			setValue({
+				...value,
+				first_name: user.first_name || '',
+				last_name: user.last_name || '',
+				birth_date: user.birth_date || '',
+				email: user.email || '',
+				sex: user.sex
+			})
+		}
+	}, [user])
 	return (
 		<Container pb={PADDING_Y}>
+			{(isPending || isLoading) && <Spinner />}
 			<Flex
 				justifyContent='space-between'
 				alignItems='center'
 				pt='20px'
 			>
-				
 				<BsChevronLeft
 					onClick={back}
 					fontSize='22px'
@@ -77,25 +112,33 @@ const ProfileForm = () => {
 			>
 				<Stack>
 					<InputComponent
+						handleChange={handleChange}
+						value={value.first_name}
 						title='Имя'
 						placeholder='Введите имя'
 						name='first_name'
 					/>
 					<InputComponent
+						handleChange={handleChange}
+						value={value.last_name}
 						title='Фамилия'
 						placeholder='Введите фамилию'
 						name='last_name'
 					/>
 					<InputComponent
+						handleChange={handleChange}
+						value={value.email}
 						title='Почта'
 						placeholder='example@gmail.com'
 						name='email'
 						type='email'
 					/>
 					<InputComponent
+						handleChange={handleChange}
+						value={value.birth_date}
 						title='День рождения'
 						placeholder='ДД.ММ.ГГ'
-						name='date'
+						name='birth_date'
 						type='date'
 					/>
 				</Stack>
@@ -109,7 +152,7 @@ const ProfileForm = () => {
 					>
 						{options.map(value => {
 							const radio = getRadioProps({
-								value: value.gender
+								value: String(value.gender)
 							})
 							return (
 								<RadioCard
@@ -124,7 +167,12 @@ const ProfileForm = () => {
 				</Stack>
 			</Box>
 
-			<DefButton mt='5'>Сохранить</DefButton>
+			<DefButton
+				mt='5'
+				onClick={onsubmit}
+			>
+				Сохранить
+			</DefButton>
 		</Container>
 	)
 }

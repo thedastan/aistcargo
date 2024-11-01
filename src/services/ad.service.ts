@@ -2,26 +2,24 @@ import { redirect } from 'next/navigation'
 
 import { AUTH_PAGES } from '@/config/pages/auth-url.config'
 
-import { useRole } from '@/hooks/useRole'
-
 import { PRIVATE_API } from '@/api/interceptors'
 
-import { EnumRole, TitlesRole } from './role.service'
+import { EnumRole, TitlesRole, getUserRole } from './role.service'
 import { IAdUpdatePayload } from '@/models/ad.model'
 
 class AdService {
 	private BASE_URL = ''
 	constructor() {
-		const role = useRole()
-		console.log(role)
-		if (role === EnumRole.SUPER_ADMIN) {
-			redirect(AUTH_PAGES.REGISTER_CONFIRM)
-		} else {
-			this.BASE_URL = `${TitlesRole[role]}/ad/`
-		}
+		const role = getUserRole()
+		// if (!role || role === EnumRole.SUPER_ADMIN) {
+		// 	redirect(AUTH_PAGES.REGISTER_CONFIRM)
+		// } else {
+		this.BASE_URL = `${TitlesRole[role]}/ad/`
+		// }
 	}
 
 	async getFilterAds() {
+		const role = getUserRole()
 		const response = await PRIVATE_API.get<any>(this.BASE_URL + 'filter/')
 
 		return response.data

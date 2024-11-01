@@ -11,13 +11,11 @@ import MiniText from '../texts/MiniText'
 interface AddPhotoButtonProps {
 	handleChange: (files: File[]) => void
 	isMini?: boolean
-	text?: string
 }
 
 const AddPhotoButton = ({
 	handleChange,
-	isMini = false,
-	text
+	isMini = false
 }: AddPhotoButtonProps) => {
 	const handleFileChange = (e: React.ChangeEvent<any>) => {
 		if (!!e.target?.files) handleChange(Array.from(e.target.files))
@@ -112,14 +110,12 @@ const AddPhotoButton = ({
 							>
 								<AddPhotoSvg />
 							</Flex>
-							{!!text && (
-								<MiniText
-									fontSize='16px'
-									lineHeight='22px'
-								>
-									{text}
-								</MiniText>
-							)}
+							<MiniText
+								fontSize='16px'
+								lineHeight='22px'
+							>
+								Загрузить фото. Png, Jpeg,
+							</MiniText>
 						</Flex>
 					</Text>
 				</Stack>

@@ -8,9 +8,7 @@ import Title from '@/components/ui/texts/Title'
 
 import { USER_PAGES } from '@/config/pages/user-url.config'
 
-import { storageActions } from '@/store/storage/slice'
-
-import { useAppSelector } from '@/hooks/useAppSelector'
+import { default_ad_value, storageActions } from '@/store/slices/storage-slice'
 
 import { ITransportType, transports } from '@/models/transport.model'
 
@@ -21,10 +19,9 @@ interface TransportModalProps {
 
 const TransportModal = ({ isOpen, onClose }: TransportModalProps) => {
 	const dispatch = useDispatch()
-	const { values_ad } = useAppSelector(s => s.storage)
 
 	const setTransportId = (transport: number) => {
-		dispatch(storageActions.setAdValues({ ...values_ad, transport }))
+		dispatch(storageActions.setAdValues({ ...default_ad_value, transport }))
 	}
 	return (
 		<DrawerModal

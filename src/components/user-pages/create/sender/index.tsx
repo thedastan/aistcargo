@@ -18,9 +18,10 @@ import CurrencySom from '@/assets/svg/CurrencySom'
 
 import { useValidate } from '@/config/validation'
 
-import { default_ad_value } from '@/store/storage/slice'
+import { default_ad_value } from '@/store/slices/storage-slice'
 
 import { IAdFormCreate } from '@/models/ad.model'
+import { IListItem } from '@/models/transport.model'
 
 const CreateComponentSender = () => {
 	const [step, setStep] = useState<0 | 1>(0)
@@ -54,7 +55,7 @@ const CreateComponentSender = () => {
 							<>
 								<RouteSelect
 									value={{ from_city: value.from_city, to_city: value.to_city }}
-									onChange={(e: string, key: string) =>
+									onChange={(e: IListItem, key: string) =>
 										setValue({ ...value, [key]: e })
 									}
 								/>
@@ -95,10 +96,10 @@ const CreateComponentSender = () => {
 					<Box>
 						<ParcelTypesComponent
 							onChange={parcel => setValue({ ...value, parcel })}
-							value={value.parcel}
+							parcel={value.parcel}
 						/>
 
-						<UploadPhotos text='Загрузить фото. Png, Jpeg,' />
+						<UploadPhotos />
 
 						<TextAreaComponent
 							title='Описание'

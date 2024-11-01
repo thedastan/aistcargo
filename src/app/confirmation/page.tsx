@@ -1,6 +1,6 @@
 import { Metadata } from 'next'
 
-import RegisterForm from '@/components/auth-pages/register-form'
+import RegisterForm from '@/components/auth-pages/confirmation-form'
 
 import { NO_INDEX_PAGE } from '@/constants/seo/seo.constants'
 

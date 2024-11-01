@@ -6,37 +6,41 @@ import {
 	PURGE,
 	REGISTER,
 	REHYDRATE,
-	persistReducer,
-	persistStore
+	persistReducer
 } from 'redux-persist'
 // @ts-ignore
 import storage from 'redux-persist/lib/storage'
 
 import { SITE_NAME } from '@/constants/seo/seo.constants'
 
-import { StorageReducer } from './storage/slice'
+import { FilesReducer } from './slices/files-slice'
+import { StorageReducer } from './slices/storage-slice'
 
-const cartPersistConfig = {
+const persistConfig = {
 	key: SITE_NAME,
 	storage,
-	version: 1,
 	blacklist: ['storage']
 }
-
 const rootReducer = combineReducers({
-	storage: persistReducer(cartPersistConfig, StorageReducer)
+	storage: persistReducer(persistConfig, StorageReducer),
+	files: FilesReducer
 })
+
+const persistedReducer = persistReducer(persistConfig, rootReducer)
 // FilterReducer: persistReducer(cartPersistConfig, FilterReducer)
 
-export const store = configureStore({
-	reducer: rootReducer,
-	middleware: getDefaultMiddleware =>
-		getDefaultMiddleware({
-			serializableCheck: {
-				ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
-			}
-		})
-})
-export const persistor = persistStore(store)
+export const makeStore = () =>
+	configureStore({
+		reducer: rootReducer,
+		middleware: getDefaultMiddleware =>
+			getDefaultMiddleware({
+				serializableCheck: {
+					ignoredActions: [FLUSH, REHYDRATE, PAUSE, PERSIST, PURGE, REGISTER]
+				}
+			})
+	})
+
+export type AppStore = ReturnType<typeof makeStore>
+export type AppDispatch = AppStore['dispatch']
 
 export type TypeRootState = ReturnType<typeof rootReducer>

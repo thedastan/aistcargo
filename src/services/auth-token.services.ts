@@ -1,5 +1,6 @@
 import Cookies from 'js-cookie'
 
+import { saveUserRole } from './role.service'
 import { IAuthResponse } from '@/models/auth.model'
 
 export enum EnumTokens {
@@ -17,7 +18,7 @@ export const saveTokenStorage = (tokens: IAuthResponse) => {
 		sameSite: 'strict',
 		expires: 1
 	}
-
+	if (tokens.role) saveUserRole(tokens.role)
 	Cookies.set(EnumTokens.ACCESS_TOKEN, tokens.access, settings)
 	Cookies.set(EnumTokens.REFRESH_TOKEN, tokens.refresh, settings)
 }

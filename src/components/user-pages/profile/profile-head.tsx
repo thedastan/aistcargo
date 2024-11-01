@@ -1,10 +1,13 @@
-import { Avatar, Box, Container, Flex } from '@chakra-ui/react'
+import { Avatar, Box, Container, Flex, SkeletonText } from '@chakra-ui/react'
 import { PiBellSimple } from 'react-icons/pi'
 
 import InputTitle from '@/components/ui/texts/InputTitle'
 import Title from '@/components/ui/texts/Title'
 
+import { getFullName, useProfile } from '@/hooks/useProfile'
+
 const ProfileHead = () => {
+	const { user, isLoading } = useProfile()
 	return (
 		<Container>
 			<Flex
@@ -14,14 +17,29 @@ const ProfileHead = () => {
 			>
 				<Flex gap='4'>
 					<Avatar
+						src={user?.image}
 						w='50px'
 						h='50px'
 					/>
 
-					<Box>
-						<Title>Аэлита Ажыбаева</Title>
-						<InputTitle lineHeight='19.07px'>Отправитель</InputTitle>
-					</Box>
+					{isLoading ? (
+						<SkeletonText
+							py='10px'
+							w='150px'
+							noOfLines={2}
+							spacing='2'
+							skeletonHeight='2.5'
+						/>
+					) : (
+						<Box>
+							<Title textAlign='start'>
+								{getFullName(user?.first_name, user?.last_name)}
+							</Title>
+							{!!user && (
+								<InputTitle lineHeight='19.07px'>{user.role_label}</InputTitle>
+							)}
+						</Box>
+					)}
 				</Flex>
 
 				<PiBellSimple

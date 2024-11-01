@@ -1,0 +1,32 @@
+.main-anim-loader {
+	animation: MainAnim ease 4s;
+	min-width: 100vw;
+	margin-top: -30px;
+	height: 120vh;
+	border-radius: 30px;
+	padding-bottom: 400px;
+}
+
+@keyframes MainAnim {
+	0% {
+		margin-top: -981px;
+		border-radius: 50%;
+		height: 1201px;
+		min-width: 1038px;
+		padding-bottom: 17.94px;
+	}
+	40% {
+		margin-top: -981px;
+		border-radius: 50%;
+		height: 1201px;
+		min-width: 1038px;
+		padding-bottom: 17.94px;
+	}
+	100% {
+		min-width: 100vw;
+		margin-top: -30px;
+		height: 120vh;
+		border-radius: 30px;
+		padding-bottom: 400px;
+	}
+}

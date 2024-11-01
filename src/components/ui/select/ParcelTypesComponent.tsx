@@ -7,27 +7,28 @@ import { useParcelTypes } from '@/hooks/useLists'
 import InputComponent from '../inputs/InputComponent'
 
 import SearchSelect from './SearchSelect'
+import { PartialListItem } from '@/models/transport.model'
 
 interface ParcelTypesComponentProps {
-	onChange: (parcel: string) => void
-	value: string
+	onChange: (parcel: PartialListItem) => void
+	parcel: PartialListItem
 }
 
 const ParcelTypesComponent = ({
 	onChange,
-	value
+	parcel
 }: ParcelTypesComponentProps) => {
 	const { data } = useParcelTypes()
 	return !data ? null : (
 		<SearchSelect
 			data={data}
 			onChange={onChange}
-			value={value}
+			value={parcel}
 		>
 			<InputComponent
 				title='Тип посылки'
 				placeholder='Тип посылки'
-				value={data.find(el => el.id === +value)?.name || ''}
+				value={parcel.name}
 				isReadOnly={true}
 				LeftElement={<PackageCub />}
 				RightElement={
