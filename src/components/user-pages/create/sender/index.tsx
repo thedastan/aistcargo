@@ -1,7 +1,7 @@
 'use client'
 
 import { Box, Flex } from '@chakra-ui/react'
-import { ChangeEvent, useState } from 'react'
+import { ChangeEvent, useEffect, useState } from 'react'
 import { HiOutlineLocationMarker } from 'react-icons/hi'
 
 import InterfaceShape from '@/components/layout-templates/interface-template'
@@ -20,6 +20,8 @@ import { useValidate } from '@/config/validation'
 
 import { default_ad_value } from '@/store/slices/storage-slice'
 
+import { useAppSelector } from '@/hooks/useAppSelector'
+
 import { IAdFormCreate } from '@/models/ad.model'
 import { IListItem } from '@/models/transport.model'
 
@@ -34,7 +36,7 @@ const CreateComponentSender = () => {
 	) => {
 		setValue({ ...value, [e.target.name]: e.target.value })
 	}
-
+	const { ad } = useAppSelector(s => s.storage)
 	const { onsubmit } = useValidate('sender', value)
 
 	const handleSubmit = () => {
@@ -45,6 +47,9 @@ const CreateComponentSender = () => {
 
 	const onBack = () => setStep(0)
 
+	useEffect(() => {
+		if (ad) setValue({ ...ad })
+	}, [])
 	return (
 		<Box>
 			<InterfaceShape

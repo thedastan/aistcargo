@@ -21,7 +21,6 @@ export function useValidate(type: 'sender' | 'traveler', value: IAdFormCreate) {
 		}
 
 		const toastError = () => toast.error('Заполните поле пожалуйста')
-		console.log(value)
 		if (type === 'sender') {
 			if (isSenderHalf) {
 				if (sender_valid && !!value.address) setStep()

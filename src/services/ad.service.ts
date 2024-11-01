@@ -5,7 +5,7 @@ import { AUTH_PAGES } from '@/config/pages/auth-url.config'
 import { PRIVATE_API } from '@/api/interceptors'
 
 import { EnumRole, TitlesRole, getUserRole } from './role.service'
-import { IAdUpdatePayload } from '@/models/ad.model'
+import { IAdCreatePayload, IAdUpdatePayload } from '@/models/ad.model'
 
 class AdService {
 	private BASE_URL = ''
@@ -43,7 +43,7 @@ class AdService {
 		return response.data
 	}
 
-	async createAd(data: any) {
+	async createAd(data: IAdCreatePayload) {
 		const response = await PRIVATE_API.post(this.BASE_URL + `create/`, data)
 
 		return response.data

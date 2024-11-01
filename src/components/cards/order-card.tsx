@@ -120,9 +120,9 @@ const OrderCard = () => {
 				onClose={onClose}
 				title='Детали'
 			>
-				<PhoneTitle />
+				{/* <PhoneTitle />
 				<AdCard />
-				<AdDates />
+				<AdDates /> */}
 			</DrawerModal>
 		</>
 	)

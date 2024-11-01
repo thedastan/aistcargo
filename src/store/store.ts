@@ -19,15 +19,12 @@ import { StorageReducer } from './slices/storage-slice'
 const persistConfig = {
 	key: SITE_NAME,
 	storage,
-	blacklist: ['storage']
+	whitelist: ['storage']
 }
 const rootReducer = combineReducers({
 	storage: persistReducer(persistConfig, StorageReducer),
 	files: FilesReducer
 })
-
-const persistedReducer = persistReducer(persistConfig, rootReducer)
-// FilterReducer: persistReducer(cartPersistConfig, FilterReducer)
 
 export const makeStore = () =>
 	configureStore({

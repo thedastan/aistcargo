@@ -1,7 +1,9 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useRouter } from 'next/navigation'
 import { toast } from 'sonner'
 
 import { ToastError } from '@/config/helpers'
+import { USER_PAGES } from '@/config/pages/user-url.config'
 
 import { IProfileUpdate } from '@/models/profile.model'
 import { profileService } from '@/services/profile.service'
@@ -15,15 +17,20 @@ export function useProfile() {
 	return { user: data, isLoading }
 }
 
-export function useProfileUpdate(onSuccess?: () => void) {
+export function useProfileUpdate(isConfirmPage?: boolean) {
+	const { push } = useRouter()
 	const queryClient = useQueryClient()
 	const { mutate, isPending } = useMutation({
 		mutationKey: ['update-profile'],
 		mutationFn: (data: IProfileUpdate) => profileService.update(data),
 		onSuccess() {
-			onSuccess && onSuccess()
+			if (isConfirmPage) push(USER_PAGES.HOME)
 			queryClient.invalidateQueries({ queryKey: ['profile'] })
-			toast.success('Профиль обновился')
+			toast.success(
+				isConfirmPage
+					? `Данные подтверждены, Добро пожаловать`
+					: 'Данные обновлены'
+			)
 		},
 		onError(e) {
 			ToastError(e)

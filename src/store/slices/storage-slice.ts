@@ -7,7 +7,7 @@ export const default_ad_value: IAdFormCreate = {
 	to_city: {},
 	parcel: {},
 	send_date: '',
-	transport: null,
+	transport: [],
 	address: '',
 	description: '',
 	price: ''

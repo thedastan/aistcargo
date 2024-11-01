@@ -7,7 +7,7 @@ import { EnumRole } from './services/role.service'
 
 export async function middleware(request: NextRequest, response: NextResponse) {
 	const { url, cookies, nextUrl } = request
-	const role = cookies.get(EnumTokens.ROLE)?.value
+	const role = decodeURIComponent(cookies.get(EnumTokens.ROLE)?.value as string)
 	const refreshToken = cookies.get(EnumTokens.REFRESH_TOKEN)?.value
 	const isAuthPage = url.includes('/auth')
 

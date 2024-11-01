@@ -2,49 +2,101 @@
 
 import { Box, Flex } from '@chakra-ui/react'
 import moment from 'moment'
+import { useRouter } from 'next/navigation'
 
 import InterfaceShape from '@/components/layout-templates/interface-template'
+import Spinner from '@/components/loader/spinner'
 import AdCard from '@/components/ui/ad/AdCard'
 import AdDates from '@/components/ui/ad/AdDates'
 import PhoneTitle from '@/components/ui/ad/PhoneTitle'
 import DefButton from '@/components/ui/buttons/DefButton'
 import MiniText from '@/components/ui/texts/MiniText'
+import Title from '@/components/ui/texts/Title'
 
 import EditSvg from '@/assets/svg/EditSvg'
 
+import { useAdCreate } from '@/hooks/useAds'
 import { useAppSelector } from '@/hooks/useAppSelector'
+import { getFullName, useProfile } from '@/hooks/useProfile'
+
+import { EnumRole, getUserRole } from '@/services/role.service'
 
 const PreviewAdComponent = () => {
 	const { ad } = useAppSelector(s => s.storage)
+	const { user } = useProfile()
+	const role = getUserRole()
+	const { back } = useRouter()
 
-	const current_date = moment().format('DD.MM.YYYY')
+	const { isPending, mutate } = useAdCreate()
+	const current_date = moment().format('YYYY-MM-DD')
+
+	const onsubmit = () => {
+		if (ad) {
+			mutate({
+				...ad,
+				from_city: ad.from_city.id,
+				to_city: ad.to_city.id,
+				parcel: ad.parcel.id,
+				transport: role === EnumRole.TRAVELER ? ad.transport[0] : ad.transport
+			})
+		}
+	}
 	return (
 		<InterfaceShape title='Предпросмотр'>
-			<Box pt='10px'>
-				<PhoneTitle withoutAvatar={true} />
-				<AdCard />
-				<AdDates />
-
-				<Flex
-					my='44px'
-					alignItems='center'
-					gap='2'
-					w='133px'
-					mx='auto'
-					cursor='pointer'
-					_active={{ opacity: '.8' }}
+			{isPending && <Spinner />}
+			{!ad ? (
+				<Title
+					fontSize='18px'
+					lineHeight='22px'
+					fontWeight='500'
+					mt='80px'
 				>
-					<MiniText
-						fontSize='14px'
-						lineHeight='19.07px'
-					>
-						Редактировать
-					</MiniText>
-					<EditSvg />
-				</Flex>
+					Вы ничего не создали, пожалуйста вернитесь и проверьте правильно ли вы
+					заполнили данные
+				</Title>
+			) : (
+				<Box pt='10px'>
+					<PhoneTitle
+						withoutAvatar={true}
+						full_name={getFullName(user?.first_name, user?.last_name)}
+						phone='+996 554 247 027'
+					/>
+					<AdCard
+						address={ad.address}
+						from_city={`${ad?.from_city.name}`}
+						to_city={`${ad?.to_city.name}`}
+						parcel_type={`${ad?.parcel.name}`}
+						transport={ad.transport}
+						description={ad.description}
+						price={ad.price}
+					/>
+					<AdDates
+						send_date={ad?.send_date}
+						created_date={current_date}
+					/>
 
-				<DefButton>Опубликовать</DefButton>
-			</Box>
+					<Flex
+						onClick={back}
+						my='44px'
+						alignItems='center'
+						gap='2'
+						w='133px'
+						mx='auto'
+						cursor='pointer'
+						_active={{ opacity: '.8' }}
+					>
+						<MiniText
+							fontSize='14px'
+							lineHeight='19.07px'
+						>
+							Редактировать
+						</MiniText>
+						<EditSvg />
+					</Flex>
+
+					<DefButton onClick={onsubmit}>Опубликовать</DefButton>
+				</Box>
+			)}
 		</InterfaceShape>
 	)
 }

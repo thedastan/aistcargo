@@ -9,10 +9,10 @@ import {
 	useRadio,
 	useRadioGroup
 } from '@chakra-ui/react'
-import { useRouter } from 'next/navigation'
 import { ChangeEvent, FormEvent, useEffect, useState } from 'react'
 import { HiTruck } from 'react-icons/hi2'
 import { IoMdCube } from 'react-icons/io'
+import { toast } from 'sonner'
 
 import Spinner from '@/components/loader/spinner'
 import DefButton from '@/components/ui/buttons/DefButton'
@@ -20,7 +20,6 @@ import InputComponent from '@/components/ui/inputs/InputComponent'
 import InputTitle from '@/components/ui/texts/InputTitle'
 
 import { PADDING_Y } from '@/config/_variables.config'
-import { USER_PAGES } from '@/config/pages/user-url.config'
 
 import { useFullHeight } from '@/hooks/useFullHeight'
 import { useProfile, useProfileUpdate } from '@/hooks/useProfile'
@@ -42,12 +41,12 @@ const options = [
 
 const RegisterForm = () => {
 	const { clientHeight } = useFullHeight()
-	const { push } = useRouter()
+
 	const [value, setValue] = useState({
 		password: '',
 		first_name: '',
 		last_name: '',
-		role: EnumRole.SENDER
+		role: EnumRole.SUPER_ADMIN
 	})
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -55,11 +54,15 @@ const RegisterForm = () => {
 	}
 
 	const { isLoading, user } = useProfile()
-	const { isPending, mutate } = useProfileUpdate(() => push(USER_PAGES.HOME))
+	const { isPending, mutate } = useProfileUpdate(true)
 
-	const { getRootProps, getRadioProps } = useRadioGroup({
+	const {
+		getRootProps,
+		getRadioProps,
+		setValue: setRadioValue
+	} = useRadioGroup({
 		name: 'framework',
-		defaultValue: EnumRole.SENDER,
+		defaultValue: value.role,
 		onChange: (role: RoleTypes) => {
 			setValue({ ...value, role })
 		}
@@ -69,9 +72,12 @@ const RegisterForm = () => {
 
 	const onsubmit = (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault()
-		mutate(value)
-
-		saveUserRole(value.role)
+		if (!!Number(value.role)) {
+			mutate(value)
+			saveUserRole(value.role)
+		} else {
+			toast('Выберите роли')
+		}
 	}
 
 	useEffect(() => {
@@ -80,8 +86,9 @@ const RegisterForm = () => {
 				...value,
 				first_name: user.first_name || '',
 				last_name: user.last_name || '',
-				role: user.role || EnumRole.SENDER
+				role: String(user.role) as RoleTypes
 			})
+			setRadioValue(String(user.role))
 		}
 	}, [user])
 	return (

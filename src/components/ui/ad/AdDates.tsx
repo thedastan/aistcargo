@@ -3,7 +3,11 @@ import { Box, Flex } from '@chakra-ui/react'
 import MiniText from '../texts/MiniText'
 import Title from '../texts/Title'
 
-const AdDates = () => {
+interface AdDatesProps {
+	created_date: string
+	send_date: string
+}
+const AdDates = ({ created_date, send_date }: AdDatesProps) => {
 	return (
 		<Box
 			mt='5'
@@ -26,7 +30,7 @@ const AdDates = () => {
 					fontSize='16px'
 					lineHeight='21.79px'
 				>
-					14.09.2034
+					{send_date}
 				</Title>
 			</Flex>
 
@@ -45,7 +49,7 @@ const AdDates = () => {
 					fontSize='16px'
 					lineHeight='21.79px'
 				>
-					12.09.2034
+					{created_date}
 				</Title>
 			</Flex>
 		</Box>

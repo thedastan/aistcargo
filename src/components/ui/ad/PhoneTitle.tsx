@@ -1,4 +1,5 @@
 import { Avatar, Box, Flex } from '@chakra-ui/react'
+import Link from 'next/link'
 import { BsTelephoneFill } from 'react-icons/bs'
 
 import MiniText from '../texts/MiniText'
@@ -6,8 +7,16 @@ import Title from '../texts/Title'
 
 interface PhoneTitleProps {
 	withoutAvatar?: boolean
+	avatar?: string
+	phone: string
+	full_name: string
 }
-const PhoneTitle = ({ withoutAvatar }: PhoneTitleProps) => {
+const PhoneTitle = ({
+	withoutAvatar,
+	phone,
+	avatar,
+	full_name
+}: PhoneTitleProps) => {
 	return (
 		<Flex
 			justifyContent='space-between'
@@ -34,6 +43,7 @@ const PhoneTitle = ({ withoutAvatar }: PhoneTitleProps) => {
 					</Flex>
 				) : (
 					<Avatar
+						src={avatar}
 						w='50px'
 						h='50px'
 					/>
@@ -46,14 +56,16 @@ const PhoneTitle = ({ withoutAvatar }: PhoneTitleProps) => {
 						fontSize='14px'
 						lineHeight='19.07px'
 					>
-						Аэлита Ажыбаева
+						{full_name}
 					</MiniText>
-					<Title
-						fontSize='18px'
-						lineHeight='24px'
-					>
-						+996 234 567 890
-					</Title>
+					<Link href={`tel:${phone}`}>
+						<Title
+							fontSize='18px'
+							lineHeight='24px'
+						>
+							{phone}
+						</Title>
+					</Link>
 				</Flex>
 			</Flex>
 			{!withoutAvatar && (

@@ -1,7 +1,8 @@
 'use client'
 
 import { Box } from '@chakra-ui/react'
-import { ChangeEvent, useState } from 'react'
+import { redirect } from 'next/navigation'
+import { ChangeEvent, useEffect, useState } from 'react'
 
 import InterfaceShape from '@/components/layout-templates/interface-template'
 import DefButton from '@/components/ui/buttons/DefButton'
@@ -12,6 +13,7 @@ import RouteSelect from '@/components/ui/select/RouteSelect'
 
 import CurrencySom from '@/assets/svg/CurrencySom'
 
+import { USER_PAGES } from '@/config/pages/user-url.config'
 import { useValidate } from '@/config/validation'
 
 import { default_ad_value } from '@/store/slices/storage-slice'
@@ -33,12 +35,13 @@ const CreateComponentTraveler = () => {
 		setValue({ ...value, [e.target.name]: e.target.value })
 	}
 
-	const { onsubmit } = useValidate('traveler', {
-		...value,
-		transport: ad?.transport ? ad.transport : 0
-	})
-
-	return (
+	const { onsubmit } = useValidate('traveler', value)
+	useEffect(() => {
+		if (ad) setValue({ ...ad })
+	}, [])
+	return !ad?.transport ? (
+		redirect(USER_PAGES.HOME)
+	) : (
 		<Box>
 			<InterfaceShape
 				title='Стать попутчиком'
@@ -53,6 +56,7 @@ const CreateComponentTraveler = () => {
 						<InputComponent
 							handleChange={handleChange}
 							value={value.send_date}
+							name='send_date'
 							title='Дата отправки'
 							placeholder='Укажите дату'
 							isGreen={true}
@@ -70,6 +74,7 @@ const CreateComponentTraveler = () => {
 					handleChange={handleChange}
 					value={value.price}
 					title='Цена (в сомах)'
+					name='price'
 					placeholder='Цена / Договорная'
 					RightElement={<CurrencySom />}
 				/>
@@ -77,6 +82,7 @@ const CreateComponentTraveler = () => {
 				<TextAreaComponent
 					handleChange={handleChange}
 					title='Описание'
+					name='description'
 					value={value.description}
 					placeholder='Введите текст...'
 				/>

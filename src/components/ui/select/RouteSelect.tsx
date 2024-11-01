@@ -77,7 +77,8 @@ function RouteInput(props: RouteInputProps) {
 		<InputGroup>
 			<Input
 				placeholder={props.placeholder}
-				value={props.value}
+				type='text'
+				value={props.value || ''}
 				_placeholder={{ color: 'rgba(255, 255, 255, .4)', fontWeight: '400' }}
 				fontWeight='500'
 				fontSize='16px'
@@ -89,6 +90,7 @@ function RouteInput(props: RouteInputProps) {
 				px='5'
 				_focus={{ boxShadow: 'none' }}
 				isReadOnly={true}
+				readOnly={true}
 			/>
 			<InputRightElement
 				alignItems='center'

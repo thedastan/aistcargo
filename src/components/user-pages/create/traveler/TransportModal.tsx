@@ -21,7 +21,12 @@ const TransportModal = ({ isOpen, onClose }: TransportModalProps) => {
 	const dispatch = useDispatch()
 
 	const setTransportId = (transport: number) => {
-		dispatch(storageActions.setAdValues({ ...default_ad_value, transport }))
+		dispatch(
+			storageActions.setAdValues({
+				...default_ad_value,
+				transport: [String(transport)]
+			})
+		)
 	}
 	return (
 		<DrawerModal
@@ -51,8 +56,8 @@ interface ButtonCardProps extends ITransportType {
 function ButtonCard(props: ButtonCardProps) {
 	return (
 		<Link
-			href={USER_PAGES.CREATE_TRAVELER}
 			onClick={() => props.onClick(props.id)}
+			href={USER_PAGES.CREATE_TRAVELER}
 		>
 			<Flex
 				justifyContent='space-between'

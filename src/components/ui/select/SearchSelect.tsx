@@ -6,6 +6,7 @@ import {
 	PopoverTrigger,
 	Radio,
 	RadioGroup,
+	Stack,
 	useDisclosure,
 	useOutsideClick
 } from '@chakra-ui/react'
@@ -34,6 +35,11 @@ const SearchSelect = (props: SearchSelectProps) => {
 		ref: ref,
 		handler: () => onClose()
 	})
+
+	const onChange = (item: IListItem) => {
+		props.onChange(item)
+		onClose()
+	}
 
 	useEffect(() => {
 		if (debounce) {
@@ -73,6 +79,7 @@ const SearchSelect = (props: SearchSelectProps) => {
 							placeholder='Поиск'
 							handleChange={e => setSearch(e.target.value)}
 							value={search}
+							name='search'
 							LeftElement={
 								<IoIosSearch
 									color='#292D32'
@@ -81,33 +88,31 @@ const SearchSelect = (props: SearchSelectProps) => {
 							}
 						/>
 					</Box>
+
 					{!!search_data?.length && (
-						<RadioGroup
-							onChange={e => {
-								props.onChange(JSON.parse(e) as IListItem)
-								onClose()
-							}}
-							value={props.value ? JSON.stringify(props.value) : ''}
-						>
-							{search_data.map((el, idx) => (
-								<Radio
-									key={idx}
-									value={JSON.stringify(el)}
-									flexDirection='row-reverse'
+						<Stack spacing='0'>
+							{search_data.map(el => (
+								<Flex
+									key={el.id}
+									onClick={() => onChange(el)}
+									cursor='pointer'
+									alignItems='center'
 									justifyContent='space-between'
 									w='100%'
-									minH='35px'
-									colorScheme='green'
+									h='40px'
 									pr='10px'
 									rounded='10px'
 									pl='4'
-									bg='#0000000A'
-									// _checked={{ bg: '#0000000A' }}
+									bg={el.id === props.value?.id ? '#0000000A' : '#FFFFFF'}
 								>
 									{el.name}
-								</Radio>
+									<Radio
+										colorScheme='green'
+										isChecked={el.id === props.value?.id}
+									/>
+								</Flex>
 							))}
-						</RadioGroup>
+						</Stack>
 					)}
 
 					{!search_data?.length && (

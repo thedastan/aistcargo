@@ -2,13 +2,17 @@
 
 import { Container, Flex, useDisclosure } from '@chakra-ui/react'
 import { usePathname, useRouter } from 'next/navigation'
+import { useEffect } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
+import { useDispatch } from 'react-redux'
 
 import NavbarHomeSvg from '@/assets/svg/NavbarHomeSvg'
 import NavbarUserSvg from '@/assets/svg/NavbarUserSvg'
 
 import { INTERFACE_WIDTH, THEME_COLOR } from '@/config/_variables.config'
 import { USER_PAGES } from '@/config/pages/user-url.config'
+
+import { storageActions } from '@/store/slices/storage-slice'
 
 import TransportModal from '../user-pages/create/traveler/TransportModal'
 
@@ -37,6 +41,7 @@ const navbar = [
 const Navbar = () => {
 	const role = getUserRole()
 	const pathname = usePathname()
+	const dispatch = useDispatch()
 	const { isOpen, onClose, onOpen } = useDisclosure()
 	const { push } = useRouter()
 	const onRedirect = (path: string) => {
@@ -44,6 +49,10 @@ const Navbar = () => {
 			onOpen()
 		else push(path)
 	}
+
+	useEffect(() => {
+		dispatch(storageActions.resetFrom())
+	}, [pathname])
 	return (
 		<Flex
 			position='fixed'

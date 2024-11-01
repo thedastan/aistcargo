@@ -3,13 +3,24 @@ import { GoDotFill } from 'react-icons/go'
 import { GoDot } from 'react-icons/go'
 import { GrLocation } from 'react-icons/gr'
 
-import CarSvg from '@/assets/svg/CarSvg'
-
 import BoldText from '../texts/BoldText'
 import Description from '../texts/Description'
 import MiniText from '../texts/MiniText'
 
-const AdCard = () => {
+import TransportsData from './TransportsData'
+
+interface AdCardProps {
+	transport: string[]
+	price?: string
+	parcel_type: string
+	description?: string
+	to_city: string
+	from_city: string
+	address?: string
+}
+const AdCard = (props: AdCardProps) => {
+	// const [transportData, setTransport] = useState(props.transport)
+
 	return (
 		<Box
 			mt='5'
@@ -22,27 +33,7 @@ const AdCard = () => {
 				justifyContent='space-between'
 				alignItems='center'
 			>
-				<Flex
-					gap='3'
-					alignItems='center'
-				>
-					<Flex
-						justifyContent='center'
-						alignItems='center'
-						w='42px'
-						h='42px'
-						rounded='50%'
-						bg='#FFFFFF'
-					>
-						<CarSvg />
-					</Flex>
-					<MiniText
-						fontSize='14px'
-						lineHeight='19px'
-					>
-						Машина
-					</MiniText>
-				</Flex>
+				<TransportsData transport={props.transport} />
 
 				<Text
 					fontWeight='600'
@@ -50,15 +41,15 @@ const AdCard = () => {
 					fontSize='16px'
 					color='#43995C'
 				>
-					Договорная
+					{props.price ? props.price + ' c' : 'Договорная'}
 				</Text>
 			</Flex>
 
 			<Box mt='6'>
-				<BoldText mb='10px'>Коробка M (65x40x25 см до 15 кг)</BoldText>
-				<Description color='#232D37'>
-					Беру строго хорошо упакованные грузы/посылки
-				</Description>
+				<BoldText mb='10px'>{props.parcel_type}</BoldText>
+				{!!props.description && (
+					<Description color='#232D37'>{props.description}</Description>
+				)}
 			</Box>
 
 			<Flex
@@ -94,7 +85,7 @@ const AdCard = () => {
 						fontWeight='600'
 						fontSize='16px'
 					>
-						Бишкек, Кыргызстан
+						{props.from_city}
 					</BoldText>
 
 					<Divider
@@ -111,29 +102,31 @@ const AdCard = () => {
 						fontWeight='600'
 						fontSize='16px'
 					>
-						Москва, Россия
+						{props.to_city}
 					</BoldText>
 				</Box>
 			</Flex>
 
-			<Flex
-				mt='6'
-				gap='10px'
-				alignItems='center'
-			>
-				<GrLocation
-					color='#43995C'
-					fontSize='20px'
-				/>
-
-				<BoldText
-					fontWeight='600'
-					fontSize='16px'
-					color='#43995C'
+			{!!props.address && (
+				<Flex
+					mt='6'
+					gap='10px'
+					alignItems='center'
 				>
-					Лебедевская 34/2
-				</BoldText>
-			</Flex>
+					<GrLocation
+						color='#43995C'
+						fontSize='20px'
+					/>
+
+					<BoldText
+						fontWeight='600'
+						fontSize='16px'
+						color='#43995C'
+					>
+						{props.address}
+					</BoldText>
+				</Flex>
+			)}
 		</Box>
 	)
 }
