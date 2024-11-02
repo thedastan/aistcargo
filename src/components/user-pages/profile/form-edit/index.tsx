@@ -10,6 +10,7 @@ import {
 	useRadio,
 	useRadioGroup
 } from '@chakra-ui/react'
+import moment from 'moment'
 import { useRouter } from 'next/navigation'
 import { ChangeEvent, useEffect, useState } from 'react'
 import { BsChevronLeft } from 'react-icons/bs'
@@ -24,6 +25,7 @@ import { PADDING_Y } from '@/config/_variables.config'
 
 import { useProfile, useProfileUpdate } from '@/hooks/useProfile'
 
+import AvatarUpload from './AvatarUpload'
 import { EnumGender, GenderTypes, IProfileUpdate } from '@/models/profile.model'
 
 const options = [
@@ -42,8 +44,7 @@ const ProfileForm = () => {
 		first_name: '',
 		last_name: '',
 		email: '',
-		birth_date: '',
-		sex: 0
+		birth_date: ''
 	})
 
 	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -53,10 +54,14 @@ const ProfileForm = () => {
 	const { back } = useRouter()
 	const { user, isLoading } = useProfile()
 
-	const { getRootProps, getRadioProps } = useRadioGroup({
+	const {
+		getRootProps,
+		getRadioProps,
+		setValue: setRadioValue
+	} = useRadioGroup({
 		name: 'framework-2',
-		defaultValue: value.sex ? String(value.sex) : '',
-		onChange: sex => setValue({ ...value, sex: Number(sex) })
+		defaultValue: value.sex,
+		onChange: (sex: GenderTypes) => setValue({ ...value, sex })
 	})
 
 	const group = getRootProps()
@@ -68,14 +73,21 @@ const ProfileForm = () => {
 
 	useEffect(() => {
 		if (user) {
+			const gender = String(user.sex) as GenderTypes
+			const birth_date = user.birth_date
+				? moment(user.birth_date).format('YYYY-MM-DD')
+				: ''
 			setValue({
 				...value,
 				first_name: user.first_name || '',
 				last_name: user.last_name || '',
-				birth_date: user.birth_date || '',
+				birth_date: birth_date,
 				email: user.email || '',
-				sex: user.sex
+				sex: gender
 			})
+			if (gender) {
+				setRadioValue(gender)
+			}
 		}
 	}, [user])
 	return (
@@ -111,6 +123,7 @@ const ProfileForm = () => {
 				py='25.5px'
 			>
 				<Stack>
+					<AvatarUpload />
 					<InputComponent
 						handleChange={handleChange}
 						value={value.first_name}
@@ -152,7 +165,7 @@ const ProfileForm = () => {
 					>
 						{options.map(value => {
 							const radio = getRadioProps({
-								value: String(value.gender)
+								value: value.gender
 							})
 							return (
 								<RadioCard

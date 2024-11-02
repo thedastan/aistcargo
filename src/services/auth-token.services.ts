@@ -26,4 +26,5 @@ export const saveTokenStorage = (tokens: IAuthResponse) => {
 export const removeFromStorage = () => {
 	Cookies.remove(EnumTokens.ACCESS_TOKEN)
 	Cookies.remove(EnumTokens.REFRESH_TOKEN)
+	Cookies.remove(EnumTokens.ROLE)
 }

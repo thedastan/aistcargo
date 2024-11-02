@@ -1,8 +1,8 @@
 import { RoleTypes } from '@/services/role.service'
 
 export enum EnumGender {
-	MAN = 0, //'мужчина'
-	WOMAN = 1 //'женщина'
+	MAN = '0', //'мужчина'
+	WOMAN = '1' //'женщина'
 }
 
 export type GenderTypes = typeof EnumGender.MAN | typeof EnumGender.WOMAN
@@ -26,4 +26,11 @@ export interface IProfile {
 	birth_date?: string
 	sex?: GenderTypes
 	email?: string
+}
+
+export interface IAdUser {
+	first_name: string
+	last_name: string
+	image: any
+	phone: string
 }

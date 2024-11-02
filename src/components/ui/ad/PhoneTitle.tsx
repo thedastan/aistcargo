@@ -69,19 +69,21 @@ const PhoneTitle = ({
 				</Flex>
 			</Flex>
 			{!withoutAvatar && (
-				<Box
-					px='5'
-					py='10.5px'
-					bg='#43995C'
-					rounded='1000px'
-					fontSize='14px'
-					lineHeight='19.07px'
-					fontWeight='600'
-					color='#FFFFFF'
-					_active={{ opacity: '.7' }}
-				>
-					Откликнуться
-				</Box>
+				<Link href={`tel:${phone}`}>
+					<Box
+						px='5'
+						py='10.5px'
+						bg='#43995C'
+						rounded='1000px'
+						fontSize='14px'
+						lineHeight='19.07px'
+						fontWeight='600'
+						color='#FFFFFF'
+						_active={{ opacity: '.7' }}
+					>
+						Откликнуться
+					</Box>
+				</Link>
 			)}
 		</Flex>
 	)

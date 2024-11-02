@@ -5,13 +5,13 @@ import MiniText from '../texts/MiniText'
 
 import { ITransportType, transports } from '@/models/transport.model'
 
-const TransportsData = (props: { transport: string[] }) => {
+const TransportsData = (props: { transport: number[] }) => {
 	const [filter, setFilter] = useState<ITransportType[]>([])
 	function getFilter() {
 		const result: ITransportType[] = []
 		transports.reduce((acc: any, el) => {
 			props.transport.reduce((init: any, id) => {
-				if (Number(id) === el.id) {
+				if (id === el.id) {
 					result.push(el)
 				}
 			}, '')
@@ -24,7 +24,7 @@ const TransportsData = (props: { transport: string[] }) => {
 
 	useEffect(() => {
 		getFilter()
-	}, [])
+	}, [props.transport])
 	return !filter.length ? null : (
 		<>
 			{filter.length === 1 ? (

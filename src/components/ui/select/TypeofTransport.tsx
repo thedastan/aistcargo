@@ -18,10 +18,15 @@ import { transports } from '@/models/transport.model'
 interface TypeofTransportProps {
 	onChange: (arr: string[]) => void
 	isLight?: boolean
+	value?: string[]
 }
-const TypeofTransport = ({ onChange, isLight }: TypeofTransportProps) => {
+const TypeofTransport = ({
+	onChange,
+	isLight,
+	value
+}: TypeofTransportProps) => {
 	const { getCheckboxProps } = useCheckboxGroup({
-		defaultValue: [],
+		defaultValue: value,
 		onChange
 	})
 	return (

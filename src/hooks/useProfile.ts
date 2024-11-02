@@ -47,7 +47,7 @@ export function useAvatarUpdate() {
 		mutationFn: (file: File) => profileService.updateAvatar(file),
 		onSuccess() {
 			queryClient.invalidateQueries({ queryKey: ['profile'] })
-			toast.success('Ваши данные сохранены!')
+			toast.success('Фото профиля загружается')
 		},
 		onError(e) {
 			ToastError(e)
@@ -61,7 +61,7 @@ export function getFullName(
 	firsName: string | undefined,
 	lastName: string | undefined
 ) {
-	return (
-		`${firsName ? firsName : '' + (lastName ? ` ${lastName}` : '')}` || 'ФИО'
-	)
+	const first_name = firsName ? firsName : ''
+	const last_name = lastName ? ` ${lastName}` : ''
+	return first_name + last_name || 'ФИО'
 }

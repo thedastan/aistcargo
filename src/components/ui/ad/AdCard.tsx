@@ -10,7 +10,7 @@ import MiniText from '../texts/MiniText'
 import TransportsData from './TransportsData'
 
 interface AdCardProps {
-	transport: string[]
+	transport: number[]
 	price?: string
 	parcel_type: string
 	description?: string

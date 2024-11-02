@@ -46,7 +46,7 @@ const CreateComponentSender = () => {
 	}
 
 	const onBack = () => setStep(0)
-
+	console.log(value)
 	useEffect(() => {
 		if (ad) setValue({ ...ad })
 	}, [])
@@ -66,6 +66,7 @@ const CreateComponentSender = () => {
 								/>
 								<InputComponent
 									handleChange={handleChange}
+									value={value.address}
 									title='Адрес доставки'
 									name='address'
 									placeholder='Введите адрес получения'
@@ -82,6 +83,7 @@ const CreateComponentSender = () => {
 							<>
 								<TypeofTransport
 									onChange={transport => setValue({ ...value, transport })}
+									value={value.transport}
 								/>
 								<InputComponent
 									handleChange={handleChange}

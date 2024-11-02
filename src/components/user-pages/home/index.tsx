@@ -5,22 +5,29 @@ import { useState } from 'react'
 import { IoMdCheckmark } from 'react-icons/io'
 
 import OrderCard from '@/components/cards/order-card'
+import OrderSkeleton from '@/components/cards/order-skeleton'
 import Navbar from '@/components/navbar'
+import EmptyText from '@/components/ui/texts/EmptyText'
 
-import { THEME_COLOR } from '@/config/_variables.config'
+import { PADDING_Y, THEME_COLOR } from '@/config/_variables.config'
 
 import { useFIlterAds } from '@/hooks/useAds'
 
 import ProfileHead from '../profile/profile-head'
 
 import Filter from './filter'
+import { AdFilterForm } from '@/models/ad.model'
 import { transports } from '@/models/transport.model'
 
 const Home = () => {
-	const [active, setActive] = useState(0)
-	const { data, isLoading } = useFIlterAds()
+	const [filter, setFilter] = useState<AdFilterForm>()
+	const [activeTransport, setActiveTransport] = useState(0)
+	const { data, isLoading } = useFIlterAds(activeTransport, filter)
 	return (
-		<Box py='5'>
+		<Box
+			pt='5'
+			pb={PADDING_Y}
+		>
 			<ProfileHead />
 
 			<Flex
@@ -34,30 +41,35 @@ const Home = () => {
 					gap='10px'
 					px='4'
 				>
-					<Filter />
+					<Filter onChange={setFilter} />
 					<FIlterButtonCard
-						handleClick={() => setActive(0)}
-						isActive={active === 0}
+						handleClick={() => setActiveTransport(0)}
+						isActive={activeTransport === 0}
 						name={'Все'}
 					/>
 					{transports.map(el => (
 						<FIlterButtonCard
 							key={el.id}
-							handleClick={() => setActive(el.id)}
-							isActive={active === el.id}
+							handleClick={() => setActiveTransport(el.id)}
+							isActive={activeTransport === el.id}
 							name={el.name}
 						/>
 					))}
 				</Flex>
 			</Flex>
-			<Container>
+
+			<Container pt='10px'>
+				{!isLoading && !data?.length && <EmptyText />}
+				{isLoading && <OrderSkeleton />}
 				<SimpleGrid
-					mt='10px'
 					spacing='9px 10px'
 					columns={2}
 				>
-					{[1, 2, 3, 4, 5, 6].map(el => (
-						<OrderCard key={el} />
+					{data?.map(el => (
+						<OrderCard
+							ad={el}
+							key={el.id}
+						/>
 					))}
 				</SimpleGrid>
 			</Container>

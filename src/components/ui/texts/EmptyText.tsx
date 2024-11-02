@@ -4,9 +4,9 @@ const EmptyText = () => {
 	return (
 		<Text
 			textAlign='center'
-			mt='3'
+			mt='4'
 			opacity='.7'
-			color='#FFFFFF'
+			color='#232D37'
 		>
 			Пусто
 		</Text>

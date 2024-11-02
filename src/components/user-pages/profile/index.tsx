@@ -17,12 +17,16 @@ import Title from '@/components/ui/texts/Title'
 
 import ProfileHourSvg from '@/assets/svg/ProfileHourSvg'
 import ProfileLockSvg from '@/assets/svg/ProfileLockSvg'
+import ProfileLogoutSvg from '@/assets/svg/ProfileLogoutSvg'
 import ProfilePenSvg from '@/assets/svg/ProfilePenSvg'
 
+import { AUTH_PAGES } from '@/config/pages/auth-url.config'
 import { PUBLIC_PAGES } from '@/config/pages/public-url.config'
 import { USER_PAGES } from '@/config/pages/user-url.config'
 
 import { getFullName, useProfile } from '@/hooks/useProfile'
+
+import { removeFromStorage } from '@/services/auth-token.services'
 
 const Profile = () => {
 	const { user, isLoading } = useProfile()
@@ -120,6 +124,12 @@ const Profile = () => {
 					path={PUBLIC_PAGES.RESET_PASSWORD}
 					title='Изменить пароль'
 				/>
+				<ProfileItem
+					icon={ProfileLogoutSvg}
+					path={AUTH_PAGES.AUTH}
+					title='Выйти из кабинета'
+					isLogout={true}
+				/>
 			</Stack>
 
 			<Navbar />
@@ -131,15 +141,19 @@ interface ProfileItemProps {
 	title: string
 	icon: () => JSX.Element
 	path: string
+	isLogout?: boolean
 }
 function ProfileItem(props: ProfileItemProps) {
 	return (
-		<Link href={props.path}>
+		<Link
+			href={props.path}
+			onClick={() => props.isLogout && removeFromStorage()}
+		>
 			<Flex
 				rounded='14px'
 				h='60px'
 				gap='13px'
-				bg='#F5F5F5'
+				bg={'#F5F5F5'}
 				px='5'
 				py='18px'
 			>
@@ -148,6 +162,7 @@ function ProfileItem(props: ProfileItemProps) {
 					fontSize='16px'
 					lineHeight='22px'
 					textAlign='start'
+					color={props.isLogout ? '#F54135' : '#232D37'}
 				>
 					{props.title}
 				</Title>

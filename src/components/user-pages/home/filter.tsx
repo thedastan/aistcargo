@@ -1,24 +1,46 @@
 import { Flex, useDisclosure } from '@chakra-ui/react'
-import { HiOutlineLocationMarker } from 'react-icons/hi'
+import { ChangeEvent, Dispatch, SetStateAction, useState } from 'react'
 import { VscSettings } from 'react-icons/vsc'
+import { toast } from 'sonner'
 
 import DefButton from '@/components/ui/buttons/DefButton'
 import DrawerModal from '@/components/ui/drawer'
 import InputComponent from '@/components/ui/inputs/InputComponent'
-import SearchSelect from '@/components/ui/select/SearchSelect'
-import TypeofTransport from '@/components/ui/select/TypeofTransport'
+import RouteSelect from '@/components/ui/select/RouteSelect'
 
-import PackageCub from '@/assets/svg/PackageCub'
+import { AdFilterForm } from '@/models/ad.model'
 
-const data = [
-	'Бишкек/Кыргызстан',
-	'Екатеринбург/Россия',
-	'Москва/Россия',
-	'Санк-Петербург/Россия'
-]
-
-const Filter = () => {
+interface FilterProps {
+	onChange: Dispatch<SetStateAction<AdFilterForm | undefined>>
+}
+const Filter = ({ onChange }: FilterProps) => {
 	const { isOpen, onClose, onOpen } = useDisclosure()
+	const [value, setValue] = useState<AdFilterForm>({
+		to_city: {},
+		from_city: {},
+		send_date: ''
+	})
+	const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+		setValue({ ...value, [e.target.name]: e.target.value })
+	}
+
+	const onsubmit = () => {
+		if (value.from_city?.id || value.to_city?.id || value.send_date) {
+			onChange(value)
+			onClose()
+		} else {
+			toast.info('Чтобы применить фильтры, заполните хотя бы одну полю')
+		}
+	}
+
+	const onReset = () => {
+		setValue({
+			to_city: {},
+			from_city: {},
+			send_date: ''
+		})
+		onChange(undefined)
+	}
 	return (
 		<>
 			<Flex
@@ -45,24 +67,36 @@ const Filter = () => {
 				title='Фильтр'
 			>
 				<InputComponent
-					type='date'
+					handleChange={handleChange}
+					value={value.send_date}
+					name='send_date'
 					title='Дата выезда'
-					placeholder='Укажите дату'
+					placeholder='Указать дату'
+					type='date'
 				/>
-
-				<TypeofTransport
+				{/* <TypeofTransport
 					onChange={values => values}
+					isLight={true}
+				/> */}
+				<RouteSelect
+					onChange={(e, key) => setValue({ ...value, [key]: e })}
+					value={{ from_city: value.from_city, to_city: value.to_city }}
 					isLight={true}
 				/>
 
-				{/* <SearchSelect
-					data={data}
-					placeholder='Выберите город'
-					title='Город'
-					icon={<HiOutlineLocationMarker fontSize='22px' />}
-				/> */}
-
-				<DefButton mt='35px'>Применить фильтры</DefButton>
+				<DefButton
+					mt='15px'
+					isLight={true}
+					onClick={onReset}
+				>
+					Очистить
+				</DefButton>
+				<DefButton
+					mt='2.5'
+					onClick={onsubmit}
+				>
+					Применить фильтры
+				</DefButton>
 			</DrawerModal>
 		</>
 	)

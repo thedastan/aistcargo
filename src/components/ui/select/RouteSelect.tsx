@@ -21,17 +21,18 @@ interface RouteSelectProps {
 		from_city: PartialListItem
 		to_city: PartialListItem
 	}
+	isLight?: boolean
 }
-const RouteSelect = ({ onChange, value }: RouteSelectProps) => {
+const RouteSelect = ({ onChange, value, isLight }: RouteSelectProps) => {
 	const { data } = useCity()
 	return !data ? null : (
 		<Stack mb='4'>
-			<InputTitle color='#FFFFFF'>Маршрут</InputTitle>
+			<InputTitle color={isLight ? '#232D37' : '#FFFFFF'}>Маршрут</InputTitle>
 			<Stack
 				rounded='16px'
 				overflow='hidden'
 				bg='#FFFFFF1A'
-				border='1px solid #FFFFFF33'
+				border={`1px solid ${isLight ? '#1A1D201F' : '#FFFFFF33'}`}
 			>
 				<SearchSelect
 					data={data}
@@ -41,16 +42,19 @@ const RouteSelect = ({ onChange, value }: RouteSelectProps) => {
 					<RouteInput
 						value={value.from_city?.name}
 						placeholder='Откуда'
+						isLight={!!isLight}
 					/>
 				</SearchSelect>
 
+				{/* {!isLight && ( */}
 				<Box px='6'>
 					<Divider
 						h='1px'
-						bg='#FFFFFF'
+						bg={isLight ? '#000000' : '#FFFFFF'}
 						opacity='.2'
 					/>
 				</Box>
+				{/* )} */}
 
 				<SearchSelect
 					data={data}
@@ -60,6 +64,7 @@ const RouteSelect = ({ onChange, value }: RouteSelectProps) => {
 					<RouteInput
 						value={value.to_city?.name}
 						placeholder='Куда'
+						isLight={!!isLight}
 					/>
 				</SearchSelect>
 			</Stack>
@@ -70,6 +75,7 @@ const RouteSelect = ({ onChange, value }: RouteSelectProps) => {
 interface RouteInputProps {
 	value?: string
 	placeholder: string
+	isLight: boolean
 }
 
 function RouteInput(props: RouteInputProps) {
@@ -79,25 +85,30 @@ function RouteInput(props: RouteInputProps) {
 				placeholder={props.placeholder}
 				type='text'
 				value={props.value || ''}
-				_placeholder={{ color: 'rgba(255, 255, 255, .4)', fontWeight: '400' }}
 				fontWeight='500'
 				fontSize='16px'
 				lineHeight='22px'
 				bg='transparent'
 				h='52px'
-				color='#FFFFFF'
+				color={props.isLight ? '#232D37' : '#FFFFFF'}
 				border='none'
 				px='5'
 				_focus={{ boxShadow: 'none' }}
 				isReadOnly={true}
 				readOnly={true}
+				_placeholder={{
+					color: props.isLight
+						? 'rgba(35, 45, 55, .6)'
+						: 'rgba(255, 255, 255, .4)',
+					fontWeight: '400'
+				}}
 			/>
 			<InputRightElement
 				alignItems='center'
 				h='100%'
 			>
 				<IoChevronDownOutline
-					color='#FFFFFF'
+					color={props.isLight ? '#232D37' : '#FFFFFF'}
 					fontSize='15px'
 				/>
 			</InputRightElement>

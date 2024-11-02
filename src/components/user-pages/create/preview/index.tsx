@@ -27,7 +27,7 @@ const PreviewAdComponent = () => {
 	const role = getUserRole()
 	const { back } = useRouter()
 
-	const { isPending, mutate } = useAdCreate()
+	const { isPending, mutate } = useAdCreate(!!ad?.id)
 	const current_date = moment().format('YYYY-MM-DD')
 
 	const onsubmit = () => {
@@ -66,7 +66,7 @@ const PreviewAdComponent = () => {
 						from_city={`${ad?.from_city.name}`}
 						to_city={`${ad?.to_city.name}`}
 						parcel_type={`${ad?.parcel.name}`}
-						transport={ad.transport}
+						transport={ad.transport.map(id => +id)}
 						description={ad.description}
 						price={ad.price}
 					/>
@@ -94,7 +94,9 @@ const PreviewAdComponent = () => {
 						<EditSvg />
 					</Flex>
 
-					<DefButton onClick={onsubmit}>Опубликовать</DefButton>
+					<DefButton onClick={onsubmit}>
+						{ad?.id ? 'Обновить' : 'Опубликовать'}
+					</DefButton>
 				</Box>
 			)}
 		</InterfaceShape>
