@@ -37,17 +37,18 @@ const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
 	const send_date_short = moment(ad.send_date).format('DD MMM')
 	const send_date = moment(ad.send_date).format('DD.MM.YYYY')
 	const created_at = moment(ad.created_at).format('DD.MM.YYYY')
+	const transport =
+		typeof ad.transport === 'number' ? [ad.transport] : ad.transport
 
 	const onClickIcon = () => {
 		if (!isEdit) onOpen()
 		else {
-			const transport = ad.transport.map(id => String(id))
 			const send_date_input_format = moment(ad.send_date).format('YYYY-MM-DD')
 			const ad_copy: any = {
 				...ad,
-				transport,
+				transport: transport.map(id => String(id)),
 				send_date: send_date_input_format,
-				phone: ad.user.phone
+				phone: ad.user?.phone
 			}
 			delete ad_copy.user
 			delete ad_copy.created_at
@@ -77,7 +78,7 @@ const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
 						onClick={onOpen}
 						cursor='pointer'
 					>
-						<TransportsData transport={ad.transport} />
+						<TransportsData transport={transport} />
 					</Box>
 
 					<Box
@@ -154,16 +155,18 @@ const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
 				onClose={onClose}
 				title='Детали'
 			>
-				<PhoneTitle
-					full_name={getFullName(ad.user.first_name, ad.user.last_name)}
-					phone={ad.user.phone}
-					avatar={ad.user.image}
-				/>
+				{!!ad.user && (
+					<PhoneTitle
+						full_name={getFullName(ad.user.first_name, ad.user.last_name)}
+						phone={ad.user.phone}
+						avatar={ad.user.image}
+					/>
+				)}
 				<AdCard
 					from_city={ad.from_city.name}
 					to_city={ad.to_city.name}
 					parcel_type={ad.parcel.name}
-					transport={ad.transport}
+					transport={transport}
 					address={ad.address}
 					description={ad.description}
 					price={ad.price}

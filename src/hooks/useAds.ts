@@ -19,7 +19,13 @@ export function useFIlterAds(transport: number, filter?: AdFilterForm) {
 
 	const result = !transport
 		? data
-		: data?.filter(el => el.transport.includes(transport))
+		: data?.filter(el => {
+				if (typeof el.transport === 'number') {
+					return el.transport === transport
+				} else {
+					return el.transport.includes(transport)
+				}
+			})
 
 	return { data: result, isLoading }
 }

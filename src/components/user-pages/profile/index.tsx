@@ -9,6 +9,7 @@ import {
 	Stack
 } from '@chakra-ui/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { SlArrowRight } from 'react-icons/sl'
 
 import Navbar from '@/components/navbar'
@@ -144,30 +145,34 @@ interface ProfileItemProps {
 	isLogout?: boolean
 }
 function ProfileItem(props: ProfileItemProps) {
+	const { push } = useRouter()
+	const logout = () => {
+		if (props.isLogout) {
+			removeFromStorage()
+		}
+
+		push(props.path)
+	}
 	return (
-		<Link
-			href={props.path}
-			onClick={() => props.isLogout && removeFromStorage()}
+		<Flex
+			onClick={logout}
+			rounded='14px'
+			h='60px'
+			gap='13px'
+			bg={'#F5F5F5'}
+			px='5'
+			py='18px'
 		>
-			<Flex
-				rounded='14px'
-				h='60px'
-				gap='13px'
-				bg={'#F5F5F5'}
-				px='5'
-				py='18px'
+			<props.icon />
+			<Title
+				fontSize='16px'
+				lineHeight='22px'
+				textAlign='start'
+				color={props.isLogout ? '#F54135' : '#232D37'}
 			>
-				<props.icon />
-				<Title
-					fontSize='16px'
-					lineHeight='22px'
-					textAlign='start'
-					color={props.isLogout ? '#F54135' : '#232D37'}
-				>
-					{props.title}
-				</Title>
-			</Flex>
-		</Link>
+				{props.title}
+			</Title>
+		</Flex>
 	)
 }
 

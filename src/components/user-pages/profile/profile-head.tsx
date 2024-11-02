@@ -17,7 +17,7 @@ const ProfileHead = () => {
 			>
 				<Flex gap='4'>
 					<Avatar
-						src={user?.image}
+						src={user?.image || ''}
 						w='50px'
 						h='50px'
 					/>

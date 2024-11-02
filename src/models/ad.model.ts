@@ -29,15 +29,15 @@ export interface IAdCreatePayload {
 
 export interface IAdModel {
 	id: number
-	user: IAdUser
-	transport: number[]
+	user?: IAdUser
+	transport: number | number[]
 	price: string
 	parcel: IListItem
 	description: string
 	from_city: IListItem
 	to_city: IListItem
-	address: string
-	ads_media: any[]
+	address?: string
+	ads_media?: any[]
 	send_date: string
 	created_at: string
 }
