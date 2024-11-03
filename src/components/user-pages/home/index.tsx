@@ -7,6 +7,7 @@ import { IoMdCheckmark } from 'react-icons/io'
 import OrderCard from '@/components/cards/order-card'
 import OrderSkeleton from '@/components/cards/order-skeleton'
 import Navbar from '@/components/navbar'
+import AdsSimpleGrid from '@/components/ui/ad/AdsSimpleGrid'
 import EmptyText from '@/components/ui/texts/EmptyText'
 
 import { PADDING_Y, THEME_COLOR } from '@/config/_variables.config'
@@ -41,7 +42,10 @@ const Home = () => {
 					gap='10px'
 					px='4'
 				>
-					<Filter onChange={setFilter} />
+					<Filter
+						onChange={setFilter}
+						filterValid={!!filter}
+					/>
 					<FIlterButtonCard
 						handleClick={() => setActiveTransport(0)}
 						isActive={activeTransport === 0}
@@ -59,19 +63,10 @@ const Home = () => {
 			</Flex>
 
 			<Container pt='10px'>
-				{!isLoading && !data?.length && <EmptyText />}
-				{isLoading && <OrderSkeleton />}
-				<SimpleGrid
-					spacing='9px 10px'
-					columns={2}
-				>
-					{data?.map(el => (
-						<OrderCard
-							ad={el}
-							key={el.id}
-						/>
-					))}
-				</SimpleGrid>
+				<AdsSimpleGrid
+					data={data}
+					isLoading={isLoading}
+				/>
 			</Container>
 
 			<Navbar />

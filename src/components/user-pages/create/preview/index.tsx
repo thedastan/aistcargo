@@ -30,6 +30,7 @@ const PreviewAdComponent = () => {
 	const { isPending, mutate } = useAdCreate(!!ad?.id)
 	const current_date = moment().format('YYYY-MM-DD')
 
+	console.log('ad:', ad)
 	const onsubmit = () => {
 		if (ad) {
 			mutate({
@@ -41,10 +42,11 @@ const PreviewAdComponent = () => {
 			})
 		}
 	}
+
 	return (
 		<InterfaceShape title='Предпросмотр'>
 			{isPending && <Spinner />}
-			{!ad ? (
+			{!ad?.from_city?.id ? (
 				<Title
 					fontSize='18px'
 					lineHeight='22px'
@@ -59,7 +61,7 @@ const PreviewAdComponent = () => {
 					<PhoneTitle
 						withoutAvatar={true}
 						full_name={getFullName(user?.first_name, user?.last_name)}
-						phone='+996 554 247 027'
+						phone={ad.phone ? ad.phone : '-'}
 					/>
 					<AdCard
 						address={ad.address}

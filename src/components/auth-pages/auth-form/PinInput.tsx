@@ -5,6 +5,7 @@ import {
 	Modal,
 	ModalBody,
 	ModalContent,
+	ModalFooter,
 	ModalHeader,
 	Text
 } from '@chakra-ui/react'
@@ -81,106 +82,87 @@ const PinInputComponent = ({ value, isOpen, onClose }: PinInputProps) => {
 			<ModalContent
 				justifyContent='center'
 				transition='0'
-				bg='linear-gradient(180deg, #0E1E2B 0%, #3F485F 100%)'
 			>
-				<ModalHeader
-					px='4'
-					mt='3'
-				>
-					<Flex
-						color='#FFFFFF'
-						justifyContent='space-between'
-						alignItems='center'
-					>
-						<BsChevronLeft
-							onClick={onClose}
-							color='#FFFFFF'
-							fontSize='22px'
-						/>
-						<Text
-							fontWeight='500'
-							lineHeight='27px'
-							fontSize='18px'
-						>
-							Вход
-						</Text>
-						<Box opacity='0'>
-							<BsChevronLeft />
-						</Box>
-					</Flex>
-				</ModalHeader>
 				<ModalBody
-					mt='87px'
+					mt='130px'
 					maxW={INTERFACE_WIDTH}
 					w='100%'
 					mx='auto'
 					padding='0'
 				>
-					<Box>
-						{(isPending || isLoading) && <Spinner />}
-						<Box textAlign='center'>
-							<Title>Введите код</Title>
-							<Description mt='18px'>Мы отправили код на ваш номер</Description>
-							<Description fontWeight='500'>{value.phone}</Description>
-						</Box>
-						<HStack
-							mx='auto'
-							mt={5}
-							justifyContent='center'
+					{(isPending || isLoading) && <Spinner />}
+					<Box textAlign='center'>
+						<Title>Введите код</Title>
+						<Description
+							color='#232D37'
+							mt='35px'
 						>
-							<PinInput
-								length={4}
-								secret
-								secretDelay={1000}
-								// onChange={(value, index) => setCode(value)}
-								type='numeric'
-								inputMode='number'
-								style={{ padding: '10px' }}
-								onComplete={code => verify(code)}
-								autoSelect={true}
-								regexCriteria={/^[0-9]*$/}
-							/>
-						</HStack>
-						{!true && (
-							<Description
-								color='#F54135'
-								mt='26px'
-								textAlign='center'
-							>
-								Неправильный код, попробуйте еще раз
-							</Description>
-						)}
-
-						<Flex
-							justifyContent='center'
-							gap='5px'
-							mt='29px'
-							mx='auto'
+							Мы отправили код на ваш номер
+						</Description>
+						<Description
+							color='#232D37'
+							fontWeight='500'
 						>
-							<Text
-								fontSize='14px'
-								lineHeight='17.5px'
-								fontWeight='600'
-								color='#FFFFFF'
-								opacity='.6'
-							>
-								{isAgain ? 'Отправить код снова' : 'Я не получил код'}
-							</Text>
-							<Box
-								onClick={() => !isAgain && sendOtpCode()}
-								cursor='pointer'
-								fontWeight='600'
-								fontSize='14px'
-								lineHeight='17.5px'
-								color='#FFFFFF'
-								textDecoration='underline'
-								_active={{ opacity: '.7' }}
-							>
-								<Text>{isAgain ? timer : 'Запросить'}</Text>
-							</Box>
-						</Flex>
+							{value.phone}
+						</Description>
 					</Box>
+					<HStack
+						mx='auto'
+						mt={5}
+						justifyContent='center'
+					>
+						<PinInput
+							length={4}
+							secret
+							secretDelay={1000}
+							// onChange={(value, index) => setCode(value)}
+							type='numeric'
+							inputMode='number'
+							style={{ padding: '10px' }}
+							onComplete={code => verify(code)}
+							autoSelect={true}
+							regexCriteria={/^[0-9]*$/}
+						/>
+					</HStack>
+					{!true && (
+						<Description
+							color='#F54135'
+							mt='26px'
+							textAlign='center'
+						>
+							Неправильный код, попробуйте еще раз
+						</Description>
+					)}
 				</ModalBody>
+				<ModalFooter pb='50px'>
+					<Flex
+						justifyContent='center'
+						gap='5px'
+						mt='29px'
+						mx='auto'
+					>
+						<Text
+							fontSize='16px'
+							lineHeight='20px'
+							fontWeight='400'
+							color='#000000B2'
+						>
+							{isAgain ? 'Отправить код снова' : 'Я не получил код'}
+						</Text>
+						<Box
+							onClick={() => !isAgain && sendOtpCode()}
+							cursor='pointer'
+							fontWeight='600'
+							fontSize='16px'
+							lineHeight='20px'
+							color='#000000'
+							textDecoration='underline'
+							_active={{ opacity: '.7' }}
+						>
+							<Text>{isAgain ? timer : 'Запросить'}</Text>
+						</Box>
+					</Flex>
+				</ModalFooter>
 			</ModalContent>
 		</Modal>
 	)

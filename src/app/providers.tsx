@@ -8,15 +8,18 @@ import {
 	dehydrate
 } from '@tanstack/react-query'
 import { PropsWithChildren, useEffect, useState } from 'react'
+import { Provider } from 'react-redux'
 import { Toaster } from 'sonner'
+
+import MainStartLoader from '@/components/loader/MainStartLoader'
 
 import { INTERFACE_WIDTH } from '@/config/_variables.config'
 
-import { PersistProvider } from '@/store/persist-provider'
+import { store } from '@/store/store'
 
 export function Providers({ children }: PropsWithChildren) {
 	const [innerHeight, setHeight] = useState(0)
-
+	const [isLoading, setLoading] = useState(false)
 	const [client] = useState(
 		new QueryClient({
 			defaultOptions: {
@@ -30,12 +33,14 @@ export function Providers({ children }: PropsWithChildren) {
 
 	useEffect(() => {
 		setHeight(document.documentElement.clientHeight)
+		setTimeout(() => setLoading(true), 3000)
 	}, [])
 
+	if (!isLoading) return <MainStartLoader />
 	return (
 		<QueryClientProvider client={client}>
 			<HydrationBoundary state={dehydratedState}>
-				<PersistProvider>
+				<Provider store={store}>
 					<Box
 						maxW={INTERFACE_WIDTH}
 						mx='auto'
@@ -61,7 +66,7 @@ export function Providers({ children }: PropsWithChildren) {
 							}
 						}}
 					/>
-				</PersistProvider>
+				</Provider>
 			</HydrationBoundary>
 		</QueryClientProvider>
 	)

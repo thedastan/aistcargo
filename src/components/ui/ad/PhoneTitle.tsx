@@ -60,8 +60,8 @@ const PhoneTitle = ({
 					</MiniText>
 					<Link href={`tel:${phone}`}>
 						<Title
-							fontSize='18px'
-							lineHeight='24px'
+							fontSize='16px'
+							lineHeight='22px'
 						>
 							{phone}
 						</Title>
@@ -71,8 +71,8 @@ const PhoneTitle = ({
 			{!withoutAvatar && (
 				<Link href={`tel:${phone}`}>
 					<Box
-						px='5'
-						py='10.5px'
+						px='4'
+						py='9px'
 						bg='#43995C'
 						rounded='1000px'
 						fontSize='14px'

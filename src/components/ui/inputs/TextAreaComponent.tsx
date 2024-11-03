@@ -1,4 +1,5 @@
 import { Box, Flex, Stack, Textarea } from '@chakra-ui/react'
+import { ChangeEvent } from 'react'
 
 import { open_sans } from '@/constants/fonts/fonts'
 
@@ -8,19 +9,26 @@ export interface IInputComponentProps {
 	name?: string
 	placeholder?: string
 	value?: string
-	handleChange?: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
+	handleChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void
 	required?: boolean
 	title?: string
 }
 
+const limit = 100
+
 const TextAreaComponent = ({
 	name,
 	placeholder,
-	value,
+	value = '',
 	handleChange,
 	required = true,
 	title
 }: IInputComponentProps) => {
+	const onChange = (e: ChangeEvent<HTMLTextAreaElement>) => {
+		if (e.target.value.length <= limit) {
+			handleChange(e)
+		}
+	}
 	return (
 		<Stack
 			mb='4'
@@ -29,7 +37,7 @@ const TextAreaComponent = ({
 		>
 			{!!title && <InputTitle>{title}</InputTitle>}
 			<Textarea
-				onChange={handleChange}
+				onChange={onChange}
 				variant='none'
 				value={value}
 				name={name}
@@ -61,9 +69,9 @@ const TextAreaComponent = ({
 					lineHeight='21px'
 					fontWeight='600'
 					fontSize='12px'
-					color='#232D37'
+					color={value.length > 95 ? '#F54135' : '#232D37'}
 				>
-					{value?.length}/100
+					{value?.length}/{limit}
 				</Box>
 			</Flex>
 		</Stack>

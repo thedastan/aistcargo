@@ -1,7 +1,7 @@
 import { PropsWithChildren, useEffect, useRef, useState } from 'react'
 import { Provider } from 'react-redux'
 import { type Persistor, persistStore } from 'redux-persist'
-import { PersistGate } from 'redux-persist/integration/react'
+import { PersistGate } from 'redux-persist/lib/integration/react'
 
 import MainStartLoader from '@/components/loader/MainStartLoader'
 import Spinner from '@/components/loader/spinner'

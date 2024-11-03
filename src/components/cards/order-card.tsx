@@ -26,7 +26,7 @@ import { EnumRole, getUserRole } from '@/services/role.service'
 
 interface OrderCardProps {
 	ad: IAdModel
-	isEdit?: boolean
+	isEdit: boolean
 }
 
 const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
@@ -34,15 +34,13 @@ const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
 	const dispatch = useDispatch()
 	const { push } = useRouter()
 	const role = getUserRole()
-	const send_date_short = moment(ad.send_date).format('DD MMM')
-	const send_date = moment(ad.send_date).format('DD.MM.YYYY')
-	const created_at = moment(ad.created_at).format('DD.MM.YYYY')
+	const send_date_short = moment(ad.send_date).format('D-MMM')
+
 	const transport =
 		typeof ad.transport === 'number' ? [ad.transport] : ad.transport
 
 	const onClickIcon = () => {
-		if (!isEdit) onOpen()
-		else {
+		if (isEdit) {
 			const send_date_input_format = moment(ad.send_date).format('YYYY-MM-DD')
 			const ad_copy: any = {
 				...ad,
@@ -69,31 +67,28 @@ const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
 				py='5'
 				bg='#EBF0EB'
 				rounded='20px'
+				onClick={() => !isEdit && onOpen()}
+				cursor='pointer'
 			>
 				<Flex
 					justifyContent='space-between'
 					alignItems='center'
 				>
-					<Box
-						onClick={onOpen}
-						cursor='pointer'
-					>
-						<TransportsData transport={transport} />
-					</Box>
+					<TransportsData transport={transport} />
 
-					<Box
-						onClick={onClickIcon}
-						cursor='pointer'
-					>
-						{isEdit ? (
+					{isEdit ? (
+						<Box
+							onClick={onClickIcon}
+							cursor='pointer'
+						>
 							<EditSvg />
-						) : (
-							<GoChevronRight
-								color='#232D37'
-								fontSize='20px'
-							/>
-						)}
-					</Box>
+						</Box>
+					) : (
+						<GoChevronRight
+							color='#232D37'
+							fontSize='20px'
+						/>
+					)}
 				</Flex>
 
 				<Box mt='14px'>
@@ -131,7 +126,7 @@ const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
 						color='#43995C'
 						lineHeight='24.51px'
 					>
-						{ad.price ? ad.price : 'Договорная'}
+						{ad.price ? `${ad.price} с` : 'Договорная'}
 					</BoldText>
 
 					<Flex
@@ -172,8 +167,8 @@ const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
 					price={ad.price}
 				/>
 				<AdDates
-					created_date={created_at}
-					send_date={send_date}
+					created_date={ad.created_at}
+					send_date={ad.send_date}
 				/>
 			</DrawerModal>
 		</>

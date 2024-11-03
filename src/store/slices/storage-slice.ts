@@ -27,7 +27,7 @@ export const storageSlice = createSlice({
 			state.ad = action.payload
 		},
 		resetFrom(state) {
-			state = {}
+			state.ad = { ...default_ad_value }
 		}
 	}
 })

@@ -16,15 +16,21 @@ import {
 interface InterfaceShapeProps extends PropsWithChildren {
 	title: string
 	UpperContent?: JSX.Element
+	backFn?: () => void
 }
 
 const InterfaceShape = ({
 	children,
 	title,
-	UpperContent
+	UpperContent,
+	backFn
 }: InterfaceShapeProps) => {
 	const { back } = useRouter()
 
+	const onBack = () => {
+		if (backFn) backFn()
+		else back()
+	}
 	return (
 		<Box>
 			{/* Header .. */}
@@ -43,7 +49,7 @@ const InterfaceShape = ({
 					pb={UpperContent ? '6' : '27px'}
 				>
 					<BsChevronLeft
-						onClick={back}
+						onClick={onBack}
 						color='#FFFFFF'
 						fontSize='22px'
 						cursor='pointer'

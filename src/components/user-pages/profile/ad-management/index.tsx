@@ -1,31 +1,38 @@
 'use client'
 
-import { Box, SimpleGrid } from '@chakra-ui/react'
+import { Box } from '@chakra-ui/react'
+import { useRouter } from 'next/navigation'
 
-import OrderCard from '@/components/cards/order-card'
-import OrderSkeleton from '@/components/cards/order-skeleton'
 import InterfaceShape from '@/components/layout-templates/interface-template'
+import AdsSimpleGrid from '@/components/ui/ad/AdsSimpleGrid'
+import Title from '@/components/ui/texts/Title'
+
+import { USER_PAGES } from '@/config/pages/user-url.config'
 
 import { useActiveAds } from '@/hooks/useAds'
 
 const AdManagement = () => {
+	const { push } = useRouter()
 	const { data, isLoading } = useActiveAds()
 	return (
-		<InterfaceShape title='Управление'>
+		<InterfaceShape
+			title='Управление'
+			backFn={() => push(USER_PAGES.PROFILE)}
+		>
 			<Box>
-				{isLoading && <OrderSkeleton />}
-				<SimpleGrid
-					spacing='9px 10px'
-					columns={2}
+				<Title
+					mb='14px'
+					textAlign='start'
+					fontSize='18px'
+					lineHeight='24px'
 				>
-					{data?.map(el => (
-						<OrderCard
-							ad={el}
-							key={el.id}
-							isEdit={true}
-						/>
-					))}
-				</SimpleGrid>
+					Мои объявления
+				</Title>
+				<AdsSimpleGrid
+					data={data}
+					isLoading={isLoading}
+					isEdit={true}
+				/>
 			</Box>
 		</InterfaceShape>
 	)

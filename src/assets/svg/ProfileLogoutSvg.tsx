@@ -24,7 +24,7 @@ const ProfileLogoutSvg = () => {
 			<path
 				d='M16.8818 7.10626L19.8098 10.0213L16.8818 12.9373'
 				stroke='#F54135'
-				stroke-width='1.8'
+				strokeWidth='1.8'
 				strokeLinecap='round'
 				strokeLinejoin='round'
 			/>

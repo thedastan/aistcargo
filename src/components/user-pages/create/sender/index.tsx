@@ -21,12 +21,14 @@ import { useValidate } from '@/config/validation'
 import { default_ad_value } from '@/store/slices/storage-slice'
 
 import { useAppSelector } from '@/hooks/useAppSelector'
+import { useProfile } from '@/hooks/useProfile'
 
 import { IAdFormCreate } from '@/models/ad.model'
 import { IListItem } from '@/models/transport.model'
 
 const CreateComponentSender = () => {
 	const [step, setStep] = useState<0 | 1>(0)
+	const { user } = useProfile()
 	const [value, setValue] = useState<IAdFormCreate>({
 		...default_ad_value
 	})
@@ -41,7 +43,17 @@ const CreateComponentSender = () => {
 
 	const handleSubmit = () => {
 		if (!step) {
-			onsubmit({ isSenderHalf: true, setStep: () => setStep(1) })
+			onsubmit({
+				isSenderHalf: true,
+				setStep: () => {
+					setStep(1)
+					if (user?.phone && Number(value.phone?.length) < 5) {
+						setValue(state => {
+							return { ...state, phone: user.phone }
+						})
+					}
+				}
+			})
 		} else onsubmit()
 	}
 
@@ -50,6 +62,11 @@ const CreateComponentSender = () => {
 	useEffect(() => {
 		if (ad) setValue({ ...ad })
 	}, [])
+
+	// useEffect(() => {
+	// 	if (ad) setValue({ ...ad })
+	// 	if (user && !ad?.id) setValue({ ...value, phone: user.phone })
+	// }, [user])
 	return (
 		<Box>
 			<InterfaceShape

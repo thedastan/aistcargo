@@ -8,12 +8,15 @@ import DrawerModal from '@/components/ui/drawer'
 import InputComponent from '@/components/ui/inputs/InputComponent'
 import RouteSelect from '@/components/ui/select/RouteSelect'
 
+import { THEME_COLOR } from '@/config/_variables.config'
+
 import { AdFilterForm } from '@/models/ad.model'
 
 interface FilterProps {
 	onChange: Dispatch<SetStateAction<AdFilterForm | undefined>>
+	filterValid: boolean
 }
-const Filter = ({ onChange }: FilterProps) => {
+const Filter = ({ onChange, filterValid }: FilterProps) => {
 	const { isOpen, onClose, onOpen } = useDisclosure()
 	const [value, setValue] = useState<AdFilterForm>({
 		to_city: {},
@@ -45,7 +48,7 @@ const Filter = ({ onChange }: FilterProps) => {
 		<>
 			<Flex
 				onClick={onOpen}
-				bg='#F5F5F5'
+				bg={filterValid ? THEME_COLOR : '#F5F5F5'}
 				border={`1px solid #232D3714`}
 				px='10px'
 				alignItems='center'
@@ -56,7 +59,7 @@ const Filter = ({ onChange }: FilterProps) => {
 				_active={{ opacity: '.8' }}
 			>
 				<VscSettings
-					color='#000000'
+					color={filterValid ? '#FFFFFF' : '#000000'}
 					fontSize='26px'
 				/>
 			</Flex>

@@ -30,7 +30,7 @@ export function useFIlterAds(transport: number, filter?: AdFilterForm) {
 	return { data: result, isLoading }
 }
 
-export function useAdCreate(isUpdate?: boolean) {
+export function useAdCreate(isUpdate: boolean) {
 	const { push } = useRouter()
 	const queryClient = useQueryClient()
 	const dispatch = useDispatch()
@@ -39,10 +39,10 @@ export function useAdCreate(isUpdate?: boolean) {
 		mutationFn: (data: IAdCreatePayload) =>
 			data.id ? adService.updateAd(data) : adService.createAd(data),
 		onSuccess() {
-			push(USER_PAGES.HOME)
+			push(USER_PAGES.AD_MANAGEMENT)
+			dispatch(storageActions.resetFrom())
 			queryClient.invalidateQueries({ queryKey: ['all-ads'] })
 			toast.success(isUpdate ? 'Объявление обновлено' : 'Объявление добавлено')
-			dispatch(storageActions.resetFrom())
 		},
 		onError(e) {
 			ToastError(e)

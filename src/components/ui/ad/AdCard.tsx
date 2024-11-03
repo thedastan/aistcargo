@@ -19,8 +19,6 @@ interface AdCardProps {
 	address?: string
 }
 const AdCard = (props: AdCardProps) => {
-	// const [transportData, setTransport] = useState(props.transport)
-
 	return (
 		<Box
 			mt='5'
@@ -41,7 +39,7 @@ const AdCard = (props: AdCardProps) => {
 					fontSize='16px'
 					color='#43995C'
 				>
-					{props.price ? props.price + ' c' : 'Договорная'}
+					{props.price ? props.price + ' сом' : 'Договорная'}
 				</Text>
 			</Flex>
 

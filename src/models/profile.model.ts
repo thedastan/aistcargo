@@ -24,6 +24,7 @@ export interface IProfile {
 	role_label: RoleTypes
 	image?: string
 	birth_date?: string
+	phone: string
 	sex?: GenderTypes
 	email?: string
 }

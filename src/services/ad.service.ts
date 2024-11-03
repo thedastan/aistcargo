@@ -1,14 +1,22 @@
 import { PRIVATE_API } from '@/api/interceptors'
 
-import { TitlesRole, getUserRole } from './role.service'
+import { EnumRole, TitlesRole, getUserRole } from './role.service'
 import { AdFilterForm, IAdCreatePayload, IAdModel } from '@/models/ad.model'
+
+const FilterAdsRole = {
+	[EnumRole.SUPER_ADMIN]: TitlesRole[EnumRole.SUPER_ADMIN],
+	[EnumRole.SENDER]: TitlesRole[EnumRole.TRAVELER],
+	[EnumRole.TRAVELER]: TitlesRole[EnumRole.SENDER]
+}
 
 class AdService {
 	private BASE_URL = ''
+	private BASE_URL_FILTER = ''
 	constructor() {
 		const role = getUserRole()
 
 		this.BASE_URL = `${TitlesRole[role]}/ad/`
+		this.BASE_URL_FILTER = `${FilterAdsRole[role]}/ad/`
 	}
 
 	async getFilterAds(filter?: AdFilterForm) {
@@ -20,8 +28,9 @@ class AdService {
 
 		const arr = [from_city, to_city, send_date].filter(el => !!el)
 		const filter_path = arr.length ? '?' + arr.join('&') : ''
+
 		const response = await PRIVATE_API.get<IAdModel[]>(
-			this.BASE_URL + `filter/${filter_path}`
+			this.BASE_URL_FILTER + `filter/${filter_path}`
 		)
 
 		return response.data

@@ -1,4 +1,5 @@
 import { Box, Flex } from '@chakra-ui/react'
+import moment from 'moment'
 
 import MiniText from '../texts/MiniText'
 import Title from '../texts/Title'
@@ -8,6 +9,24 @@ interface AdDatesProps {
 	send_date: string
 }
 const AdDates = ({ created_date, send_date }: AdDatesProps) => {
+	moment.locale('ru', {
+		months: [
+			'января',
+			'февраля',
+			'марта',
+			'апреля',
+			'мая',
+			'июня',
+			'июля',
+			'августа',
+			'сентября',
+			'октября',
+			'ноября',
+			'декабря'
+		]
+	})
+	const send_date_LL = moment(send_date).format('D-MMMM')
+	const created_at_LL = moment(created_date).format('D-MMMM')
 	return (
 		<Box
 			mt='5'
@@ -30,7 +49,7 @@ const AdDates = ({ created_date, send_date }: AdDatesProps) => {
 					fontSize='16px'
 					lineHeight='21.79px'
 				>
-					{send_date}
+					{send_date_LL}
 				</Title>
 			</Flex>
 
@@ -49,7 +68,7 @@ const AdDates = ({ created_date, send_date }: AdDatesProps) => {
 					fontSize='16px'
 					lineHeight='21.79px'
 				>
-					{created_date}
+					{created_at_LL}
 				</Title>
 			</Flex>
 		</Box>

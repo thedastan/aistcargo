@@ -46,18 +46,19 @@
 		padding: 0 !important;
 		margin: 0 4px !important;
 		text-align: center;
-		border: 1px solid #ffffff !important;
+		border: 1px solid #d8dadc !important;
 		background: transparent;
-		max-width: 63px !important;
+		max-width: 64px !important;
 		width: 100% !important;
 		height: 72px !important;
 		border-radius: 15px;
 		font-size: 18px !important;
-		color: #ffffff !important;
+		color: #232d37 !important;
 	}
 	.pincode-input-text:focus {
 		outline: none;
 		box-shadow: none;
+		border: 1px solid #43995c !important;
 	}
 }
 
