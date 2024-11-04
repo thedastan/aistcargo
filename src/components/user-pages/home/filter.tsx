@@ -73,14 +73,11 @@ const Filter = ({ onChange, filterValid }: FilterProps) => {
 					handleChange={handleChange}
 					value={value.send_date}
 					name='send_date'
-					title='Дата выезда'
+					title='Дата выезда (до:)'
 					placeholder='Указать дату'
 					type='date'
 				/>
-				{/* <TypeofTransport
-					onChange={values => values}
-					isLight={true}
-				/> */}
+
 				<RouteSelect
 					onChange={(e, key) => setValue({ ...value, [key]: e })}
 					value={{ from_city: value.from_city, to_city: value.to_city }}
