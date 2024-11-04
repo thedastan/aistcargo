@@ -27,7 +27,7 @@ export default function ImageCreateCard({ onDelete, file }: ImageCardProps) {
 	return (
 		<Box
 			position='relative'
-			w='85px'
+			minW={{ sm: '85px', base: '20%' }}
 			h='80px'
 		>
 			{!!base64 && (
@@ -78,7 +78,10 @@ export default function ImageCreateCard({ onDelete, file }: ImageCardProps) {
 				title='Вы уверены, что хотите удалить фото?'
 				isOpen={isOpen}
 				onClose={onClose}
-				onSubmit={onDelete}
+				onSubmit={() => {
+					onDelete()
+					onClose()
+				}}
 			/>
 		</Box>
 	)

@@ -1,15 +1,7 @@
 import { Box, Flex, Stack, useDisclosure } from '@chakra-ui/react'
 import moment from 'moment'
 import 'moment/locale/ru'
-import { useRouter } from 'next/navigation'
 import { GoChevronRight } from 'react-icons/go'
-import { useDispatch } from 'react-redux'
-
-import EditSvg from '@/assets/svg/EditSvg'
-
-import { USER_PAGES } from '@/config/pages/user-url.config'
-
-import { storageActions } from '@/store/slices/storage-slice'
 
 import { getFullName } from '@/hooks/useProfile'
 
@@ -18,12 +10,12 @@ import AdCard from '../ui/ad/AdCard'
 import AdDates from '../ui/ad/AdDates'
 import PhoneTitle from '../ui/ad/PhoneTitle'
 import TransportsData from '../ui/ad/TransportsData'
+import EditAdButtons from '../ui/buttons/EditAdButtons'
 import DrawerModal from '../ui/drawer'
 import BoldText from '../ui/texts/BoldText'
 import MiniText from '../ui/texts/MiniText'
 
 import { IAdModel } from '@/models/ad.model'
-import { EnumRole, getUserRole } from '@/services/role.service'
 
 interface OrderCardProps {
 	ad: IAdModel
@@ -32,37 +24,19 @@ interface OrderCardProps {
 
 const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
 	const { isOpen, onClose, onOpen } = useDisclosure()
-	const dispatch = useDispatch()
-	const { push } = useRouter()
-	const role = getUserRole()
-	const send_date_short = moment(ad.send_date).format('D-MMM')
 
+	const send_date_short = moment(ad.send_date).format('D-MMM')
 	const transport =
 		typeof ad.transport === 'number' ? [ad.transport] : ad.transport
 
-	const onClickIcon = () => {
-		if (isEdit) {
-			const send_date_input_format = moment(ad.send_date).format('YYYY-MM-DD')
-			const ad_copy: any = {
-				...ad,
-				transport: transport.map(id => String(id)),
-				send_date: send_date_input_format,
-				phone: ad.user?.phone
-			}
-			delete ad_copy.user
-			delete ad_copy.created_at
-			delete ad_copy?.ads_media
-			dispatch(storageActions.setAdValues(ad_copy))
-
-			const path =
-				role === EnumRole.TRAVELER
-					? USER_PAGES.CREATE_TRAVELER
-					: USER_PAGES.CREATE_SENDER
-			push(path)
-		}
-	}
 	return (
-		<>
+		<Box>
+			{!!isEdit && (
+				<EditAdButtons
+					ad={ad}
+					transport={transport.map(id => String(id))}
+				/>
+			)}
 			<Box
 				px='14px'
 				py='5'
@@ -77,19 +51,10 @@ const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
 				>
 					<TransportsData transport={transport} />
 
-					{isEdit ? (
-						<Box
-							onClick={onClickIcon}
-							cursor='pointer'
-						>
-							<EditSvg />
-						</Box>
-					) : (
-						<GoChevronRight
-							color='#232D37'
-							fontSize='20px'
-						/>
-					)}
+					<GoChevronRight
+						color='#232D37'
+						fontSize='20px'
+					/>
 				</Flex>
 
 				<Box mt='14px'>
@@ -167,13 +132,17 @@ const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
 					description={ad.description}
 					price={ad.price}
 				/>
-				{!!ad.ads_media && <ImagesSliderDetail images={ad.ads_media} />}
+				{!!ad?.ads_media && (
+					<ImagesSliderDetail
+						images={ad.ads_media.filter(item => !!item.image)}
+					/>
+				)}
 				<AdDates
 					created_date={ad.created_at}
 					send_date={ad.send_date}
 				/>
 			</DrawerModal>
-		</>
+		</Box>
 	)
 }
 

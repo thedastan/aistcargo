@@ -49,7 +49,7 @@ const AvatarUpload = () => {
 						<FileInput
 							handleChange={handleFileChange}
 							accept={['.png', '.jpeg', '.jpg']}
-							multi={true}
+							multi={false}
 						/>
 						<Text
 							as='span'

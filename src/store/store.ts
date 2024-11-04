@@ -1,11 +1,9 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit'
 
-import { FilesReducer } from './slices/files-slice'
 import { StorageReducer } from './slices/storage-slice'
 
 const rootReducer = combineReducers({
-	storage: StorageReducer,
-	files: FilesReducer
+	storage: StorageReducer
 })
 
 export const makeStore = () =>

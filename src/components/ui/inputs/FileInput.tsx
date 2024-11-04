@@ -2,7 +2,7 @@ import { Input } from '@chakra-ui/react'
 import React from 'react'
 
 interface Props {
-	handleChange: (e: React.ChangeEvent) => void
+	handleChange: (e: React.ChangeEvent<any>) => void
 	accept: string[]
 	multi: boolean
 	id?: string

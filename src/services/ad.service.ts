@@ -1,5 +1,8 @@
+import { AxiosResponse } from 'axios'
+
 import { PRIVATE_API } from '@/api/interceptors'
 
+import { mediaService } from './media.service'
 import { EnumRole, TitlesRole, getUserRole } from './role.service'
 import { AdFilterForm, IAdCreatePayload, IAdModel } from '@/models/ad.model'
 
@@ -58,13 +61,21 @@ class AdService {
 		return response.data
 	}
 
-	async createAd(data: IAdCreatePayload) {
-		const response = await PRIVATE_API.post<IAdModel>(
-			this.BASE_URL + `create/`,
-			data
-		)
+	async mutate(payload: IAdCreatePayload, files?: File[]) {
+		function uploadImages({ data }: AxiosResponse<IAdModel>) {
+			if (files && files.length > 0) {
+				return mediaService.upload({ files, id: payload.id || data.id })
+			}
+		}
 
-		return response.data.id
+		return payload.id
+			? PRIVATE_API.put<IAdModel>(
+					this.BASE_URL + `update/${payload.id}/`,
+					payload
+				).then(uploadImages)
+			: PRIVATE_API.post<IAdModel>(this.BASE_URL + `create/`, payload).then(
+					uploadImages
+				)
 	}
 
 	async updateAd(data: IAdCreatePayload) {
@@ -77,7 +88,7 @@ class AdService {
 	}
 
 	async deleteAd(id: number) {
-		const response = await PRIVATE_API.delete(this.BASE_URL + `detail/${id}/`)
+		const response = await PRIVATE_API.delete(this.BASE_URL + `delete/${id}/`)
 
 		return response.data
 	}

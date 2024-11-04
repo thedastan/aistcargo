@@ -1,6 +1,9 @@
-import { PayloadAction, createSlice } from '@reduxjs/toolkit'
+import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 
-import { IAdFormCreate } from '@/models/ad.model'
+
+
+import { IAdFormCreate } from '@/models/ad.model';
+
 
 export const default_ad_value: IAdFormCreate = {
 	from_city: {},
@@ -15,12 +18,12 @@ export const default_ad_value: IAdFormCreate = {
 
 interface StorageState {
 	ad: IAdFormCreate
-	images: File[]
+	files: File[]
 }
 
 const initialState: StorageState = {
 	ad: { ...default_ad_value },
-	images: []
+	files: []
 }
 
 export const storageSlice = createSlice({
@@ -31,11 +34,11 @@ export const storageSlice = createSlice({
 			state.ad = action.payload
 		},
 		setFiles(state, action: PayloadAction<File[]>) {
-			state.images = action.payload
+			state.files = action.payload
 		},
 		resetFrom(state) {
 			state.ad = { ...default_ad_value }
-			state.images = []
+			state.files = []
 		}
 	}
 })

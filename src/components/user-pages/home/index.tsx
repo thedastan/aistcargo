@@ -27,7 +27,7 @@ const Home = () => {
 	return (
 		<Box
 			pt='5'
-			pb={PADDING_Y}
+			pb='80px'
 		>
 			<ProfileHead />
 

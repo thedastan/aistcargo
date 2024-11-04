@@ -28,7 +28,7 @@ const ParcelTypesComponent = ({
 			<InputComponent
 				title='Тип посылки'
 				placeholder='Тип посылки'
-				value={parcel.name}
+				value={parcel.name || ''}
 				isReadOnly={true}
 				LeftElement={<PackageCub />}
 				RightElement={

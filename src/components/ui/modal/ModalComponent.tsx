@@ -56,9 +56,8 @@ const ModalComponent = ({
 					>
 						{title}
 					</Description>
-					{isLoading && <Spinner />}
 				</Flex>
-
+				<Flex justifyContent='center'>{isLoading && <Spinner />}</Flex>
 				<Flex
 					gap='50px'
 					mt='15px'

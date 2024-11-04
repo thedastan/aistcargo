@@ -8,7 +8,6 @@ import { USER_PAGES } from '@/config/pages/user-url.config'
 
 import { storageActions } from '@/store/slices/storage-slice'
 
-import { useFilesUpload } from './useMedia'
 import { AdFilterForm, IAdCreatePayload } from '@/models/ad.model'
 import { adService } from '@/services/ad.service'
 import { TitlesRole, getUserRole } from '@/services/role.service'
@@ -38,36 +37,32 @@ export function useFIlterAds(transport: number, filter?: AdFilterForm) {
 	return { data: result, isLoading }
 }
 
-export function useAdCreate(isUpdate: boolean, files: File[]) {
+interface AdPayload {
+	files?: File[]
+	ad: IAdCreatePayload
+}
+
+export function useAdCreate(isUpdate: boolean) {
 	const { push } = useRouter()
 	const queryClient = useQueryClient()
 	const dispatch = useDispatch()
-	const KEY = getFilterDataKey()
-	const onSuccess = () => {
-		push(USER_PAGES.AD_MANAGEMENT)
-		dispatch(storageActions.resetFrom())
-		queryClient.invalidateQueries({ queryKey: [KEY] })
-		toast.success(isUpdate ? 'Объявление обновлено' : 'Объявление добавлено')
-	}
-	const { upload, isLoading } = useFilesUpload(onSuccess)
 
 	const { mutate, isPending } = useMutation({
-		mutationKey: [`create-${KEY}`],
-		mutationFn: (data: IAdCreatePayload) =>
-			data.id ? adService.updateAd(data) : adService.createAd(data),
-		onSuccess(id) {
-			if (!!files.length) {
-				upload({ id, files })
-			} else onSuccess()
-
-			onSuccess()
+		mutationKey: [`create-ad`],
+		mutationFn: (payload: AdPayload) =>
+			adService.mutate(payload.ad, payload.files),
+		onSuccess() {
+			push(USER_PAGES.AD_MANAGEMENT)
+			dispatch(storageActions.resetFrom())
+			queryClient.invalidateQueries({ queryKey: ['active-ads'] })
+			toast.success(isUpdate ? 'Объявление обновлено' : 'Объявление добавлено')
 		},
 		onError(e) {
 			ToastError(e)
 		}
 	})
 
-	return { mutate, isPending: isPending || isLoading }
+	return { mutate, isPending }
 }
 
 export function useActiveAds() {
@@ -86,4 +81,22 @@ export function useAdsHistory() {
 	})
 
 	return { data, isLoading }
+}
+
+export function useRemoveAd(onClose: () => void) {
+	const queryClient = useQueryClient()
+	const { mutate, isPending } = useMutation({
+		mutationKey: [`remove-ad`],
+		mutationFn: (id: number) => adService.deleteAd(id),
+		onSuccess() {
+			onClose()
+			queryClient.invalidateQueries({ queryKey: ['active-ads'] })
+			toast.success('удалено')
+		},
+		onError(e) {
+			ToastError(e)
+		}
+	})
+
+	return { remove: mutate, isPending }
 }

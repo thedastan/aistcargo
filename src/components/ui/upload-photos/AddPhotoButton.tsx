@@ -9,7 +9,7 @@ import AddPhotoSvg from '@/assets/svg/AddPhotoSvg'
 import MiniText from '../texts/MiniText'
 
 interface AddPhotoButtonProps {
-	handleChange: Dispatch<SetStateAction<File[]>>
+	handleChange: (e: React.ChangeEvent<any>) => void
 	isMini?: boolean
 }
 
@@ -17,28 +17,20 @@ const AddPhotoButton = ({
 	handleChange,
 	isMini = false
 }: AddPhotoButtonProps) => {
-	const handleFileChange = (e: React.ChangeEvent<any>) => {
-		const files: FileList | null = e.target?.files
-		if (files && files.length > 0)
-			// const arr: File[] = Array.from(files)
-			handleChange(state => {
-				return [...state, ...Array.from(files)]
-			})
-	}
 	return (
 		<>
 			{isMini && (
 				<Stack
 					as='label'
-					maxW='80px'
+					minW={{ sm: '85px', base: '20%' }}
 					rounded='6px'
-					maxH='80px'
+					minH='80px'
 					zIndex='2'
 					position='relative'
 					display='inline-block'
 				>
 					<FileInput
-						handleChange={handleFileChange}
+						handleChange={handleChange}
 						accept={['.png', '.jpeg', '.jpg']}
 						multi={true}
 					/>
@@ -80,7 +72,7 @@ const AddPhotoButton = ({
 					display='inline-block'
 				>
 					<FileInput
-						handleChange={handleFileChange}
+						handleChange={handleChange}
 						accept={['.png', '.jpeg', '.jpg']}
 						multi={true}
 					/>

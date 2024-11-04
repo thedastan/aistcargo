@@ -22,22 +22,25 @@ import { getFullName, useProfile } from '@/hooks/useProfile'
 import { EnumRole, getUserRole } from '@/services/role.service'
 
 const PreviewAdComponent = () => {
-	const { ad, images } = useAppSelector(s => s.storage)
+	const { ad, files } = useAppSelector(s => s.storage)
 	const { user } = useProfile()
 	const role = getUserRole()
 	const { back } = useRouter()
 
-	const { isPending, mutate } = useAdCreate(!!ad?.id, images)
+	const { isPending, mutate } = useAdCreate(!!ad?.id)
 	const current_date = moment().format('YYYY-MM-DD')
 
 	const onsubmit = () => {
 		if (ad) {
 			mutate({
-				...ad,
-				from_city: ad.from_city.id,
-				to_city: ad.to_city.id,
-				parcel: ad.parcel.id,
-				transport: role === EnumRole.TRAVELER ? ad.transport[0] : ad.transport
+				ad: {
+					...ad,
+					from_city: ad.from_city.id,
+					to_city: ad.to_city.id,
+					parcel: ad.parcel.id,
+					transport: role === EnumRole.TRAVELER ? ad.transport[0] : ad.transport
+				},
+				files: role === EnumRole.SENDER ? files : undefined
 			})
 		}
 	}
