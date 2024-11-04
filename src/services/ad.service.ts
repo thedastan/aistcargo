@@ -59,18 +59,21 @@ class AdService {
 	}
 
 	async createAd(data: IAdCreatePayload) {
-		const response = await PRIVATE_API.post(this.BASE_URL + `create/`, data)
+		const response = await PRIVATE_API.post<IAdModel>(
+			this.BASE_URL + `create/`,
+			data
+		)
 
-		return response.data
+		return response.data.id
 	}
 
 	async updateAd(data: IAdCreatePayload) {
-		const response = await PRIVATE_API.put(
+		const response = await PRIVATE_API.put<IAdModel>(
 			this.BASE_URL + `update/${data.id}/`,
 			data
 		)
 
-		return response.data
+		return response.data.id
 	}
 
 	async deleteAd(id: number) {

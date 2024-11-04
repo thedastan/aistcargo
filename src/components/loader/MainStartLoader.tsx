@@ -3,7 +3,7 @@ import Image from 'next/image'
 
 import { unbounded } from '@/constants/fonts/fonts'
 
-import Logo from '@/assets/img/Auth-logo.svg'
+import Logo from '@/assets/img/logo.png'
 
 const MainStartLoader = () => {
 	return (
@@ -28,6 +28,8 @@ const MainStartLoader = () => {
 						<Image
 							src={Logo}
 							alt='Logo'
+							width={313}
+							height={195}
 						/>
 					</Flex>
 				</Flex>

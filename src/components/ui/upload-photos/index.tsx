@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 
 import ImageCreateCard from '@/components/cards/Image-create-card'
 
-import { filesActions } from '@/store/slices/files-slice'
+import { storageActions } from '@/store/slices/storage-slice'
 
 import InputTitle from '../texts/InputTitle'
 
@@ -19,7 +19,7 @@ const UploadPhotos = (props: UploadPhotosProps) => {
 	}
 
 	useEffect(() => {
-		dispatch(filesActions.setFiles(fileList))
+		dispatch(storageActions.setFiles(fileList))
 	}, [fileList])
 	return (
 		<Box mb='4'>

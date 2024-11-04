@@ -127,7 +127,7 @@ const Profile = () => {
 				/>
 				<ProfileItem
 					icon={ProfileLogoutSvg}
-					path={AUTH_PAGES.AUTH}
+					path={''}
 					title='Выйти из кабинета'
 					isLogout={true}
 				/>
@@ -149,6 +149,7 @@ function ProfileItem(props: ProfileItemProps) {
 	const logout = () => {
 		if (props.isLogout) {
 			removeFromStorage()
+			window.location.reload()
 		}
 
 		push(props.path)

@@ -1,5 +1,5 @@
 import { Flex, Stack, Text } from '@chakra-ui/react'
-import React from 'react'
+import React, { Dispatch, SetStateAction } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 
 import FileInput from '@/components/ui/inputs/FileInput'
@@ -9,7 +9,7 @@ import AddPhotoSvg from '@/assets/svg/AddPhotoSvg'
 import MiniText from '../texts/MiniText'
 
 interface AddPhotoButtonProps {
-	handleChange: (files: File[]) => void
+	handleChange: Dispatch<SetStateAction<File[]>>
 	isMini?: boolean
 }
 
@@ -18,7 +18,12 @@ const AddPhotoButton = ({
 	isMini = false
 }: AddPhotoButtonProps) => {
 	const handleFileChange = (e: React.ChangeEvent<any>) => {
-		if (!!e.target?.files) handleChange(Array.from(e.target.files))
+		const files: FileList | null = e.target?.files
+		if (files && files.length > 0)
+			// const arr: File[] = Array.from(files)
+			handleChange(state => {
+				return [...state, ...Array.from(files)]
+			})
 	}
 	return (
 		<>

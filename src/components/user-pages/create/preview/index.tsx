@@ -22,15 +22,14 @@ import { getFullName, useProfile } from '@/hooks/useProfile'
 import { EnumRole, getUserRole } from '@/services/role.service'
 
 const PreviewAdComponent = () => {
-	const { ad } = useAppSelector(s => s.storage)
+	const { ad, images } = useAppSelector(s => s.storage)
 	const { user } = useProfile()
 	const role = getUserRole()
 	const { back } = useRouter()
 
-	const { isPending, mutate } = useAdCreate(!!ad?.id)
+	const { isPending, mutate } = useAdCreate(!!ad?.id, images)
 	const current_date = moment().format('YYYY-MM-DD')
 
-	console.log('ad:', ad)
 	const onsubmit = () => {
 		if (ad) {
 			mutate({

@@ -13,6 +13,7 @@ import { storageActions } from '@/store/slices/storage-slice'
 
 import { getFullName } from '@/hooks/useProfile'
 
+import ImagesSliderDetail from '../swiper/AdsImages'
 import AdCard from '../ui/ad/AdCard'
 import AdDates from '../ui/ad/AdDates'
 import PhoneTitle from '../ui/ad/PhoneTitle'
@@ -166,6 +167,7 @@ const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
 					description={ad.description}
 					price={ad.price}
 				/>
+				{!!ad.ads_media && <ImagesSliderDetail images={ad.ads_media} />}
 				<AdDates
 					created_date={ad.created_at}
 					send_date={ad.send_date}

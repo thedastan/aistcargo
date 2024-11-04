@@ -15,9 +15,13 @@ export const default_ad_value: IAdFormCreate = {
 
 interface StorageState {
 	ad: IAdFormCreate
+	images: File[]
 }
 
-const initialState: Partial<StorageState> = {}
+const initialState: StorageState = {
+	ad: { ...default_ad_value },
+	images: []
+}
 
 export const storageSlice = createSlice({
 	name: 'storage',
@@ -26,8 +30,12 @@ export const storageSlice = createSlice({
 		setAdValues(state, action: PayloadAction<IAdFormCreate>) {
 			state.ad = action.payload
 		},
+		setFiles(state, action: PayloadAction<File[]>) {
+			state.images = action.payload
+		},
 		resetFrom(state) {
 			state.ad = { ...default_ad_value }
+			state.images = []
 		}
 	}
 })

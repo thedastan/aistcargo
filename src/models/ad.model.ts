@@ -37,7 +37,7 @@ export interface IAdModel {
 	from_city: IListItem
 	to_city: IListItem
 	address?: string
-	ads_media?: any[]
+	ads_media?: IMedia[]
 	send_date: string
 	created_at: string
 }
@@ -46,4 +46,14 @@ export interface AdFilterForm {
 	from_city: PartialListItem
 	to_city: PartialListItem
 	send_date: string
+}
+
+export interface IMediaPayload {
+	id: number
+	files: File[]
+}
+
+export interface IMedia {
+	id: number
+	image: string
 }
