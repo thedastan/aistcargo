@@ -83,7 +83,8 @@ const InputComponent = ({
 					_placeholder={{
 						opacity: '.7',
 						fontWeight: '400',
-						color: isGreen ? '#FFFFFF' : '#232D37'
+						color: isGreen ? '#FFFFFF' : '#232D37',
+						fontSize: '15px'
 					}}
 					isRequired={required}
 					isReadOnly={isReadOnly}

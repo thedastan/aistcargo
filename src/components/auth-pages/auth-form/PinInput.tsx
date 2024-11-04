@@ -6,12 +6,10 @@ import {
 	ModalBody,
 	ModalContent,
 	ModalFooter,
-	ModalHeader,
 	Text
 } from '@chakra-ui/react'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
-import { BsChevronLeft } from 'react-icons/bs'
 import PinInput from 'react-pin-input'
 
 import Spinner from '@/components/loader/spinner'
@@ -26,22 +24,22 @@ import { useOtpSent, useVerify } from '@/hooks/useAuth'
 import { ISendotpForm } from '@/models/auth.model'
 
 interface PinInputProps {
-	onClose: () => void
+	onsubmit: (code: string) => void
 	value: ISendotpForm
 	isOpen: boolean
+	isLoading: boolean
 }
 
 const countdown_count = 30
 
-const PinInputComponent = ({ value, isOpen, onClose }: PinInputProps) => {
-	const [code, setCode] = useState('')
-	const { push } = useRouter()
+const PinInputComponent = ({
+	value,
+	isOpen,
+	onsubmit,
+	isLoading
+}: PinInputProps) => {
 	const [countdown, setCountdown] = useState(countdown_count)
 	const [isAgain, setAgain] = useState(false)
-	const { isPending: isLoading, mutate: verify } = useVerify(
-		() => push(AUTH_PAGES.REGISTER_CONFIRM),
-		() => setCode('')
-	)
 
 	const countdownStart = () => setAgain(true)
 	const countdownStop = () => {
@@ -58,7 +56,6 @@ const PinInputComponent = ({ value, isOpen, onClose }: PinInputProps) => {
 	const timer = `00:${
 		String(countdown).length > 1 ? countdown : '0' + countdown
 	}`
-
 	useEffect(() => {
 		setTimeout(() => {
 			if (isAgain) {
@@ -115,11 +112,10 @@ const PinInputComponent = ({ value, isOpen, onClose }: PinInputProps) => {
 							length={4}
 							secret
 							secretDelay={1000}
-							// onChange={(value, index) => setCode(value)}
 							type='numeric'
 							inputMode='number'
 							style={{ padding: '10px' }}
-							onComplete={code => verify(code)}
+							onComplete={onsubmit}
 							autoSelect={true}
 							regexCriteria={/^[0-9]*$/}
 						/>

@@ -9,20 +9,18 @@ import {
 	Stack
 } from '@chakra-ui/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { SlArrowRight } from 'react-icons/sl'
 
+import ProfileChangePassword from '@/components/auth-pages/reset-password/profile-change-password'
+import ProfileItem from '@/components/cards/profile-item-card'
 import Navbar from '@/components/navbar'
 import MiniText from '@/components/ui/texts/MiniText'
 import Title from '@/components/ui/texts/Title'
 
 import ProfileHourSvg from '@/assets/svg/ProfileHourSvg'
-import ProfileLockSvg from '@/assets/svg/ProfileLockSvg'
 import ProfileLogoutSvg from '@/assets/svg/ProfileLogoutSvg'
 import ProfilePenSvg from '@/assets/svg/ProfilePenSvg'
 
-import { AUTH_PAGES } from '@/config/pages/auth-url.config'
-import { PUBLIC_PAGES } from '@/config/pages/public-url.config'
 import { USER_PAGES } from '@/config/pages/user-url.config'
 
 import { getFullName, useProfile } from '@/hooks/useProfile'
@@ -31,6 +29,11 @@ import { removeFromStorage } from '@/services/auth-token.services'
 
 const Profile = () => {
 	const { user, isLoading } = useProfile()
+	const logout = () => {
+		removeFromStorage()
+		window.location.reload()
+	}
+
 	return (
 		<Container py='5'>
 			<Title
@@ -110,70 +113,29 @@ const Profile = () => {
 				spacing='10px'
 				mt='5'
 			>
-				<ProfileItem
-					icon={ProfilePenSvg}
-					path={USER_PAGES.AD_MANAGEMENT}
-					title='Управление объявлениями'
-				/>
-				<ProfileItem
-					icon={ProfileHourSvg}
-					path={USER_PAGES.ADS_HISTORY}
-					title='История объявлений'
-				/>
-				<ProfileItem
-					icon={ProfileLockSvg}
-					path={PUBLIC_PAGES.RESET_PASSWORD}
-					title='Изменить пароль'
-				/>
+				<Link href={USER_PAGES.AD_MANAGEMENT}>
+					<ProfileItem
+						icon={ProfilePenSvg}
+						title='Управление объявлениями'
+					/>
+				</Link>
+				<Link href={USER_PAGES.ADS_HISTORY}>
+					<ProfileItem
+						icon={ProfileHourSvg}
+						title='История объявлений'
+					/>
+				</Link>
+				<ProfileChangePassword />
 				<ProfileItem
 					icon={ProfileLogoutSvg}
-					path={''}
 					title='Выйти из кабинета'
+					onClick={logout}
 					isLogout={true}
 				/>
 			</Stack>
 
 			<Navbar />
 		</Container>
-	)
-}
-
-interface ProfileItemProps {
-	title: string
-	icon: () => JSX.Element
-	path: string
-	isLogout?: boolean
-}
-function ProfileItem(props: ProfileItemProps) {
-	const { push } = useRouter()
-	const logout = () => {
-		if (props.isLogout) {
-			removeFromStorage()
-			window.location.reload()
-		}
-
-		push(props.path)
-	}
-	return (
-		<Flex
-			onClick={logout}
-			rounded='14px'
-			h='60px'
-			gap='13px'
-			bg={'#F5F5F5'}
-			px='5'
-			py='18px'
-		>
-			<props.icon />
-			<Title
-				fontSize='16px'
-				lineHeight='22px'
-				textAlign='start'
-				color={props.isLogout ? '#F54135' : '#232D37'}
-			>
-				{props.title}
-			</Title>
-		</Flex>
 	)
 }
 

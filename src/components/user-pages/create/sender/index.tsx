@@ -58,15 +58,10 @@ const CreateComponentSender = () => {
 	}
 
 	const onBack = () => setStep(0)
-	console.log(value)
+
 	useEffect(() => {
 		if (ad) setValue({ ...ad })
 	}, [])
-
-	// useEffect(() => {
-	// 	if (ad) setValue({ ...ad })
-	// 	if (user && !ad?.id) setValue({ ...value, phone: user.phone })
-	// }, [user])
 	return (
 		<Box>
 			<InterfaceShape

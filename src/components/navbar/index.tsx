@@ -1,7 +1,8 @@
 'use client'
 
 import { Container, Flex, useDisclosure } from '@chakra-ui/react'
-import { usePathname, useRouter } from 'next/navigation'
+import Link from 'next/link'
+import { usePathname } from 'next/navigation'
 import { useEffect } from 'react'
 import { AiOutlinePlus } from 'react-icons/ai'
 import { useDispatch } from 'react-redux'
@@ -18,37 +19,36 @@ import TransportModal from '../user-pages/create/traveler/TransportModal'
 
 import { EnumRole, getUserRole } from '@/services/role.service'
 
-const navbar = [
-	{
-		path: USER_PAGES.HOME,
-		icon: <NavbarHomeSvg />
-	},
-	{
-		path: USER_PAGES.CREATE_SENDER,
-		icon: (
-			<AiOutlinePlus
-				color='#FFFFFF'
-				fontSize='24px'
-			/>
-		)
-	},
-	{
-		path: USER_PAGES.PROFILE,
-		icon: <NavbarUserSvg />
-	}
-]
-
 const Navbar = () => {
 	const role = getUserRole()
 	const pathname = usePathname()
 	const dispatch = useDispatch()
 	const { isOpen, onClose, onOpen } = useDisclosure()
-	const { push } = useRouter()
-	const onRedirect = (path: string) => {
-		if (role === EnumRole.TRAVELER && path === USER_PAGES.CREATE_SENDER)
+	const onRedirect = (index: number) => {
+		if (role === EnumRole.TRAVELER && index === 1) {
 			onOpen()
-		else push(path)
+		}
 	}
+
+	const navbar = [
+		{
+			path: USER_PAGES.HOME,
+			icon: <NavbarHomeSvg />
+		},
+		{
+			path: role === EnumRole.SENDER ? USER_PAGES.CREATE_SENDER : '',
+			icon: (
+				<AiOutlinePlus
+					color='#FFFFFF'
+					fontSize='24px'
+				/>
+			)
+		},
+		{
+			path: USER_PAGES.PROFILE,
+			icon: <NavbarUserSvg />
+		}
+	]
 
 	useEffect(() => {
 		dispatch(storageActions.resetFrom())
@@ -72,22 +72,27 @@ const Navbar = () => {
 					gap='1'
 				>
 					{navbar.map((el, idx) => (
-						<Flex
+						<Link
+							href={el.path}
+							onClick={() => onRedirect(idx)}
 							key={idx}
-							onClick={() => onRedirect(el.path)}
-							w={pathname === el.path ? '34%' : '33%'}
-							h='100%'
-							bg={pathname === el.path ? THEME_COLOR : 'transparent'}
-							rounded='30px'
-							justifyContent='center'
-							alignItems='center'
-							className={pathname === el.path ? 'active' : ''}
-							cursor='pointer'
-							_active={{ opacity: '.8' }}
-							transition='.2s'
+							style={{ width: pathname === el.path ? '34%' : '33%' }}
 						>
-							{el.icon}
-						</Flex>
+							<Flex
+								w='100%'
+								h='100%'
+								bg={pathname === el.path ? THEME_COLOR : 'transparent'}
+								rounded='30px'
+								justifyContent='center'
+								alignItems='center'
+								className={pathname === el.path ? 'active' : ''}
+								cursor='pointer'
+								_active={{ opacity: '.8' }}
+								transition='.2s'
+							>
+								{el.icon}
+							</Flex>
+						</Link>
 					))}
 				</Flex>
 			</Container>

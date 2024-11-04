@@ -1,15 +1,20 @@
 'use client'
 
 import { Flex, useDisclosure } from '@chakra-ui/react'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
 import AuthTemplate from '@/components/layout-templates/auth-template'
+import Spinner from '@/components/loader/spinner'
 import InputComponent from '@/components/ui/inputs/InputComponent'
 import PhoneInputComponent from '@/components/ui/inputs/PhoneInputComponent'
 import InputTitle from '@/components/ui/texts/InputTitle'
 
 import { AUTH_PAGES } from '@/config/pages/auth-url.config'
+
+import { useOtpSent } from '@/hooks/useAuth'
+import { usePasswordReset } from '@/hooks/usePassword'
 
 import PinInputComponent from '../auth-form/PinInput'
 
@@ -18,17 +23,24 @@ import { IAuthForm } from '@/models/auth.model'
 
 const ResetPasswordForm = () => {
 	const { isOpen, onClose, onOpen } = useDisclosure()
+	const { push } = useRouter()
 	const [value, setValue] = useState<IAuthForm>({
 		phone: '',
 		password: ''
 	})
 
+	const { isPending, mutate } = useOtpSent(onOpen)
 	const onsubmit = () => {
-		if (value.phone.trim().length > 10) {
-			toast.info('в разработке..') // mutate(update)
+		if (value.phone.trim().length > 10 && !!value.password.trim()) {
+			mutate({ phone: value.phone, type: EnumOtpCode.RESET_PASSWORD })
 		} else {
 			toast.error('заполните поле')
 		}
+	}
+
+	const { isLoading, reset } = usePasswordReset(() => push(AUTH_PAGES.AUTH))
+	const onReset = (code: string) => {
+		reset({ password: value.password, otp: code })
 	}
 
 	return (
@@ -42,6 +54,7 @@ const ResetPasswordForm = () => {
 				path: AUTH_PAGES.REGISTER
 			}}
 		>
+			{isPending && <Spinner />}
 			<PhoneInputComponent
 				handleChange={phone => setValue({ ...value, phone })}
 				value={value.phone}
@@ -57,7 +70,7 @@ const ResetPasswordForm = () => {
 				type='password'
 			/>
 
-			<Flex
+			{/* <Flex
 				justifyContent='end'
 				mt='-1'
 			>
@@ -68,11 +81,12 @@ const ResetPasswordForm = () => {
 				>
 					Через почту
 				</InputTitle>
-			</Flex>
+			</Flex> */}
 
 			<PinInputComponent
 				isOpen={isOpen}
-				onClose={onClose}
+				onsubmit={onReset}
+				isLoading={isLoading}
 				value={{ phone: value.phone, type: EnumOtpCode.RESET_PASSWORD }}
 			/>
 		</AuthTemplate>

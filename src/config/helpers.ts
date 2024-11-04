@@ -8,9 +8,8 @@ export function ToastError(e: any) {
 	toast.error(
 		e.response?.data?.email ||
 			e.response?.data?.detail ||
-			e.response?.data?.non_field_errors ||
 			e.response?.data?.message ||
-			e.response?.data[key] ||
+			JSON.stringify(e.response?.data[key]) ||
 			'Произошла ошибка!'
 	)
 }

@@ -2,6 +2,7 @@
 
 import { Checkbox, Flex, Text, useDisclosure } from '@chakra-ui/react'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { toast } from 'sonner'
 
@@ -14,7 +15,7 @@ import InputTitle from '@/components/ui/texts/InputTitle'
 import { AUTH_PAGES } from '@/config/pages/auth-url.config'
 import { PUBLIC_PAGES } from '@/config/pages/public-url.config'
 
-import { useLogin, useOtpSent } from '@/hooks/useAuth'
+import { useLogin, useOtpSent, useVerify } from '@/hooks/useAuth'
 
 import PinInputComponent from './PinInput'
 import { EnumOtpCode } from '@/models/auth.enum'
@@ -23,6 +24,8 @@ import { IAuthForm, ISendotpForm } from '@/models/auth.model'
 const AuthForm = ({ isRegister }: { isRegister?: boolean }) => {
 	const [agreeTerms, setAgree] = useState(false)
 	const { isOpen, onClose, onOpen } = useDisclosure()
+	const { push } = useRouter()
+
 	const [value, setValue] = useState<IAuthForm>({
 		phone: '',
 		password: ''
@@ -35,6 +38,10 @@ const AuthForm = ({ isRegister }: { isRegister?: boolean }) => {
 		phone: value.phone,
 		type: EnumOtpCode.REGISTER
 	}
+
+	const { isPending: isLoading, mutate: verify } = useVerify(() =>
+		push(AUTH_PAGES.REGISTER_CONFIRM)
+	)
 
 	const onsubmit = () => {
 		if (value.phone.trim().length > 10) {
@@ -116,7 +123,8 @@ const AuthForm = ({ isRegister }: { isRegister?: boolean }) => {
 			)}
 			<PinInputComponent
 				isOpen={isOpen}
-				onClose={onClose}
+				onsubmit={verify}
+				isLoading={isLoading}
 				value={register_value}
 			/>
 		</AuthTemplate>
