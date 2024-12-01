@@ -24,7 +24,7 @@ const DefButton = ({
 			w='100%'
 			border='none'
 			bg={
-				isLight ? '#F5F5F5' : 'linear-gradient(90deg, #FF7B00 0%, #FF4A00 100%)'
+				isLight ? '#F5F5F5' : 'linear-gradient(90deg, #FF7B00 0%, #24B23E 100%)'
 			}
 			h='54px'
 			rounded='100px'

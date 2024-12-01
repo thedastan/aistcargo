@@ -87,7 +87,7 @@ function CheckboxCard(props: TransportCardProps) {
 				border='1px solid #232D371F'
 				h='112px'
 				_checked={{
-					bg: props.isLight ? '#43995C' : '#FFFFFF',
+					bg: props.isLight ? '#24B23E' : '#FFFFFF',
 					opacity: '1',
 					border: '1px solid #2FBF53'
 				}}

@@ -28,30 +28,30 @@ const OrderSkeleton = () => {
 						<SkeletonCircle
 							w='42px'
 							h='42px'
-							// endColor='#43995C'
+							// endColor='#24B23E'
 						/>
 						<Skeleton
 							w='69px'
 							h='10px'
-							// endColor='#43995C'
+							// endColor='#24B23E'
 						/>
 					</Flex>
 					<SkeletonText
 						mt='5'
 						skeletonHeight='2'
-						// endColor='#43995C'
+						// endColor='#24B23E'
 					/>
 					<SkeletonText
 						w='50%'
 						noOfLines={2}
 						mt='5'
 						skeletonHeight='2'
-						// endColor='#43995C'
+						// endColor='#24B23E'
 					/>
 					<SkeletonText
 						mt='5'
 						skeletonHeight='2'
-						// endColor='#43995C'
+						// endColor='#24B23E'
 					/>
 					<Flex
 						mt='5'
@@ -61,12 +61,12 @@ const OrderSkeleton = () => {
 						<Skeleton
 							w='40px'
 							height='2'
-							// endColor='#43995C'
+							// endColor='#24B23E'
 						/>
 						<Skeleton
 							w='40px'
 							height='2'
-							// endColor='#43995C'
+							// endColor='#24B23E'
 						/>
 					</Flex>
 				</Box>

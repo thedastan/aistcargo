@@ -37,7 +37,7 @@ const AdCard = (props: AdCardProps) => {
 					fontWeight='600'
 					lineHeight='21.79px'
 					fontSize='16px'
-					color='#43995C'
+					color='#24B23E'
 				>
 					{props.price ? props.price + ' сом' : 'Договорная'}
 				</Text>
@@ -112,14 +112,14 @@ const AdCard = (props: AdCardProps) => {
 					alignItems='center'
 				>
 					<GrLocation
-						color='#43995C'
+						color='#24B23E'
 						fontSize='20px'
 					/>
 
 					<BoldText
 						fontWeight='600'
 						fontSize='16px'
-						color='#43995C'
+						color='#24B23E'
 					>
 						{props.address}
 					</BoldText>

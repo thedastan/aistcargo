@@ -73,7 +73,7 @@ const PhoneTitle = ({
 					<Box
 						px='4'
 						py='9px'
-						bg='#43995C'
+						bg='#24B23E'
 						rounded='1000px'
 						fontSize='14px'
 						lineHeight='19.07px'

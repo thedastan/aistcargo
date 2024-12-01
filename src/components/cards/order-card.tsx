@@ -89,7 +89,7 @@ const OrderCard = ({ ad, isEdit }: OrderCardProps) => {
 				<Box mt='5'>
 					<BoldText
 						fontWeight='600'
-						color='#43995C'
+						color='#24B23E'
 						lineHeight='24.51px'
 					>
 						{ad.price ? `${ad.price} с` : 'Договорная'}

@@ -14,7 +14,7 @@ const MainStartLoader = () => {
 			<Center overflow='hidden'>
 				<Flex
 					justifyContent='center'
-					bg='#45C069'
+					bg='#24B23E'
 					alignItems='end'
 					mx='auto'
 					className='main-anim-loader'
@@ -45,7 +45,7 @@ const MainStartLoader = () => {
 				lineHeight='42.2px'
 			>
 				<Text color='#FF8400'>AIST</Text>
-				<Text color='#43995C'>CARGO</Text>
+				<Text color='#24B23E'>CARGO</Text>
 			</Flex>
 		</Box>
 	)

@@ -1,4 +1,4 @@
-import { SEO_KEY_WORDS, SITE_NAME } from '@/constants/seo/seo.constants'
+import { SEO_KEY_WORDS, SITE_NAME, SEO_DESCRIPTION } from '@/constants/seo/seo.constants'
 
 import { THEME_COLOR } from '@/config/_variables.config'
 
@@ -31,7 +31,7 @@ const Head = () => {
 
 			<meta
 				name='description'
-				content={SEO_KEY_WORDS}
+				content={SEO_DESCRIPTION}
 			/>
 			<meta
 				property='og:title'
@@ -39,7 +39,7 @@ const Head = () => {
 			/>
 			<meta
 				property='og:description'
-				content={SEO_KEY_WORDS}
+				content={SEO_DESCRIPTION}
 			/>
 
 			<meta

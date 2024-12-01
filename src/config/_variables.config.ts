@@ -5,4 +5,4 @@ export const PADDING_Y = '30px'
 
 export const HEADER_HEIGHT = '80px'
 
-export const THEME_COLOR = '#43995C'
+export const THEME_COLOR = '#24B23E'
