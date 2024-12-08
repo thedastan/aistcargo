@@ -3,7 +3,7 @@ export const PHONE_NUMBER = '+996332123456'
 export const WHATSAPP_NUMBER = PHONE_NUMBER
 
 export const EMAIL_ADDRESS = 'agrico@gmail.com'
-export const INSTAGRAM = 'agrico'
+export const INSTAGRAM = 'aistcargo'
 
 export const LOCATION = 'Бишкек, Улица Ибраимова, 64/2'
 

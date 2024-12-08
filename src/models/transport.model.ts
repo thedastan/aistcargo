@@ -15,8 +15,8 @@ export interface IListItem {
 export type PartialListItem = Partial<IListItem>
 
 export enum EnumTransportId {
-	CAR = 1,
-	AIRPLANE = 2,
+	AIRPLANE = 1,
+	CAR = 2,
 	TRUCK = 3
 }
 
@@ -29,17 +29,18 @@ export interface ITransportType {
 
 export const transports: ITransportType[] = [
 	{
-		id: EnumTransportId.CAR,
-		image: CarTransport,
-		icon: CarSvg,
-		name: 'Машина'
-	},
-	{
 		id: EnumTransportId.AIRPLANE,
 		image: Airplane,
 		icon: AirplaneSvg,
 		name: 'Самолёт'
 	},
+	{
+		id: EnumTransportId.CAR,
+		image: CarTransport,
+		icon: CarSvg,
+		name: 'Автомобиль'
+	},
+	
 	{
 		id: EnumTransportId.TRUCK,
 		image: TruckTransport,

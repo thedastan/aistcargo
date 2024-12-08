@@ -33,7 +33,7 @@ const options = [
 		icon: IoMdCube
 	},
 	{
-		name: 'Попутчик',
+		name: 'Перевозчик',
 		role: EnumRole.TRAVELER,
 		icon: HiTruck
 	}

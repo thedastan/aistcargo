@@ -1,7 +1,7 @@
 {
-	"name": "AIST-EXPRESS",
-	"short_name": "Aist-express",
-	"description": "Доставка",
+	"name": "Aist Cargo",
+	"short_name": "Aist Cargo",
+	"description": "Передача посылки",
 	"lang": "ru-RU",
 	"start_url": "/",
 	"scope": "/",

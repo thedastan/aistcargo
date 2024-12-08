@@ -30,7 +30,7 @@ const TransportModal = ({ isOpen, onClose }: TransportModalProps) => {
 	}
 	return (
 		<DrawerModal
-			title='Стать попутчиком'
+			title='Стать перевозчиком'
 			isOpen={isOpen}
 			onClose={onClose}
 		>

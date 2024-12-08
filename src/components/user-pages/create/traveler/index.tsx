@@ -44,7 +44,7 @@ const CreateComponentTraveler = () => {
 	) : (
 		<Box>
 			<InterfaceShape
-				title='Стать попутчиком'
+				title='Стать перевозчиком'
 				UpperContent={
 					<Box>
 						<RouteSelect

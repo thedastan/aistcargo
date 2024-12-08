@@ -5,7 +5,7 @@ import { NO_INDEX_PAGE } from '@/constants/seo/seo.constants'
 import CreateComponentTraveler from '@/components/user-pages/create/traveler'
 
 export const metadata: Metadata = {
-	title: 'Стать попутчиком',
+	title: 'Стать перевозчиком',
 	...NO_INDEX_PAGE
 }
 export default function TravelerCreatePage() {
